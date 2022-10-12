@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:programmerprofile/auth/view/auth_page.dart';
-import 'package:programmerprofile/auth/view/widgets/slider_widget.dart';
-
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -95,9 +91,9 @@ class _OnBoardingState extends State<OnBoarding> {
                     ),
                     onPressed: () {
                       print("PRESSED");
-                      // if (currentIndex == pages.length - 1) {
-                      //   Navigator.pushReplacementNamed(context, AuthScreen.routeName);
-                      // }
+                      if (currentIndex == pages.length - 1) {
+                        Navigator.pushReplacementNamed(context, AuthScreen.routeName);
+                      }
                       _controller.nextPage(
                           duration: Duration(milliseconds: 100),
                           curve: Curves.bounceIn);
@@ -138,13 +134,13 @@ Widget page2() {
   return Scaffold(
       backgroundColor: Color.fromARGB(255, 27, 88, 194),
       body: Center(
-        child: const Text("Page 1"),
+        child: const Text("Page 2"),
       ));
 }
 Widget page3() {
   return Scaffold(
       backgroundColor: Color.fromARGB(255, 27, 88, 194),
       body: Center(
-        child: const Text("Page 1"),
+        child: const Text("Page 3"),
       ));
 }
