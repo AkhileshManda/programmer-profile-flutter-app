@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:programmerprofile/auth/view/auth_page.dart';
 import 'package:programmerprofile/auth/view/widgets/slider_widget.dart';
 
-import '../model/slider_model.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
