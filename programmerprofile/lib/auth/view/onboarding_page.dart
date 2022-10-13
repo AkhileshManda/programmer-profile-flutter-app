@@ -1,146 +1,60 @@
+import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
-import 'package:programmerprofile/auth/view/auth_page.dart';
+import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/auth/view/sign_up_page.dart';
+import 'package:programmerprofile/auth/view/widgets/on_boarding_card.dart';
 
-class OnBoarding extends StatefulWidget {
-  const OnBoarding({Key? key}) : super(key: key);
-  static const routeName = "Onboarding";
-  @override
-  State<OnBoarding> createState() => _OnBoardingState();
-}
-
-class _OnBoardingState extends State<OnBoarding> {
-  int currentIndex = 0;
-  late PageController _controller;
-  List<Widget> pages = [
-    page1(), page2(), page3()
+class OnboardingPage extends StatelessWidget {
+  OnboardingPage({Key? key}) : super(key: key);
+  static const routeName = 'onboarding';
+  final data = [
+    OnBoardingData(
+      title: "Connect",
+      subtitle:
+          "Connect your Codeforces, Leetcode, GitHub accounts all in one app",
+      image: LottieBuilder.asset("assets/images/95348-coding-boy.json"),
+      backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
+      titleColor: Colors.pink,
+      subtitleColor: Colors.white,
+      background: LottieBuilder.asset("assets/animations/bg-1.json"),
+    ),
+    OnBoardingData(
+      title: "Code",
+      subtitle: "Keep coding effectively while we help you keep track of your strength and weaknesses",
+      image: LottieBuilder.asset("assets/images/98636-coding.json"),
+      backgroundColor: Colors.white,
+      titleColor: Colors.purple,
+      subtitleColor: const Color.fromRGBO(0, 10, 56, 1),
+      background: LottieBuilder.asset("assets/animations/bg-2.json"),
+    ),
+    OnBoardingData(
+      title: "Collaborate",
+      subtitle: "Collaborate with developers across the world and build innovative products",
+      image: LottieBuilder.asset("assets/images/5482-connect.json"),
+      backgroundColor: const Color.fromRGBO(71, 59, 117, 1),
+      titleColor: Colors.yellow,
+      subtitleColor: Colors.white,
+      background: LottieBuilder.asset("assets/animations/bg-3.json"),
+    ),
   ];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller = PageController(initialPage: 0);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 88, 194),
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-                controller: _controller,
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-                itemCount: pages.length,
-                itemBuilder: (context, index) {
-                  return pages[index];
-                }),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                pages.length,
-                (index) => buildDot(index, context),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  currentIndex > 0
-                      ? IconButton(
-                          icon: Icon(
-                            currentIndex == pages.length - 1
-                                ? Icons.arrow_back_ios
-                                : Icons.arrow_back_ios,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            _controller.previousPage(
-                                duration: Duration(milliseconds: 100),
-                                curve: Curves.bounceIn);
-                          },
-                        )
-                      : Container(),
-                  IconButton(
-                    icon: Icon(
-                      currentIndex == pages.length - 1
-                          ? Icons.skip_next
-                          : Icons.done,
-                      size: 35,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      print("PRESSED");
-                      if (currentIndex == pages.length - 1) {
-                        Navigator.pushReplacementNamed(context, AuthScreen.routeName);
-                      }
-                      _controller.nextPage(
-                          duration: Duration(milliseconds: 100),
-                          curve: Curves.bounceIn);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      //backgroundColor: Colors.white,
-    );
-  }
+      body: ConcentricPageView(
 
-  Container buildDot(int index, BuildContext context) {
-    return Container(
-      height: 10,
-      width: currentIndex == index ? 25 : 10,
-      margin: const EdgeInsets.only(right: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.green,
+        duration: const Duration(seconds: 4),
+        colors: data.map((e) => e.backgroundColor).toList(),
+        itemCount: data.length,
+        itemBuilder: (int index) {
+          return OnBoardingCard(data: data[index]);
+        },
+        onFinish: () {
+          Navigator.pushNamed(
+            context, SignUpScreen.routeName
+          );
+        },
       ),
     );
   }
-}
-
-Widget page1() {
-  return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 88, 194),
-      body: Center(
-        child: const Text("Page 1"),
-      ));
-}
-
-Widget page2() {
-  return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 88, 194),
-      body: Center(
-        child: const Text("Page 2"),
-      ));
-}
-Widget page3() {
-  return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 88, 194),
-      body: Center(
-        child: const Text("Page 3"),
-      ));
 }

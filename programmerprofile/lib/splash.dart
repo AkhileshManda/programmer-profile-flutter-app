@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth/view/auth_page.dart';
+import 'auth/view/login_page.dart';
+import 'auth/view/sign_up_page.dart';
 import 'auth/view/onboarding_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,11 +19,11 @@ class _Splash extends State<SplashScreen> {
 
     if (_seen) {
       //_handleStartScreen();
-      Navigator.pushNamed(context, AuthScreen.routeName);
+      Navigator.pushNamed(context, LoginScreen.routeName);
 
     } else {
       await prefs.setBool('seen', true);
-      Navigator.pushNamed(context, OnBoarding.routeName);
+      Navigator.pushNamed(context, OnboardingPage.routeName);
     }
   }
 

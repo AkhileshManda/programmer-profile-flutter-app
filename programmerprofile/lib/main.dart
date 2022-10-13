@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:programmerprofile/auth/view/auth_page.dart';
+import 'package:programmerprofile/auth/view/sign_up_page.dart';
 import 'package:programmerprofile/splash.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
-
+import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
 
 void main(){
@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: OnBoarding(),//SplashScreen(),
+      home: OnboardingPage(),//SplashScreen(),
       routes: {
        // '/': (ctx) => SplashScreen(),
-        OnBoarding.routeName : (ctx) => OnBoarding(),
-        AuthScreen.routeName : (ctx) => AuthScreen(),
+        OnboardingPage.routeName : (ctx) => OnboardingPage(),
+        SignUpScreen.routeName : (ctx) => SignUpScreen(),
+        LoginScreen.routeName : (ctx) => LoginScreen(),
       },
     );
   }
