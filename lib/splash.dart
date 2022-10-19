@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:programmerprofile/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'auth/controller/auth.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/sign_up_page.dart';
 import 'auth/view/onboarding_page.dart';
@@ -16,9 +18,9 @@ class _Splash extends State<SplashScreen> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
-
+    print(_seen);
     if (_seen) {
-      //_handleStartScreen();
+      _handleStartScreen();
       Navigator.pushNamed(context, LoginScreen.routeName);
 
     } else {
@@ -29,11 +31,11 @@ class _Splash extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        //TODO : ADD APP LOGO INSTEAD OF CircularProgressIndicator
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      body: Container(
+        color: Color.fromARGB(255, 4, 24, 40),
       ),
+      
     );
   }
 
@@ -45,12 +47,13 @@ class _Splash extends State<SplashScreen> {
 
   Future<void> _handleStartScreen() async {
 
-    // //Auth _auth = Auth();
-
-    // if (await _auth.isLoggedIn()) {
-    //   //Navigator.popAndPushNamed(context, ChatScreen.id);
-    // } else {
-    //   //Navigator.popAndPushNamed(context, WelcomeScreen.id);
-    // }
+    final prefs = await SharedPreferences.getInstance();
+    print(prefs.toString());
+    print(prefs.getString('token'));
+    if (prefs.getString('token')==null) {
+      Navigator.popAndPushNamed(context, LoginScreen.routeName);
+    } else {
+      Navigator.popAndPushNamed(context, Home.routeName);
+    }
   }
 }

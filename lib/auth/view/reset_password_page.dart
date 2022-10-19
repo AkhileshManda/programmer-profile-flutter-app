@@ -1,38 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:programmerprofile/auth/controller/api.dart';
-import 'package:programmerprofile/auth/view/forgot_password_page.dart';
-import 'package:programmerprofile/auth/view/sign_up_page.dart';
+import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/styles.dart';
-import 'package:programmerprofile/temp_home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/api.dart';
 import '../controller/queries.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-  static const routeName = 'login_screen';
+class ResetPasswordScreen extends StatefulWidget {
+  final String email;
+  const ResetPasswordScreen({super.key, required this.email});
+  static const routeName = "reset-password";
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailCon = TextEditingController();
+  final TextEditingController _codeCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
+  final TextEditingController _confirmPasswordCon = TextEditingController();
 
-  void onLoginPressed({required String email, required String password}) async {
+  late String _code;
+  bool _onEditing = true;
+
+  void onResetPressed(
+      {required String code,
+      required String email,
+      required String password,
+      required String confirmPassword}) async {
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
     QueryResult result = await client.value.mutate(MutationOptions(
-        document: gql(AuthenticationQueries.signIn()),
+        document: gql(AuthenticationQueries.resetPassword()),
         variables: {
           "input": {
-            'email': email,
+            'email': widget.email,
+            'code': code,
             'password': password,
+            'confirmPassword': confirmPassword
           }
         }));
 
@@ -47,12 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
       //notifyListeners();
     } else {
       print(result.data);
-      final prefs = await SharedPreferences.getInstance();
-      print(result.data!['signin']['token']);
-      prefs.setString("token", result.data!['signin']['token']);
-      print(prefs.getString("token"));
-      Navigator.pushReplacementNamed(context, Home.routeName);
       print("SHEEESH");
+      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
   }
 
@@ -69,16 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        LottieBuilder.asset(
-                            "assets/images/67011-code-time.json",
+                        LottieBuilder.asset("assets/images/resetPassword.json",
                             height: 350),
 
                         const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            "Log In",
+                            "Reset your password",
                             style: TextStyle(
                                 color: Colors.pink,
                                 fontSize: 25,
@@ -89,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             textAlign: TextAlign.center,
-                            "Let's get you logged in",
+                            "Enter the code you recieved on your email",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -104,11 +110,39 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  controller: _emailCon,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: Styles.textFieldStyle("Email"),
+                                child: VerificationCode(
+                                  textStyle: TextStyle(
+                                      fontSize: 20.0, color: Colors.pink),
+                                  keyboardType: TextInputType.streetAddress,
+                                  underlineColor: Colors.pink,
+                                  // If this is null it will use primaryColor: Colors.red from Theme
+                                  length: 6,
+                                  cursorColor: Colors
+                                      .pink, // If this is null it will default to the ambient
+                                  
+                                  onCompleted: (String value) {
+                                    setState(() {
+                                      _code = value;
+                                    });
+                                  },
+                                  onEditing: (bool value) {
+                                    setState(() {
+                                      _onEditing = value;
+                                    });
+                                    if (!_onEditing)
+                                      FocusScope.of(context).unfocus();
+                                  },
                                 ),
+                              ),
+                              const Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    textAlign: TextAlign.center,
+                                    "Enter new password",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -118,23 +152,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: Styles.textFieldStyle("Password"),
                                 ),
                               ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context, ForgotPasswordScreen.routeName);
-                                  },
-                                  child: const Text(
-                                    "Forgot Password?",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.pink
-                                    ),
-                                  )
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: _confirmPasswordCon,
+                                  obscureText: true,
+                                  decoration: Styles.textFieldStyle("Confirm Password"),
                                 ),
+                              )
                             ],
                           ),
                         ),
-                        
+                        const SizedBox(height: 25),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
@@ -145,37 +174,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  //TODO : Implement Authentication
-                                  onLoginPressed(
-                                    email: _emailCon.text,
-                                    password: _passwordCon.text
+                                  print('pressed');
+                                  onResetPressed(
+                                    code: _code,
+                                    email: widget.email,
+                                    password: _passwordCon.text,
+                                    confirmPassword: _confirmPasswordCon.text,
                                   );
                                 },
                                 child: const Text(
-                                  "Log in",
+                                  "Reset my password",
                                 )),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "New User?",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, SignUpScreen.routeName);
-                                },
-                                child: const Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                      color: Colors.pink, fontSize: 17),
-                                ))
-                          ],
-                        )
+                        
                       ],
                     ),
                   ),

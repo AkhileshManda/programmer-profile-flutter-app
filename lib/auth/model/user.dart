@@ -12,6 +12,4 @@ class User{
   DateTime? updatedAt;
   List<String>? followedByIds;
   List<String>? followingIds;
-  
-
 }
