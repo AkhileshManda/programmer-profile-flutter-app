@@ -37,22 +37,23 @@ class _LoginScreenState extends State<LoginScreen> {
         }));
 
     if (result.hasException) {
-      print(result.exception);
+      //print(result.exception);
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        //print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        //print(result.exception!.graphqlErrors[0].message.toString());
       }
       //notifyListeners();
     } else {
-      print(result.data);
+      //print(result.data);
       final prefs = await SharedPreferences.getInstance();
-      print(result.data!['signin']['token']);
+      //print(result.data!['signin']['token']);
       prefs.setString("token", result.data!['signin']['token']);
-      print(prefs.getString("token"));
+      //print(prefs.getString("token"));
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, Home.routeName);
-      print("SHEEESH");
+      //print("SHEEESH");
     }
   }
 
@@ -120,21 +121,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(
-                                      context, ForgotPasswordScreen.routeName);
+                                    Navigator.pushNamed(context,
+                                        ForgotPasswordScreen.routeName);
                                   },
                                   child: const Text(
                                     "Forgot Password?",
                                     style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.pink
-                                    ),
-                                  )
-                                ),
+                                        fontSize: 17, color: Colors.pink),
+                                  )),
                             ],
                           ),
                         ),
-                        
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
@@ -145,11 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  //TODO : Implement Authentication
                                   onLoginPressed(
-                                    email: _emailCon.text,
-                                    password: _passwordCon.text
-                                  );
+                                      email: _emailCon.text,
+                                      password: _passwordCon.text);
                                 },
                                 child: const Text(
                                   "Log in",

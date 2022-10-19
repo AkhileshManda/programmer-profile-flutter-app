@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
-import 'package:programmerprofile/auth/view/verification_page.dart';
 import 'package:programmerprofile/splash.dart';
 import 'package:programmerprofile/temp_home.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
-import 'auth/view/reset_password_page.dart';
 
 void main(){
   WidgetsFlutterBinding.ensureInitialized(); 
@@ -23,15 +21,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),//OnboardingPage(),//SplashScreen(),
+      home: const SplashScreen(),//OnboardingPage(),//SplashScreen(),
       routes: {
        // '/': (ctx) => SplashScreen(),
         OnboardingPage.routeName : (ctx) => OnboardingPage(),
-        SignUpScreen.routeName : (ctx) => SignUpScreen(),
-        LoginScreen.routeName : (ctx) => LoginScreen(),
-        ForgotPasswordScreen.routeName : (ctx) => ForgotPasswordScreen(),
+        SignUpScreen.routeName : (ctx) => const SignUpScreen(),
+        LoginScreen.routeName : (ctx) => const LoginScreen(),
+        ForgotPasswordScreen.routeName : (ctx) => const ForgotPasswordScreen(),
         
-        Home.routeName : (ctx) => Home(),
+        Home.routeName : (ctx) => const Home(),
 
       },
     );

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/controller/queries.dart';
-import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String email;
-  VerificationScreen({super.key, required this.email});
+  const VerificationScreen({super.key, required this.email});
   static String routeName = 'verification-screen';
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
@@ -36,21 +33,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
         }));
 
     if (result.hasException) {
-      print(result.exception);
+      //print(result.exception);
       
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        // print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
       //notifyListeners();
     } else {
-      print(result.data);
+      // print(result.data);
       final prefs = await SharedPreferences.getInstance();
-      print(result.data!['checkCode']['token']);
+      // print(result.data!['checkCode']['token']);
       prefs.setString("token", result.data!['checkCode']['token']);
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, Home.routeName);
-      print("SHEEESH");
+      // print("SHEEESH");
     }
   }
   @override
@@ -90,7 +88,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ),
                         const SizedBox(height: 20),
                     VerificationCode(
-                      textStyle: TextStyle(fontSize: 20.0, color: Colors.pink),
+                      textStyle: const TextStyle(fontSize: 20.0, color: Colors.pink),
                       keyboardType: TextInputType.streetAddress,
                       underlineColor: Colors.pink,
                        // If this is null it will use primaryColor: Colors.red from Theme
@@ -100,7 +98,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       // clearAll is NOT required, you can delete it
                       // takes any widget, so you can implement your design
                       clearAll: const Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Text(
                           'clear all',
                           style: TextStyle(
@@ -121,7 +119,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         if (!_onEditing) FocusScope.of(context).unfocus();
                       },
                     ),
-                    SizedBox(height: 30,),
+                    const SizedBox(height: 30,),
                     Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(

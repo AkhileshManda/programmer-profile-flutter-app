@@ -3,9 +3,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/view/reset_password_page.dart';
 import 'package:programmerprofile/styles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../temp_home.dart';
 import '../controller/api.dart';
 import '../controller/queries.dart';
 
@@ -33,16 +30,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         }));
 
     if (result.hasException) {
-      print(result.exception);
+      //print(result.exception);
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        //print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        //print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      print(result.data);
-      print("SHEEESH");
+      //print(result.data);
+      //print("SHEEESH");
+      if (!mounted) return;
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -114,8 +112,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  //TODO : Implement Authentication
-                                  print("pressed");
+                                  
+                                  //print("pressed");
                                   onButtonPressed(email: _emailCon.text);
                                 },
                                 child: const Text(

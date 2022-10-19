@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:programmerprofile/auth/controller/auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth/view/login_page.dart';
 
@@ -23,10 +21,10 @@ class _HomeState extends State<Home> {
           const Text("HOME"),
           ElevatedButton(
             onPressed: ()async{
-              print("Logout");
+              //print("Logout");
               Auth().logout();
-              final prefs = await SharedPreferences.getInstance();
-              print(prefs.getString('token'));
+              //final prefs = await SharedPreferences.getInstance();
+              //print(prefs.getString('token'));
               Navigator.pushReplacementNamed(context, LoginScreen.routeName );
             }, 
             child: const Text("Log out")

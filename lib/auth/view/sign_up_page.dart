@@ -41,16 +41,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }));
 
     if (result.hasException) {
-      print(result.exception);
+      //print(result.exception);
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        //print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        //print(result.exception!.graphqlErrors[0].message.toString());
       }
       //notifyListeners();
     } else {
       //print(result.data);
+      if (!mounted) return;
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -188,7 +189,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  print('pressed');
+                                  //print('pressed');
                                   onSignUpPressed(
                                     name: _nameCon.text,
                                     email: _emailCon.text,

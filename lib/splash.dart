@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:programmerprofile/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'auth/controller/auth.dart';
 import 'auth/view/login_page.dart';
-import 'auth/view/sign_up_page.dart';
 import 'auth/view/onboarding_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
   static const String routeName = "/splashScreen";
   @override
-  _Splash createState() => _Splash();
+  Splash createState() => Splash();
 }
 
-class _Splash extends State<SplashScreen> {
+class Splash extends State<SplashScreen> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
-    print(_seen);
-    if (_seen) {
+    bool seen = (prefs.getBool('seen') ?? false);
+    //print(_seen);
+    
+    if (seen) {
       _handleStartScreen();
+      if (!mounted) return;
       Navigator.pushNamed(context, LoginScreen.routeName);
 
     } else {
       await prefs.setBool('seen', true);
+      if (!mounted) return;
       Navigator.pushNamed(context, OnboardingPage.routeName);
     }
   }
@@ -33,7 +33,7 @@ class _Splash extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color.fromARGB(255, 4, 24, 40),
+        color: const Color.fromARGB(255, 4, 24, 40),
       ),
       
     );
@@ -48,8 +48,9 @@ class _Splash extends State<SplashScreen> {
   Future<void> _handleStartScreen() async {
 
     final prefs = await SharedPreferences.getInstance();
-    print(prefs.toString());
-    print(prefs.getString('token'));
+    //print(prefs.toString());
+   // print(prefs.getString('token'));
+    if (!mounted) return;
     if (prefs.getString('token')==null) {
       Navigator.popAndPushNamed(context, LoginScreen.routeName);
     } else {

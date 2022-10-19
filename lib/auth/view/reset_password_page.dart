@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
@@ -21,7 +19,7 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _codeCon = TextEditingController();
+  //final TextEditingController _codeCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
   final TextEditingController _confirmPasswordCon = TextEditingController();
 
@@ -48,17 +46,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         }));
 
     if (result.hasException) {
-      print(result.exception);
+      //print(result.exception);
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        //print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        //print(result.exception!.graphqlErrors[0].message.toString());
       }
       //notifyListeners();
     } else {
-      print(result.data);
-      print("SHEEESH");
+      //print(result.data);
+      //print("SHEEESH");
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
   }
@@ -111,7 +110,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: VerificationCode(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontSize: 20.0, color: Colors.pink),
                                   keyboardType: TextInputType.streetAddress,
                                   underlineColor: Colors.pink,
@@ -119,7 +118,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   length: 6,
                                   cursorColor: Colors
                                       .pink, // If this is null it will default to the ambient
-                                  
+
                                   onCompleted: (String value) {
                                     setState(() {
                                       _code = value;
@@ -129,13 +128,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     setState(() {
                                       _onEditing = value;
                                     });
-                                    if (!_onEditing)
+                                    if (!_onEditing){
                                       FocusScope.of(context).unfocus();
+                                    }
                                   },
                                 ),
                               ),
                               const Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
                                     textAlign: TextAlign.center,
                                     "Enter new password",
@@ -157,7 +157,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 child: TextFormField(
                                   controller: _confirmPasswordCon,
                                   obscureText: true,
-                                  decoration: Styles.textFieldStyle("Confirm Password"),
+                                  decoration:
+                                      Styles.textFieldStyle("Confirm Password"),
                                 ),
                               )
                             ],
@@ -174,7 +175,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  print('pressed');
+                                  //print('pressed');
                                   onResetPressed(
                                     code: _code,
                                     email: widget.email,
@@ -187,7 +188,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 )),
                           ),
                         ),
-                        
                       ],
                     ),
                   ),
