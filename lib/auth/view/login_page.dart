@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
+import 'package:programmerprofile/auth/view/widgets/toasts.dart';
 import 'package:programmerprofile/styles.dart';
 import 'package:programmerprofile/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,11 +21,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
 
-  void onLoginPressed({required String email, required String password}) async {
+  bool isLoading = false;
+
+  void onLoginPressed(
+      {required String email,
+      required String password,
+      required context}) async {
+    setState(() {
+      isLoading = true;
+    });
+
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
@@ -38,28 +50,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result.hasException) {
       //print(result.exception);
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(20),
+          backgroundColor: Colors.red,
+          content:
+              Text(result.exception!.graphqlErrors[0].message.toString())));
+      _passwordCon.clear();
 
+      
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
       } else {
         //print(result.exception!.graphqlErrors[0].message.toString());
       }
-      //notifyListeners();
     } else {
       //print(result.data);
       final prefs = await SharedPreferences.getInstance();
-      //print(result.data!['signin']['token']);
       prefs.setString("token", result.data!['signin']['token']);
-      //print(prefs.getString("token"));
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, Home.routeName);
-      //print("SHEEESH");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
         body: Stack(
           children: [
@@ -143,12 +164,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
+                                  print("pressed");
+                                  print(isLoading.toString());
                                   onLoginPressed(
                                       email: _emailCon.text,
-                                      password: _passwordCon.text);
+                                      password: _passwordCon.text,
+                                      context: context);
                                 },
-                                child: const Text(
+                                child: !isLoading? const Text(
                                   "Log in",
+                                ): const CircularProgressIndicator(
+                                  color: Colors.white,
                                 )),
                           ),
                         ),

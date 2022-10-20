@@ -26,11 +26,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   late String _code;
   bool _onEditing = true;
 
+  bool isLoading = false;
+
   void onResetPressed(
       {required String code,
       required String email,
       required String password,
       required String confirmPassword}) async {
+    
+    setState(() {
+      isLoading = true;
+    });
+
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
@@ -47,7 +54,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (result.hasException) {
       //print(result.exception);
-
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(20),
+          backgroundColor: Colors.red,
+          content:
+              Text(result.exception!.graphqlErrors[0].message.toString())));
+      
+      setState(() {
+        isLoading = false;
+      });
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
       } else {

@@ -16,8 +16,15 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailCon = TextEditingController();
+  
+  bool isLoading = false;
 
   void onButtonPressed({required String email}) async {
+    
+    setState(() {
+      isLoading = true;
+    });
+    
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
@@ -31,6 +38,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     if (result.hasException) {
       //print(result.exception);
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(20),
+          backgroundColor: Colors.red,
+          content:
+              Text(result.exception!.graphqlErrors[0].message.toString())));
 
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
@@ -112,13 +129,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  
+                                  print(isLoading);
                                   //print("pressed");
                                   onButtonPressed(email: _emailCon.text);
                                 },
-                                child: const Text(
+                                child: !isLoading?const Text(
                                   "Confirm Email",
-                                )),
+                                ): const CircularProgressIndicator(color: Colors.white,)),
                           ),
                         ),
                       ],

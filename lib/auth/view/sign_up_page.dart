@@ -21,6 +21,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordCon = TextEditingController();
   final TextEditingController _confirmPasswordCon = TextEditingController();
 
+  bool isLoading = false;
+  
   void onSignUpPressed(
       {required String name,
       required String email,
@@ -28,6 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       required String confirmPassword}) async {
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
+
+    setState(() {
+      isLoading = true;
+    });
 
     QueryResult result = await client.value.mutate(MutationOptions(
         document: gql(AuthenticationQueries.signup()),
@@ -41,7 +47,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }));
 
     if (result.hasException) {
+      setState(() {
+        isLoading = false;
+      });
       //print(result.exception);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(20),
+          backgroundColor: Colors.red,
+          content:
+              Text(result.exception!.graphqlErrors[0].message.toString())));
 
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
