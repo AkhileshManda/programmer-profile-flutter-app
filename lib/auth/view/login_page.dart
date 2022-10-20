@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
-import 'package:programmerprofile/auth/view/widgets/toasts.dart';
 import 'package:programmerprofile/styles.dart';
 import 'package:programmerprofile/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -164,8 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  print("pressed");
-                                  print(isLoading.toString());
+                                  //print("pressed");
+                                  //print(isLoading.toString());
                                   onLoginPressed(
                                       email: _emailCon.text,
                                       password: _passwordCon.text,

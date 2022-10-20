@@ -41,6 +41,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       setState(() {
         isLoading = false;
       });
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           padding: const EdgeInsets.all(15),
@@ -129,7 +130,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.pink)),
                                 onPressed: () {
-                                  print(isLoading);
+                                  //print(isLoading);
                                   //print("pressed");
                                   onButtonPressed(email: _emailCon.text);
                                 },

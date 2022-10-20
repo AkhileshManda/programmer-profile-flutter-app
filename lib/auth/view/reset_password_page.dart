@@ -54,6 +54,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (result.hasException) {
       //print(result.exception);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           padding: const EdgeInsets.all(15),
