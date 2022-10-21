@@ -232,7 +232,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   Navigator.pushReplacementNamed(
                                       context, LoginScreen.routeName);
                                 },
-                                child: const Text(
+                                child: isLoading? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                ):const Text(
                                   "Login",
                                   style: TextStyle(
                                       color: Colors.pink, fontSize: 17),

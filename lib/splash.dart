@@ -20,12 +20,12 @@ class Splash extends State<SplashScreen> {
     if (seen) {
       _handleStartScreen();
       if (!mounted) return;
-      Navigator.pushNamed(context, LoginScreen.routeName);
+      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
 
     } else {
       await prefs.setBool('seen', true);
       if (!mounted) return;
-      Navigator.pushNamed(context, OnboardingPage.routeName);
+      Navigator.pushReplacementNamed(context, OnboardingPage.routeName);
     }
   }
 

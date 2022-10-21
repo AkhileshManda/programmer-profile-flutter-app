@@ -148,7 +148,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 onPressed: (){
                                   onVerificationPressed();
                                 },
-                                child: const Text(
+                                child: isLoading? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                ):const Text(
                                   "Verify",
                                 )),
                           ),

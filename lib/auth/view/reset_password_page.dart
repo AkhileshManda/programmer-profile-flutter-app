@@ -201,7 +201,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     confirmPassword: _confirmPasswordCon.text,
                                   );
                                 },
-                                child: const Text(
+                                child: isLoading? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                ): const Text(
                                   "Reset my password",
                                 )),
                           ),
