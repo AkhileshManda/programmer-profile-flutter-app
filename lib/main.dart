@@ -7,6 +7,7 @@ import 'package:programmerprofile/home/view/temp_home.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
+import 'contests/view/contests_page.dart';
 
 
 void main(){
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ForgotPasswordScreen.routeName : (ctx) => const ForgotPasswordScreen(),
         Home.routeName : (ctx) => const Home(),
         ProfileScreen.routeName : (ctx) => const ProfileScreen(),
+        ContestsScreen.routeName : (ctx) => const ContestsScreen(),
       },
     );
   }

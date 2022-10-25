@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/contests/view/contests_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
+import 'package:programmerprofile/home/view/temp_home.dart';
 
 final ZoomDrawerController z = ZoomDrawerController();
 
@@ -40,21 +43,26 @@ class DrawerTemplateState extends State<DrawerTemplate> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextButton.icon(
                       onPressed: () async {
+                        Navigator.pushReplacementNamed(context, Home.routeName);
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.houseChimney, color: Colors.white),
+                      label: const Text("Home")),
+                  TextButton.icon(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, ContestsScreen.routeName);
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.trophy, color: Colors.white),
+                      label: const Text("Contests And Events")),
+                  TextButton.icon(
+                      onPressed: () {
                         Navigator.pushNamed(context, ProfileScreen.routeName);
                       },
-                      icon: const Icon(Icons.alarm),
-                      label: const Text("Profile")),
-                  TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.alarm),
-                      label: const Text("Profile")),
-                  TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.alarm),
+                      icon: const FaIcon(FontAwesomeIcons.user, color: Colors.white),
                       label: const Text("Profile")),
                 ],
               ),
