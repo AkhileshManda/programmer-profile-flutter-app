@@ -4,7 +4,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/controller/queries.dart';
-import 'package:programmerprofile/temp_home.dart';
+import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
+import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -136,25 +137,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       },
                     ),
                     const SizedBox(height: 30,),
-                    Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                                onPressed: (){
-                                  onVerificationPressed();
-                                },
-                                child: isLoading? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                ):const Text(
-                                  "Verify",
-                                )),
-                          ),
-                        ),
+                    customElevatedButton(
+                      isLoading: isLoading, 
+                      onPressed: (){
+                        onVerificationPressed();
+                      }, 
+                      title: "Verify"
+                    )
                   ],
                 ),
               ),

@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/queries.dart';
 import 'package:programmerprofile/auth/view/verification_page.dart';
+import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
+import '../../styles.dart';
 import '../controller/api.dart';
 import 'login_page.dart';
 
@@ -129,15 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: TextFormField(
                                   controller: _nameCon,
                                   keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Colors.white)),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: "Name"),
+                                  decoration: Styles.textFieldStyle("Name"),
                                 ),
                               ),
                               Padding(
@@ -145,15 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: TextFormField(
                                   controller: _emailCon,
                                   keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Colors.white)),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: "Email"),
+                                  decoration: Styles.textFieldStyle("Email"),
                                 ),
                               ),
                               Padding(
@@ -161,16 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: TextFormField(
                                   controller: _passwordCon,
                                   obscureText: true,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            color: Colors.pink,
-                                          )),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: "Password"),
+                                  decoration: Styles.textFieldStyle("Password"),
                                 ),
                               ),
                               Padding(
@@ -178,16 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: TextFormField(
                                   controller: _confirmPasswordCon,
                                   obscureText: true,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            color: Colors.pink,
-                                          )),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      hintText: "Confirm Password"),
+                                  decoration: Styles.textFieldStyle("Confirm Password"),
                                 ),
                               )
                             ],
@@ -196,28 +164,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SizedBox(
                           height: 25,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                                onPressed: () {
-                                  //print('pressed');
-                                  onSignUpPressed(
+                        customElevatedButton(
+                          isLoading: isLoading, 
+                          onPressed: (){
+                            onSignUpPressed(
                                     name: _nameCon.text,
                                     email: _emailCon.text,
                                     password: _passwordCon.text,
                                     confirmPassword: _confirmPasswordCon.text,
                                   );
-                                },
-                                child: const Text(
-                                  "Sign Up",
-                                )),
-                          ),
+                          }, 
+                          title: "Sign Up"
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

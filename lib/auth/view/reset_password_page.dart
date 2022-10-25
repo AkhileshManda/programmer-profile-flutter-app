@@ -3,6 +3,7 @@ import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/view/login_page.dart';
+import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
 import 'package:programmerprofile/styles.dart';
 
 import '../controller/api.dart';
@@ -33,7 +34,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       required String email,
       required String password,
       required String confirmPassword}) async {
-    
     setState(() {
       isLoading = true;
     });
@@ -62,7 +62,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           backgroundColor: Colors.red,
           content:
               Text(result.exception!.graphqlErrors[0].message.toString())));
-      
+
       setState(() {
         isLoading = false;
       });
@@ -146,7 +146,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     setState(() {
                                       _onEditing = value;
                                     });
-                                    if (!_onEditing){
+                                    if (!_onEditing) {
                                       FocusScope.of(context).unfocus();
                                     }
                                   },
@@ -183,31 +183,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                         ),
                         const SizedBox(height: 25),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                                onPressed: () {
-                                  //print('pressed');
-                                  onResetPressed(
-                                    code: _code,
-                                    email: widget.email,
-                                    password: _passwordCon.text,
-                                    confirmPassword: _confirmPasswordCon.text,
-                                  );
-                                },
-                                child: isLoading? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                ): const Text(
-                                  "Reset my password",
-                                )),
-                          ),
-                        ),
+                        customElevatedButton(
+                            isLoading: isLoading,
+                            onPressed: () {
+                              onResetPressed(
+                                code: _code,
+                                email: widget.email,
+                                password: _passwordCon.text,
+                                confirmPassword: _confirmPasswordCon.text,
+                              );
+                            },
+                            title: "Reset my password")
                       ],
                     ),
                   ),

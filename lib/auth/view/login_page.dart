@@ -4,8 +4,9 @@ import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
+import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
 import 'package:programmerprofile/styles.dart';
-import 'package:programmerprofile/temp_home.dart';
+import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/queries.dart';
@@ -60,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(result.exception!.graphqlErrors[0].message.toString())));
       _passwordCon.clear();
 
-      
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
       } else {
@@ -152,30 +152,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                                onPressed: () {
-                                  //print("pressed");
-                                  //print(isLoading.toString());
-                                  onLoginPressed(
-                                      email: _emailCon.text,
-                                      password: _passwordCon.text,
-                                      context: context);
-                                },
-                                child: !isLoading? const Text(
-                                  "Log in",
-                                ): const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )),
-                          ),
-                        ),
+                        customElevatedButton(
+                            isLoading: isLoading,
+                            onPressed: () {
+                              onLoginPressed(
+                                  email: _emailCon.text,
+                                  password: _passwordCon.text,
+                                  context: context);
+                            },
+                            title: "Login"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

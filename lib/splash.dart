@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:programmerprofile/temp_home.dart';
+import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';

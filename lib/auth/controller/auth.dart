@@ -17,10 +17,10 @@ class Auth with ChangeNotifier {
   void logout() async {
     //print('logging out..');
     _token = null;
-    userEmail = null;
-    username = null;
+    // userEmail = null;
+    // username = null;
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    prefs.remove("token");
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/view/reset_password_page.dart';
+import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
 import 'package:programmerprofile/styles.dart';
 import '../controller/api.dart';
 import '../controller/queries.dart';
@@ -14,6 +15,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailCon = TextEditingController();
   
@@ -120,25 +122,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.pink)),
-                                onPressed: () {
-                                  //print(isLoading);
-                                  //print("pressed");
-                                  onButtonPressed(email: _emailCon.text);
-                                },
-                                child: !isLoading?const Text(
-                                  "Confirm Email",
-                                ): const CircularProgressIndicator(color: Colors.white,)),
-                          ),
-                        ),
+                        customElevatedButton(
+                          isLoading: isLoading, 
+                          onPressed: (){
+                            onButtonPressed(email: _emailCon.text);
+                          }, 
+                          title: "Confirm Email"
+                        )
                       ],
                     ),
                   ),
