@@ -30,4 +30,20 @@ class DashBoardQueries {
       }
     """;
   }
+
+  static String getContributions(){
+    return """ 
+    query ContributionGraph {
+      contributionGraph {
+        contributions {
+          date
+          githubContributions
+          codeforcesContributions
+          leetcodeContributions
+        }
+      }
+    }
+    
+    """;
+  }
 }

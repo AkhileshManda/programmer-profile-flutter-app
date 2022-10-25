@@ -49,6 +49,8 @@ dependencies:
   flutter_zoom_drawer: ^3.0.3
   url_launcher: ^6.1.6
   font_awesome_flutter: ^10.2.1
+  flutter_heatmap_calendar: ^1.0.5
+  intl: ^0.17.0
   
 
 dev_dependencies:
