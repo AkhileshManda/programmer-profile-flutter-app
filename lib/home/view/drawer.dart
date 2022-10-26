@@ -50,7 +50,7 @@ class DrawerTemplateState extends State<DrawerTemplate> {
                       onPressed: () async {
                         Navigator.pushReplacementNamed(context, Home.routeName);
                       },
-                      icon: const FaIcon(FontAwesomeIcons.houseChimney, color: Colors.white),
+                      icon: const FaIcon(FontAwesomeIcons.houseUser, color: Colors.white),
                       label: const Text("Home")),
                   TextButton.icon(
                       onPressed: () {

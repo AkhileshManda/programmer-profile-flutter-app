@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/home/controller/client.dart';
+import 'package:programmerprofile/home/view/temp_home.dart';
+import 'package:programmerprofile/home/view/widgets/image_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../auth/model/user.dart';
 import '../../styles.dart';
 import '../controller/queries.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   //final User user;
@@ -57,11 +60,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       //print(result.data);
       user = User(
-          username: result.data!["getUser"]["name"],
-          leetcodeUsername: result.data!["getUser"]["leetcodeUsername"],
-          codeforcesUsername: result.data!["getUser"]["codeforcesUsername"],
-          githubToken: result.data!["getUser"]["githubToken"]
-        );
+        username: result.data!["getUser"]["name"],
+        leetcodeUsername: result.data!["getUser"]["leetcodeUsername"],
+        codeforcesUsername: result.data!["getUser"]["codeforcesUsername"],
+        githubToken: result.data!["getUser"]["githubToken"],
+        profilePicture: result.data!["getUser"]["profilePicture"],
+      );
 
       return user;
       //Navigator.pushReplacementNamed(context, Home.routeName);
@@ -156,7 +160,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         //print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      //print(result.data);
       // final prefs = await SharedPreferences.getInstance();
       // prefs.setString("token", result.data!['signin']['token']);
       // if (!mounted) return;
@@ -167,8 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(20),
           backgroundColor: Colors.green,
-          content:
-              Text("Success!")));
+          content: Text("Success!")));
     }
   }
 
@@ -200,17 +202,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: BackButton(
                                       color: Colors.white,
                                       onPressed: () {
-                                        Navigator.of(context).pop();
+                                        Navigator.pushReplacementNamed(
+                                            context, Home.routeName);
                                       },
                                     ),
                                   ),
-                                  const CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      foregroundColor:
-                                          Color.fromRGBO(0, 10, 56, 1),
-                                      radius: 100,
-                                      child: Icon(Icons.person, size: 100)),
-        
+                                  ImageInput(url: user.profilePicture),
+
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Text(
@@ -221,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
-        
+
                                   const SizedBox(height: 20),
                                   //Expanded(child: Container()),
                                   Container(
@@ -231,13 +229,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           BorderRadius.all(Radius.circular(20)),
                                     ),
                                     child: ListTile(
-                                        leading: const FaIcon(FontAwesomeIcons.github,color: Colors.white),
+                                        leading: const FaIcon(
+                                            FontAwesomeIcons.github,
+                                            color: Colors.white),
                                         title: const Text(
                                           "Authorize with GitHub",
                                           style: TextStyle(color: Colors.white),
                                         ),
-                                        trailing: user.githubToken != null? const FaIcon(FontAwesomeIcons.check,color: Colors.green)
-                                        : const FaIcon(FontAwesomeIcons.plus,color: Colors.white),
+                                        trailing: user.githubToken != null
+                                            ? const FaIcon(
+                                                FontAwesomeIcons.check,
+                                                color: Colors.green)
+                                            : const FaIcon(
+                                                FontAwesomeIcons.plus,
+                                                color: Colors.white),
                                         onTap: () {
                                           onGithubAuthPressed();
                                         }),
@@ -272,21 +277,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           fontSize: 17)));
                                             },
                                             body: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Wrap(
-                                                
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: SizedBox(
-                                                      width: MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.7,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.7,
                                                       child: TextField(
-                                                        controller: _codeforcesCon,
-                                                        decoration: Styles.textFieldStyle(
-                                                            user.codeforcesUsername ==
+                                                        controller:
+                                                            _codeforcesCon,
+                                                        decoration: Styles
+                                                            .textFieldStyle(user
+                                                                        .codeforcesUsername ==
                                                                     null
                                                                 ? "Enter Username"
                                                                 : user
@@ -295,7 +305,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: ElevatedButton(
                                                         style: ButtonStyle(
                                                           backgroundColor:
@@ -321,8 +333,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 ? "Add"
                                                                 : "Update",
                                                             style: const TextStyle(
-                                                                color:
-                                                                    Colors.white))),
+                                                                color: Colors
+                                                                    .white))),
                                                   )
                                                 ],
                                               ),
@@ -340,21 +352,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           fontSize: 17)));
                                             },
                                             body: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Wrap(
-                                                
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: SizedBox(
-                                                      width: MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.7,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.7,
                                                       child: TextField(
-                                                        controller: _leetcodeCon,
-                                                        decoration: Styles.textFieldStyle(
-                                                            user.leetcodeUsername ==
+                                                        controller:
+                                                            _leetcodeCon,
+                                                        decoration: Styles
+                                                            .textFieldStyle(user
+                                                                        .leetcodeUsername ==
                                                                     null
                                                                 ? "Enter Username"
                                                                 : user
@@ -363,22 +380,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: ElevatedButton(
                                                         style: ButtonStyle(
                                                             backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(const Color
-                                                                        .fromRGBO(
-                                                                            0,
-                                                                            10,
-                                                                            56,
-                                                                            1))),
+                                                                MaterialStateProperty.all(
+                                                                    const Color
+                                                                            .fromRGBO(
+                                                                        0,
+                                                                        10,
+                                                                        56,
+                                                                        1))),
                                                         onPressed: () {
                                                           onPlatformAddition(
                                                               username:
-                                                                  _leetcodeCon.text,
-                                                              platform: "LEETCODE");
+                                                                  _leetcodeCon
+                                                                      .text,
+                                                              platform:
+                                                                  "LEETCODE");
                                                         },
                                                         child: Text(
                                                             user.leetcodeUsername ==
@@ -386,8 +407,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 ? "Add"
                                                                 : "Update",
                                                             style: const TextStyle(
-                                                                color:
-                                                                    Colors.white))),
+                                                                color: Colors
+                                                                    .white))),
                                                   )
                                                 ],
                                               ),

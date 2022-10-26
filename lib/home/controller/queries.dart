@@ -17,7 +17,7 @@ class DashBoardQueries {
   """;
   }
 
-  static String getUser(){
+  static String getUser() {
     return """
       query GetUser {
         getUser {
@@ -31,7 +31,7 @@ class DashBoardQueries {
     """;
   }
 
-  static String getContributions(){
+  static String getContributions() {
     return """ 
     query ContributionGraph {
       contributionGraph {
@@ -43,7 +43,27 @@ class DashBoardQueries {
         }
       }
     }
-    
+    """;
+  }
+
+  static String addDescription() {
+    return """ 
+    mutation AddDescription(\$input: DescriptionInput!) {
+      addDescription(input: \$input)
+    }
+    """;
+  }
+
+  static String getUserDashboard(){
+    return """ 
+    query Query {
+      getUser {
+        name
+        description
+        email
+        profilePicture
+      }
+    }
     """;
   }
 }
