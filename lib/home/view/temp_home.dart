@@ -9,13 +9,15 @@ import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/auth/controller/auth.dart';
 import 'package:programmerprofile/home/controller/client.dart';
 import 'package:programmerprofile/home/controller/queries.dart';
-import 'package:programmerprofile/home/view/drawer.dart';
+import 'package:programmerprofile/home/view/widgets/codeforces_graphs.dart';
+import 'package:programmerprofile/home/view/widgets/drawer.dart';
 import 'package:programmerprofile/home/view/edit_bio_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../auth/model/user.dart';
 import '../../auth/view/login_page.dart';
+import 'widgets/github_charts.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,10 +32,6 @@ class _HomeState extends State<Home> {
   User? user;
 
   Future<Map<DateTime, int>?> getHeatMapData() async {
-    // setState(() {
-    //   isLoading = false;
-    // });
-
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     //print("token: $token");
@@ -115,7 +113,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //getHeatMapData();
     return DrawerTemplate(
       body: Scaffold(
         backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
@@ -129,6 +126,9 @@ class _HomeState extends State<Home> {
                   FutureBuilder(
                       future: getUser(),
                       builder: (context, snap) {
+                        if(snap.connectionState == ConnectionState.waiting){
+                          return const SizedBox();
+                        }
                         if (snap.hasData) {
                           return Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -227,7 +227,9 @@ class _HomeState extends State<Home> {
                                           shrinkWrap: true,
                                           controller: controller,
                                           selectable: true,
-                                          data: user!.description==null? "Add profile description in markdown": user!.description! ,
+                                          data: user!.description == null
+                                              ? "Add profile description in markdown"
+                                              : user!.description!,
                                           extensionSet: md.ExtensionSet(
                                             md.ExtensionSet.gitHubFlavored
                                                 .blockSyntaxes,
@@ -266,12 +268,14 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         }
-                        return const Center(child: CircularProgressIndicator());
+                        return const Center(child: Text("Error Loading Information"));
                       }),
-
                   FutureBuilder(
                       future: getHeatMapData(),
                       builder: (context, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return const Center(child:CircularProgressIndicator());
+                        }
                         if (snap.hasData) {
                           bool flag = false;
                           for (var key in data!.keys) {
@@ -318,10 +322,8 @@ class _HomeState extends State<Home> {
                                   ],
                                 );
                         }
-                        return const Center(child: CircularProgressIndicator());
+                        return const Center(child: Text("Couldn't Load data"));
                       }),
-                  //const Text("HOME"),
-
                   ElevatedButton(
                       onPressed: () async {
                         Auth().logout();
@@ -329,6 +331,8 @@ class _HomeState extends State<Home> {
                             context, LoginScreen.routeName);
                       },
                       child: const Text("Log out")),
+                  const CodeforcesGraphs(),
+                  const GitHubCharts()
                 ],
               ),
             ],

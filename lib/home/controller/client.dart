@@ -17,16 +17,3 @@ class EndPointGithubAuth {
   }
 }
 
-class EndPoint {
-
-  ValueNotifier<GraphQLClient> getClient(){
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        link: HttpLink("https://programmer-profile.azurewebsites.net/graphql"),
-        cache: GraphQLCache(),
-      )
-    );
-
-    return client;
-  }
-}

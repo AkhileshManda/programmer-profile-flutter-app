@@ -54,7 +54,7 @@ class DashBoardQueries {
     """;
   }
 
-  static String getUserDashboard(){
+  static String getUserDashboard() {
     return """ 
     query Query {
       getUser {
@@ -64,6 +64,72 @@ class DashBoardQueries {
         profilePicture
       }
     }
+    """;
+  }
+
+  static String cfGraphs() {
+    return """ 
+     query CodeforcesGraphs {
+      codeforcesGraphs {
+        donutGraph {
+          problemTagGraph {
+            tagName
+            problemsCount
+          }
+        }
+        barGraph {
+          problemRatingGraph {
+            difficulty
+            problemsCount
+          }
+        }
+        ratingGraph {
+          ratings {
+            contestId
+            contestName
+            handle
+            rank
+            oldRating
+            newRating
+          }
+        }
+      }
+    }
+    """;
+  }
+
+  static String githubGraphs() {
+    return """ 
+      query GithubGraphs {
+        githubGraphs {
+          streakGraph {
+            currentSteakLength
+            longestStreakLength
+            longestStreakStartDate
+            longestStreakEndDate
+            currentStreakStartDate
+            totalContributions
+          }
+          languageGraph {
+            name
+            color
+            size
+          }
+          statsGraph {
+            followers
+            following
+            repos
+            stars
+            forkedBy
+            watchedBy
+            commits
+            issues
+            contributedTo
+            pullRequests
+            pullRequestReviews
+          }
+        }
+      }
     """;
   }
 }

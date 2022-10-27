@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
-import '../../home/view/drawer.dart';
+import 'package:programmerprofile/contests/view/contest_card.dart';
+import '../../home/view/widgets/drawer.dart';
 import '../model/contest_model.dart';
 
 class ContestsScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class _ContestsScreenState extends State<ContestsScreen> {
   late final List<Contest> _contests;
   // This list holds the data for the list view
   List<Contest> _foundContests = [];
-
   Future? _future;
 
   @override
@@ -55,10 +55,8 @@ class _ContestsScreenState extends State<ContestsScreen> {
   }
 
   void _runFilter(String enteredKeyword) {
-    //print(enteredKeyword);
     List<Contest> results = [];
     if (enteredKeyword.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
       results = _contests;
     } else {
       results = _contests
@@ -68,10 +66,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                   .contains(enteredKeyword.toLowerCase()) ||
               contest.site.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
-      // we use the toLowerCase() method to make it case-insensitive
     }
-
-    // Refresh the UI
     setState(() {
       _foundContests = results;
     });
@@ -79,7 +74,6 @@ class _ContestsScreenState extends State<ContestsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //getContests();
     return DrawerTemplate(
       body: Scaffold(
           backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
@@ -124,6 +118,10 @@ class _ContestsScreenState extends State<ContestsScreen> {
                             future: _future,
                             builder: (ctx, snap) {
                               //print(snap.data.toString());
+                              if (snap.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
                               if (snap.hasData) {
                                 return Column(
                                   children: [
@@ -134,55 +132,15 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                   const BouncingScrollPhysics(),
                                               itemCount: _foundContests.length,
                                               itemBuilder: (ctx, index) {
-                                                return Card(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Column(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                            _foundContests[
-                                                                    index]
-                                                                .name,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                              _foundContests[
-                                                                      index]
-                                                                  .start),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                              _foundContests[
-                                                                      index]
-                                                                  .end),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                              _foundContests[
-                                                                      index]
-                                                                  .site),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
+                                                return contestCard(
+                                                  name: _foundContests[index]
+                                                      .name,
+                                                  start: _foundContests[index]
+                                                      .start,
+                                                  end:
+                                                      _foundContests[index].end,
+                                                  site: _foundContests[index]
+                                                      .site,
                                                 );
                                               })
                                           : const Text(
@@ -193,7 +151,10 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                   ],
                                 );
                               }
-                              return const CircularProgressIndicator();
+                              return const Text(
+                                'No results found',
+                                style: TextStyle(fontSize: 24),
+                              );
                             }),
                       ),
                     ),

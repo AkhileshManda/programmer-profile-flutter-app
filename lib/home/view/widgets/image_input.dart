@@ -98,34 +98,6 @@ class ImageInputState extends State<ImageInput> {
                                 const BorderRadius.all(Radius.circular(200))),
                       )),
           ),
-          //     CircleAvatar(
-          //         backgroundColor: Colors.white,
-          //         foregroundColor: Color.fromRGBO(0, 10, 56, 1),
-          //         radius: 50,
-          //         child: widget.url == null
-          //             ? Container(
-          //                 width: 100,
-          //                 height: 100,
-          //                 decoration: BoxDecoration(
-          //                     color: Colors.white, border: Border.all(width: 1)),
-          //                 child: _storedImage != null
-          //                     ? Image.file(
-          //                         _storedImage!,
-          //                         fit: BoxFit.cover,
-          //                         width: double.infinity,
-          //                       )
-          //                     : const CircleAvatar(
-          //                         backgroundColor: Colors.white,
-          //                         foregroundColor: Color.fromRGBO(0, 10, 56, 1),
-          //                         radius: 50,
-          //                         child: Icon(Icons.person, size: 50)))
-          //             : Container(
-          //                 decoration: BoxDecoration(
-          //                     image: DecorationImage(
-          //                         image: NetworkImage(widget.url!)),
-          //                     borderRadius:
-          //                         const BorderRadius.all(Radius.circular(200))),
-          //               )),
           IconButton(
               onPressed: _takePicture,
               icon: const Icon(Icons.edit, color: Colors.white))
