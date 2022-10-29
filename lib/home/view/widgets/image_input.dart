@@ -79,10 +79,21 @@ class ImageInputState extends State<ImageInput> {
                 borderRadius: BorderRadius.all(Radius.circular(200))),
             //decoration: BoxDecoration(border: Border.all(width: 1)),
             child: _storedImage != null
-                ? Image.file(
-                    _storedImage!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
+                ? Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: FileImage(
+                          _storedImage!
+                        ) 
+                      ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(200))),
+                    // child: Image.file(
+                    //   _storedImage!,
+                    //   fit: BoxFit.fill,
+                    //   width: double.infinity,
+              
+                    // ),
                   )
                 : (widget.url == null
                     ? const CircleAvatar(

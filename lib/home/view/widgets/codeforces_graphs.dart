@@ -89,8 +89,8 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
             return const SizedBox();
           }
           if (snap.hasData) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -109,7 +109,7 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
                       )
                     ]),
                 SfCartesianChart(
-                    legend: Legend(isVisible: true),
+                    //legend: Legend(isVisible: true),
                     primaryXAxis: CategoryAxis(
                       majorGridLines: const MajorGridLines(width: 0),
                     ),

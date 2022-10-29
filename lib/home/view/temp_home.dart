@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // ignore: depend_on_referenced_packages
 import 'package:markdown/markdown.dart' as md;
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -26,10 +27,23 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Map<DateTime, int>? data = {};
   final ScrollController controller = ScrollController();
   User? user;
+  TabController? tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    tabController!.dispose();
+    super.dispose();
+  }
 
   Future<Map<DateTime, int>?> getHeatMapData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -42,6 +56,7 @@ class _HomeState extends State<Home> {
       document: gql(DashBoardQueries.getContributions()),
     ));
     if (result.hasException) {
+      //print("HEATMAP");
       if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -82,6 +97,7 @@ class _HomeState extends State<Home> {
     ));
 
     if (result.hasException) {
+      //print("USER");
       if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -90,7 +106,6 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.red,
           content:
               Text(result.exception!.graphqlErrors[0].message.toString())));
-      //_passwordCon.clear();
 
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
@@ -114,33 +129,39 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DrawerTemplate(
-      body: Scaffold(
-        backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
-        body: SafeArea(
-          child: Stack(
-            children: [
+        body: Scaffold(
+            backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
+            body: SafeArea(
+                child: Stack(children: [
               LottieBuilder.asset("assets/animations/bg-1.json"),
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  FutureBuilder(
-                      future: getUser(),
-                      builder: (context, snap) {
-                        if(snap.connectionState == ConnectionState.waiting){
-                          return const SizedBox();
-                        }
-                        if (snap.hasData) {
-                          return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Row(
+              CustomScrollView(
+                //physics: const NeverScrollableScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                      child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      FutureBuilder(
+                          future: getUser(),
+                          builder: (context, snap) {
+                            if (snap.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox();
+                            }
+                            if (snap.hasData) {
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
                                   children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          z.toggle!();
-                                        },
-                                        child: CircleAvatar(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              z.toggle!();
+                                            },
+                                            icon: const Icon(Icons.menu,
+                                                color: Colors.white)),
+                                        CircleAvatar(
                                           backgroundColor: Colors.white,
                                           foregroundColor: const Color.fromRGBO(
                                               0, 10, 56, 1),
@@ -157,188 +178,213 @@ class _HomeState extends State<Home> {
                                                               Radius.circular(
                                                                   200))),
                                                 ),
-                                        )),
-                                    const SizedBox(
-                                      width: 10,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Text(user!.username!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              )),
+                                        ),
+                                        const Icon(Icons.notification_add_sharp,
+                                            color: Colors.white)
+                                      ],
                                     ),
-                                    Expanded(
-                                      child: Text(user!.username!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                          )),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(8.0),
+                                    //   child: Row(
+                                    //       mainAxisAlignment:
+                                    //           MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         SizedBox(
+                                    //           width: MediaQuery.of(context)
+                                    //                   .size
+                                    //                   .width *
+                                    //               0.6,
+                                    //           child: Column(
+                                    //             children: [
+                                    //               Text(user!.username!,
+                                    //                   style: const TextStyle(
+                                    //                       color: Colors.white,
+                                    //                       fontSize: 20)),
+                                    //               Text(user!.email!,
+                                    //                   overflow:
+                                    //                       TextOverflow.ellipsis,
+                                    //                   style: const TextStyle(
+                                    //                       color: Colors.white,
+                                    //                       fontSize: 15))
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         const CircleAvatar(
+                                    //             backgroundColor: Colors.white,
+                                    //             foregroundColor:
+                                    //                 Color.fromRGBO(0, 10, 56, 1),
+                                    //             radius: 50,
+                                    //             child:
+                                    //                 Icon(Icons.person, size: 50)),
+                                    //       ]),
+                                    // ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            //color: Color.fromARGB(255, 125, 10, 48),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
+                                            border:
+                                                Border.all(color: Colors.grey)),
+                                        //height: 200,
+                                        child: Column(
+                                          children: [
+                                            Markdown(
+                                              styleSheet: MarkdownStyleSheet(
+                                                p: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                              ),
+                                              shrinkWrap: true,
+                                              controller: controller,
+                                              selectable: true,
+                                              data: user!.description == null
+                                                  ? "Add profile description in markdown"
+                                                  : user!.description!,
+                                              extensionSet: md.ExtensionSet(
+                                                md.ExtensionSet.gitHubFlavored
+                                                    .blockSyntaxes,
+                                                [
+                                                  md.EmojiSyntax(),
+                                                  ...md
+                                                      .ExtensionSet
+                                                      .gitHubFlavored
+                                                      .inlineSyntaxes
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (ctx) =>
+                                                                  const EditorScreen()));
+                                                    },
+                                                    icon: const Icon(Icons.edit,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    const Icon(Icons.notification_add_sharp,
-                                        color: Colors.white)
                                   ],
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Row(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         SizedBox(
-                                //           width: MediaQuery.of(context)
-                                //                   .size
-                                //                   .width *
-                                //               0.6,
-                                //           child: Column(
-                                //             children: [
-                                //               Text(user!.username!,
-                                //                   style: const TextStyle(
-                                //                       color: Colors.white,
-                                //                       fontSize: 20)),
-                                //               Text(user!.email!,
-                                //                   overflow:
-                                //                       TextOverflow.ellipsis,
-                                //                   style: const TextStyle(
-                                //                       color: Colors.white,
-                                //                       fontSize: 15))
-                                //             ],
-                                //           ),
-                                //         ),
-                                //         const CircleAvatar(
-                                //             backgroundColor: Colors.white,
-                                //             foregroundColor:
-                                //                 Color.fromRGBO(0, 10, 56, 1),
-                                //             radius: 50,
-                                //             child:
-                                //                 Icon(Icons.person, size: 50)),
-                                //       ]),
-                                // ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        //color: Color.fromARGB(255, 125, 10, 48),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(20)),
-                                        border: Border.all(color: Colors.grey)),
-                                    //height: 200,
-                                    child: Column(
-                                      children: [
-                                        Markdown(
-                                          styleSheet: MarkdownStyleSheet(
-                                            p: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16),
-                                          ),
-                                          shrinkWrap: true,
-                                          controller: controller,
-                                          selectable: true,
-                                          data: user!.description == null
-                                              ? "Add profile description in markdown"
-                                              : user!.description!,
-                                          extensionSet: md.ExtensionSet(
-                                            md.ExtensionSet.gitHubFlavored
-                                                .blockSyntaxes,
-                                            [
-                                              md.EmojiSyntax(),
-                                              ...md.ExtensionSet.gitHubFlavored
-                                                  .inlineSyntaxes
-                                            ],
-                                          ),
-                                        ),
+                              );
+                            }
+                            return const Center(
+                                child: Text("Error Loading Information"));
+                          }),
+                      FutureBuilder(
+                          future: getHeatMapData(),
+                          builder: (context, snap) {
+                            if (snap.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                            if (snap.hasData) {
+                              bool flag = false;
+                              for (var key in data!.keys) {
+                                if (data![key] != 0) {
+                                  flag = true;
+                                }
+                              }
+                              return flag
+                                  ? HeatMap(
+                                      defaultColor: Colors.white,
+                                      datasets: data,
+                                      //datasets: data,
+                                      colorMode: ColorMode.opacity,
+                                      showText: false,
+                                      scrollable: true,
+                                      colorsets: const {
+                                        5: Colors.pink,
+                                        3: Color.fromARGB(255, 199, 4, 137),
+                                        1: Color.fromARGB(255, 121, 0, 97),
+                                      },
+                                      onClick: (value) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "${data![value].toString()}+ contributions")));
+                                      },
+                                      textColor: Colors.white,
+                                      //margin: EdgeInsets.all(8.0),
+                                      showColorTip: false,
+                                    )
+                                  : Wrap(
+                                      children: const [
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              IconButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (ctx) =>
-                                                              const EditorScreen()));
-                                                },
-                                                icon: const Icon(Icons.edit,
-                                                    color: Colors.white),
-                                              )
-                                            ],
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            textAlign: TextAlign.center,
+                                            "No Contributions, make sure your accounts are added",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
                                           ),
                                         )
                                       ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return const Center(child: Text("Error Loading Information"));
-                      }),
-                  FutureBuilder(
-                      future: getHeatMapData(),
-                      builder: (context, snap) {
-                        if (snap.connectionState == ConnectionState.waiting) {
-                          return const Center(child:CircularProgressIndicator());
-                        }
-                        if (snap.hasData) {
-                          bool flag = false;
-                          for (var key in data!.keys) {
-                            if (data![key] != 0) {
-                              flag = true;
+                                    );
                             }
-                          }
-                          return flag
-                              ? HeatMap(
-                                  defaultColor: Colors.white,
-                                  datasets: data,
-                                  //datasets: data,
-                                  colorMode: ColorMode.opacity,
-                                  showText: false,
-                                  scrollable: true,
-                                  colorsets: const {
-                                    5: Colors.pink,
-                                    3: Color.fromARGB(255, 199, 4, 137),
-                                    1: Color.fromARGB(255, 121, 0, 97),
-                                  },
-                                  onClick: (value) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                "${data![value].toString()}+ contributions")));
-                                  },
-                                  textColor: Colors.white,
-                                  //margin: EdgeInsets.all(8.0),
-                                  showColorTip: false,
-                                )
-                              : Wrap(
-                                  children: const [
-                                    Padding(
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Text(
-                                        textAlign: TextAlign.center,
-                                        "No Contributions, make sure your accounts are added",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                );
-                        }
-                        return const Center(child: Text("Couldn't Load data"));
-                      }),
-                  ElevatedButton(
-                      onPressed: () async {
-                        Auth().logout();
-                        Navigator.pushReplacementNamed(
-                            context, LoginScreen.routeName);
-                      },
-                      child: const Text("Log out")),
-                  const CodeforcesGraphs(),
-                  const GitHubCharts()
+                            return const Center(
+                                child: Text("Couldn't Load data"));
+                          }),
+                      ElevatedButton(
+                          onPressed: () async {
+                            Auth().logout();
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.routeName);
+                          },
+                          child: const Text("Log out")),
+                    ],
+                  )),
+                  SliverToBoxAdapter(
+                    child: TabBar(
+                      controller: tabController,
+                      physics: const BouncingScrollPhysics(),
+                      tabs: const [
+                        Tab(
+                            icon: FaIcon(FontAwesomeIcons.github,
+                                color: Colors.white)),
+                        Tab(
+                          icon: Icon(Icons.access_alarm, color: Colors.white)
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    child: TabBarView(
+                      controller: tabController,
+                      children: const <Widget>[GitHubCharts(), CodeforcesGraphs()],
+                    ),
+                  )
                 ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              )
+            ]))));
   }
 }

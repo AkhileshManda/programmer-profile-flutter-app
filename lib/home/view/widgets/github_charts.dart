@@ -34,6 +34,7 @@ class _GitHubChartsState extends State<GitHubCharts> {
       document: gql(DashBoardQueries.githubGraphs()),
     ));
     if (result.hasException) {
+      //print("GITHUB CHARTS");
       if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -44,9 +45,11 @@ class _GitHubChartsState extends State<GitHubCharts> {
               Text(result.exception!.graphqlErrors[0].message.toString())));
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
+        // print("GITHUB CHARTS");
+        // print("Internet is not found");
       } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        // print("GITHUB CHARTS");
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
       //print(result.data!["codeforcesGraphs"]["barGraph"]["problemRatingGraph"]);
@@ -76,13 +79,11 @@ class _GitHubChartsState extends State<GitHubCharts> {
           () => result.data!["githubGraphs"]["streakGraph"]
                   ["longestStreakEndDate"]
               .toString());
-      
       details.putIfAbsent(
           "totalContributions",
           () => result.data!["githubGraphs"]["streakGraph"]
                   ["totalContributions"]
               .toString());
-
       details.putIfAbsent(
           "followers",
           () => result.data!["githubGraphs"]["statsGraph"]["followers"]
@@ -123,12 +124,10 @@ class _GitHubChartsState extends State<GitHubCharts> {
           "contributedTo",
           () =>
               result.data!["githubGraphs"]["statsGraph"]["contributedTo"].toString());
-
+      
       for(var x in result.data!["githubGraphs"]["languageGraph"]){
         templanguagedata.add(Language(color: x["color"], name: x["name"], number: x["size"]));
       }
-      
-
       //print(details.toString());
       data = details;
       languagedata = templanguagedata;
@@ -140,7 +139,7 @@ class _GitHubChartsState extends State<GitHubCharts> {
 
   @override
   Widget build(BuildContext context) {
-    getGithubData();
+    //getCFGraphDatagetGithubData();
     return FutureBuilder(
         future: getGithubData(),
         builder: (ctx, snap){
@@ -149,8 +148,9 @@ class _GitHubChartsState extends State<GitHubCharts> {
             //return SizedBox();
           }
           if (snap.hasData) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            return ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
