@@ -222,7 +222,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
                                     height: 50,
-                                    //decoration: const BoxDecoration(color: Colors.black),
+                                    decoration: const BoxDecoration(color: Colors.black),
 
                                     child: Row(
                                       mainAxisAlignment:
@@ -230,7 +230,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       children: [
                                         Container(
                                           width: 120,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: Colors.red,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(20))),
@@ -251,7 +251,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         ),
                                         Container(
                                           width: 120,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: Colors.red,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(20))),
