@@ -58,6 +58,7 @@ dependencies:
   simple_markdown_editor: ^0.2.0
   mime_type: ^1.0.0
   syncfusion_flutter_charts: ^20.3.52
+ 
   
 
 dev_dependencies:
