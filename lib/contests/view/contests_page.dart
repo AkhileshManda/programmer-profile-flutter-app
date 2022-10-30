@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/contests/controller/api.dart';
 import 'package:programmerprofile/contests/view/contest_card.dart';
 import '../../home/view/widgets/drawer.dart';
 import '../model/contest_model.dart';
@@ -18,40 +16,12 @@ class _ContestsScreenState extends State<ContestsScreen> {
   late final List<Contest> _contests;
   // This list holds the data for the list view
   List<Contest> _foundContests = [];
-  Future? _future;
+  late Future<List<Contest>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = getContests();
-  }
-
-  Future<List<Contest>> getContests() async {
-    _contests = [];
-    Uri url1 = Uri.parse("https://kontests.net/api/v1/all");
-    var response1 = await http.get(
-      url1,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    final extractedData1 = json.decode(response1.body);
-
-    for (var x in extractedData1) {
-      _contests.add(Contest(
-          name: x["name"],
-          url: x["url"],
-          start: x["start_time"],
-          end: x["end_time"],
-          duration: x["duration"],
-          in24hrs: x["in_24_hours"],
-          status: x["status"],
-          site: x["site"]));
-    }
-
-    //print(_contests.length);
-    _foundContests = _contests;
-    return _contests;
+    _future = ContestAPI().getContests();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -114,15 +84,19 @@ class _ContestsScreenState extends State<ContestsScreen> {
                     ),
                     Expanded(
                       child: Center(
-                        child: FutureBuilder(
+                        child: FutureBuilder<List<Contest>>(
                             future: _future,
-                            builder: (ctx, snap) {
+                            builder: (ctx, AsyncSnapshot<List<Contest>> snap) {
                               //print(snap.data.toString());
+
                               if (snap.connectionState ==
                                   ConnectionState.waiting) {
                                 return const CircularProgressIndicator();
                               }
+
                               if (snap.hasData) {
+                                //print(snap.data);
+                                _foundContests = snap.data!;
                                 return Column(
                                   children: [
                                     Expanded(

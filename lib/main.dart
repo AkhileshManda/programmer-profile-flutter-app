@@ -4,6 +4,7 @@ import 'package:programmerprofile/auth/view/sign_up_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
 import 'package:programmerprofile/splash.dart';
 import 'package:programmerprofile/home/view/temp_home.dart';
+import 'package:programmerprofile/userSearch/view/search_page.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         Home.routeName : (ctx) => const Home(),
         ProfileScreen.routeName : (ctx) => const ProfileScreen(),
         ContestsScreen.routeName : (ctx) => const ContestsScreen(),
+        SearchUserScreen.routeName : (ctx) => const SearchUserScreen(),
       },
     );
   }

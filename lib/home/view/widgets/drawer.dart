@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/contests/view/contests_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
 import 'package:programmerprofile/home/view/temp_home.dart';
+import 'package:programmerprofile/userSearch/view/search_page.dart';
 
 final ZoomDrawerController z = ZoomDrawerController();
 
@@ -50,20 +51,31 @@ class DrawerTemplateState extends State<DrawerTemplate> {
                       onPressed: () async {
                         Navigator.pushReplacementNamed(context, Home.routeName);
                       },
-                      icon: const FaIcon(FontAwesomeIcons.houseUser, color: Colors.white),
+                      icon: const FaIcon(FontAwesomeIcons.houseUser,
+                          color: Colors.white),
                       label: const Text("Home")),
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, ContestsScreen.routeName);
+                        Navigator.pushReplacementNamed(
+                            context, ContestsScreen.routeName);
                       },
-                      icon: const FaIcon(FontAwesomeIcons.trophy, color: Colors.white),
+                      icon: const FaIcon(FontAwesomeIcons.trophy,
+                          color: Colors.white),
                       label: const Text("Contests And Events")),
                   TextButton.icon(
                       onPressed: () {
                         Navigator.pushNamed(context, ProfileScreen.routeName);
                       },
-                      icon: const FaIcon(FontAwesomeIcons.user, color: Colors.white),
+                      icon: const FaIcon(FontAwesomeIcons.user,
+                          color: Colors.white),
                       label: const Text("Profile")),
+                  TextButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(context, SearchUserScreen.routeName);
+                      },
+                      icon: const FaIcon(FontAwesomeIcons.search,
+                          color: Colors.white),
+                      label: const Text("Search Users"))
                 ],
               ),
             ),

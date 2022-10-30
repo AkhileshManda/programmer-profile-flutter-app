@@ -4,10 +4,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 // ignore: depend_on_referenced_packages
 import 'package:markdown/markdown.dart' as md;
 import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/home/controller/apis.dart';
 import 'package:programmerprofile/home/view/widgets/codeforces_graphs.dart';
 import 'package:programmerprofile/home/view/widgets/drawer.dart';
 import 'package:programmerprofile/home/view/edit_bio_page.dart';
+import '../../auth/controller/auth.dart';
 import '../../auth/model/user.dart';
 import 'widgets/github_charts.dart';
 
@@ -41,6 +43,35 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void dispose() {
     super.dispose();
   }
+
+  Widget navTile(
+        {required String title, required Function onPressed, required}) {
+      return GestureDetector(
+        onTap: () {
+                  onPressed();
+                },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: 120,
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 220, 10, 94),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -219,58 +250,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       ))
                                     : (const Text("Could'nt load map")),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0, bottom: 8.0),
                                   child: Container(
-                                    height: 50,
-                                    decoration: const BoxDecoration(color: Colors.black),
-
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                    height: 60,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.transparent),
+                                    child: ListView(
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
                                       children: [
-                                        Container(
-                                          width: 120,
-                                          decoration: const BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                          child: GestureDetector(
-                                              onTap: () {
-                                                //print("github pressed");
-                                                setState(() {
-                                                  codeforcesOn = true;
-                                                  githubOn = false;
-                                                });
-                                              },
-                                              child: const Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(15.0),
-                                                  child: Text("Codeforces"),
-                                                ),
-                                              )),
-                                        ),
-                                        Container(
-                                          width: 120,
-                                          decoration: const BoxDecoration(
-                                              color: Colors.red,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                          child: GestureDetector(
-                                              onTap: () {
-                                                //print("github pressed");
-                                                setState(() {
-                                                  codeforcesOn = false;
-                                                  githubOn = true;
-                                                });
-                                              },
-                                              child: const Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(15.0),
-                                                  child: Text("Github"),
-                                                ),
-                                              )),
-                                        ),
-                                        
+                                        navTile(title: "Codeforces", onPressed: (){
+                                          setState(() {
+                                             codeforcesOn = true;
+                                             githubOn = false;
+                                          });
+                                        }),
+                                        navTile(title: "GitHub", onPressed: (){
+                                          setState(() {
+                                            githubOn = true;
+                                            codeforcesOn = false;
+                                          });
+                                        }),
+                                        navTile(title: "Leetcode", onPressed: (){})
                                       ],
                                     ),
                                   ),
@@ -302,6 +305,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           );
                         },
                       ),
+                      ElevatedButton(onPressed: (){
+                        Auth().logout();
+                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                      }, child: const Text("Logout")
+                     )
                     ]),
               ),
             ]))));

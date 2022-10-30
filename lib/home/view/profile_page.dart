@@ -176,7 +176,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //getUser();
     return Scaffold(
         backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
         body: SafeArea(
