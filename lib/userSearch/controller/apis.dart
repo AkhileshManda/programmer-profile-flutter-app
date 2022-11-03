@@ -1,19 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:programmerprofile/auth/model/user.dart';
 import 'package:programmerprofile/home/controller/client.dart';
-import 'package:programmerprofile/home/controller/queries.dart';
+import 'package:programmerprofile/home/model/cf_bar_model.dart';
+import 'package:programmerprofile/userSearch/controller/queries.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/cf_bar_model.dart';
-import '../model/cf_donut_model.dart';
-import '../model/cf_rating_model.dart';
-import '../model/github_language_model.dart';
+import '../../home/controller/queries.dart';
+import '../../home/model/cf_donut_model.dart';
+import '../../home/model/cf_rating_model.dart';
+import '../../home/model/github_language_model.dart';
+import '../model/search_result.dart';
 
-class APIs {
-  //USER
-  Future<Map<String, List<dynamic>>?> getCFGraphData() async {
+class OtherUserAPIs{
+
+  Future<List<SearchResult>?> searchResult({String? searchString}) async {
+    List<SearchResult> results = [];
+
+    final prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString("token")!;
+    final EndPointGithubAuth point = EndPointGithubAuth();
+    ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
+
+    QueryResult result = await client.value.mutate(
+        MutationOptions(document: gql(SearchQuery.searchQuery()), variables: {
+      "input": {
+        "query": searchString,
+      }
+    }));
+
+    if (result.hasException) {
+      //print("USER");
+
+      if (result.exception!.graphqlErrors.isEmpty) {
+        //print("Internet is not found");
+      } else {
+        //print(result.exception!.graphqlErrors[0].message.toString());
+      }
+    } else {
+      // print("Search called");
+      // print(result.data);
+      for (var x in result.data!["search"]) {
+        results.add(
+          SearchResult(
+            description: x["description"],
+            id: x["id"],
+            email: x["email"], 
+            name: x["name"], 
+            photoUrl: x["profilePicture"],
+            isFollowing: x["isFollowing"],
+          ));
+      }
+      return results;
+    }
+    return null;
+  }
+   
+  Future<Map<String, List<dynamic>>?> getOtherCFGraphData(String id) async {
     Map<String, List<dynamic>>? data = {};
     List<CFDonutModel> tempdonutGraphData = [];
     List<CFBarModel> tempbarGraphData = [];
@@ -21,12 +64,10 @@ class APIs {
 
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
-    final String id = prefs.getString("id")!;
     //print("token: $token");
-    //print(id);
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-    //print("CODEFORCES");
+
     QueryResult result = await client.value.mutate(MutationOptions(
       document: gql(DashBoardQueries.cfGraphs()),
       variables: {
@@ -35,9 +76,8 @@ class APIs {
         }
       }
     ));
-    //print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-      //print("CodeForces");
+      // print("CodeForces");
       if (result.exception!.graphqlErrors.isEmpty) {
         // print("Internet is not found");
       } else {
@@ -83,18 +123,14 @@ class APIs {
     }
     return null;
   }
-  //USER
-  Future<Map<String, dynamic>?> getGithubData() async {
-    // print("GITHUB");
+  
+  Future<Map<String, dynamic>?> getOtherGithubData(String id) async {
     Map<String, String> details = {};
     List<Language> templanguagedata = [];
-
     Map<String, dynamic> data = {};
 
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
-    final String id = prefs.getString("id")!;
-    // print("id: " + id);
     //print("token: $token");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
@@ -107,7 +143,6 @@ class APIs {
         }
       }
     ));
-    // print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
       // print("GITHUB CHARTS");
 
@@ -205,49 +240,11 @@ class APIs {
     }
     return null;
   }
-  //USER
-  Future<User?> getUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString("token")!;
-    // print("token here: " + token);
-    final EndPointGithubAuth point = EndPointGithubAuth();
-    ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.getUserDashboard()),
-    ));
-
-    if (result.hasException) {
-      // print("USER");
-
-      if (result.exception!.graphqlErrors.isEmpty) {
-        // print("Internet is not found");
-      } else {
-        // print(result.exception!.graphqlErrors[0].message.toString());
-      }
-    } else {
-      // print("USER");
-      // print(result.data);
-      // final prefs = await SharedPreferences.getInstance();
-      
-      return User(
-        username: result.data!["getUser"]["name"],
-        description: result.data!["getUser"]["description"],
-        email: result.data!["getUser"]["email"],
-        profilePicture: result.data!["getUser"]["profilePicture"],
-        id: result.data!["getUser"]["id"],
-      );
-
-      //Navigator.pushReplacementNamed(context, Home.routeName);
-    }
-    return null;
-  }
-  //USER
-  Future<Map<DateTime, int>?> getHeatMapData() async {
+  
+  Future<Map<DateTime, int>?> getOtherHeatMapData(String id) async {
     Map<DateTime, int>? data = {};
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
-    final String id = prefs.getString("id")!;
     //print("token: $token");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
@@ -283,40 +280,40 @@ class APIs {
     }
     return null;
   }
-  //USER (PROFILE PAGE)
-  Future<User?> getUserProfile() async {
+
+  Future<bool> toggleFollow(String action, String id)async{
+    
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
+    //print("token: $token");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
     QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.getUser()),
+      document: gql(SearchQuery.toggleFollow()),
+      variables: {
+        "input":{
+          "userId": id,
+          "action" : action
+        }
+      }
     ));
-
     if (result.hasException) {
+      // print("Toggle Follow");
+     
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
-
+        // print("Internet is not found");
       } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      //print(result.data);
-      return User(
-        username: result.data!["getUser"]["name"],
-        leetcodeUsername: result.data!["getUser"]["leetcodeUsername"],
-        codeforcesUsername: result.data!["getUser"]["codeforcesUsername"],
-        githubToken: result.data!["getUser"]["githubToken"],
-        profilePicture: result.data!["getUser"]["profilePicture"],
-      );
-
-      //Navigator.pushReplacementNamed(context, Home.routeName);
+      // print(result.data);
+      return true;
+      //print(data.toString());
+      
     }
-    return null;
+    return false;
+    
+    
   }
-  
-
-  
-
 }

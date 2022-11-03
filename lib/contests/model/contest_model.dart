@@ -1,20 +1,24 @@
 class Contest{
-  String name;
-  String url;
-  String start;
-  String end;
-  String duration;
-  String  in24hrs;
-  String status;
-  String site;
+  int duration;
+  DateTime? start;
+  DateTime? end;
+  String event;
+  String host;
+  String href;
+  String id;
+  String resource;
+  int resourceId;
+  
   Contest({
-    required this.name,
-    required this.url,
-    required this.start,
-    required this.end,
     required this.duration,
-    required this.in24hrs,
-    required this.status,
-    required this.site
+    this.start,
+    this.end,
+    required this.event,
+    required this.host,
+    required this.href,
+    required this.id,
+    required this.resource,
+    required this.resourceId
   });
+  
 }
