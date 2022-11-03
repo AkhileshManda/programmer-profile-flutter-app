@@ -33,16 +33,20 @@ class DashBoardQueries {
 
   static String getContributions() {
     return """ 
-    query ContributionGraph {
-      contributionGraph {
-        contributions {
-          date
-          githubContributions
-          codeforcesContributions
-          leetcodeContributions
-        }
-      }
+    query ContributionGraph(\$input: UserIdInput!) {
+  contributionGraph(input: \$input) {
+    totalContributions
+    totalGithubContributions
+    totalCodeforcesContributions
+    totalLeetcodeContributions
+    contributions {
+      date
+      githubContributions
+      codeforcesContributions
+      leetcodeContributions
     }
+  }
+}
     """;
   }
 
@@ -56,80 +60,83 @@ class DashBoardQueries {
 
   static String getUserDashboard() {
     return """ 
-    query Query {
-      getUser {
-        name
-        description
-        email
-        profilePicture
-      }
-    }
+     query Query {
+  getUser {
+    id
+    name
+    profilePicture
+    email
+    description
+  }
+}
     """;
   }
 
   static String cfGraphs() {
     return """ 
-     query CodeforcesGraphs {
-      codeforcesGraphs {
-        donutGraph {
-          problemTagGraph {
-            tagName
-            problemsCount
-          }
-        }
-        barGraph {
-          problemRatingGraph {
-            difficulty
-            problemsCount
-          }
-        }
-        ratingGraph {
-          ratings {
-            contestId
-            contestName
-            handle
-            rank
-            oldRating
-            newRating
-          }
-        }
+     query CodeforcesGraphs(\$input: UserIdInput!) {
+    codeforcesGraphs(input: \$input) {
+    ratingGraph {
+      ratings {
+        contestId
+        contestName
+        handle
+        rank
+        oldRating
+        newRating
       }
     }
+    barGraph {
+      problemRatingGraph {
+        difficulty
+        problemsCount
+      }
+    }
+    donutGraph {
+      problemTagGraph {
+        tagName
+        problemsCount
+      }
+    }
+  }
+}
     """;
   }
 
   static String githubGraphs() {
     return """ 
-      query GithubGraphs {
-        githubGraphs {
-          streakGraph {
-            currentSteakLength
-            longestStreakLength
-            longestStreakStartDate
-            longestStreakEndDate
-            currentStreakStartDate
-            totalContributions
-          }
-          languageGraph {
-            name
-            color
-            size
-          }
-          statsGraph {
-            followers
-            following
-            repos
-            stars
-            forkedBy
-            watchedBy
-            commits
-            issues
-            contributedTo
-            pullRequests
-            pullRequestReviews
-          }
-        }
-      }
+      query GithubGraphs(\$input: UserIdInput!) {
+  githubGraphs(input: \$input) {
+    streakGraph {
+      currentSteakLength
+      longestStreakLength
+      longestStreakStartDate
+      longestStreakEndDate
+      currentStreakStartDate
+      totalContributions
+    }
+    languageGraph {
+      name
+      color
+      size
+    }
+    statsGraph {
+      followers
+      following
+      repos
+      stars
+      forkedBy
+      watchedBy
+      commits
+      issues
+      contributedTo
+      pullRequests
+      pullRequestReviews
+    }
+  }
+}
     """;
   }
+
+  
 }

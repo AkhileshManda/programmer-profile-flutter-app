@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //print(result.data);
       final prefs = await SharedPreferences.getInstance();
       prefs.setString("token", result.data!['signin']['token']);
+      prefs.setString("id", result.data!['signin']['user']["id"]);
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, Home.routeName);
     }

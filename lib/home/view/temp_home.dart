@@ -9,6 +9,8 @@ import 'package:programmerprofile/home/controller/apis.dart';
 import 'package:programmerprofile/home/view/widgets/codeforces_graphs.dart';
 import 'package:programmerprofile/home/view/widgets/drawer.dart';
 import 'package:programmerprofile/home/view/edit_bio_page.dart';
+import 'package:programmerprofile/notifications/controller/api.dart';
+import 'package:programmerprofile/notifications/view/notification_page.dart';
 import '../../auth/controller/auth.dart';
 import '../../auth/model/user.dart';
 import 'widgets/github_charts.dart';
@@ -20,13 +22,17 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _HomeState extends State<Home>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<Home> {
   final ScrollController controller = ScrollController();
   bool githubOn = true;
   bool codeforcesOn = false;
+  late User? user;
   // List of values: [User object, Map<Date,Contribution>, CFGraphData, GithubData]
   Future<List<dynamic>>? _getData;
   APIs apis = APIs();
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -36,6 +42,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       apis.getHeatMapData(),
       apis.getCFGraphData(),
       apis.getGithubData(),
+      NotificationAPIs().getNotifications()
     ]);
   }
 
@@ -45,36 +52,35 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   Widget navTile(
-        {required String title, required Function onPressed, required}) {
-      return GestureDetector(
-        onTap: () {
-                  onPressed();
-                },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: 120,
-            decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 220, 10, 94),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white
-                  ),
-                ),
+      {required String title, required Function onPressed, required}) {
+    return GestureDetector(
+      onTap: () {
+        onPressed();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          width: 120,
+          decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 220, 10, 94),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                title,
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DrawerTemplate(
         body: Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
@@ -93,9 +99,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
+                          
                           if (snap.hasData) {
-                            //print(snap.data.toString());
                             User user = snap.data![0];
+                            int numNotifications = snap.data![4] == null? 0 : snap.data![4]["unseenNotifications"];
                             return Column(
                               children: [
                                 snap.data![0] != null
@@ -103,50 +110,85 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                         padding: const EdgeInsets.all(10.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      z.toggle!();
-                                                    },
-                                                    icon: const Icon(Icons.menu,
-                                                        color: Colors.white)),
-                                                CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  foregroundColor:
-                                                      const Color.fromRGBO(
-                                                          0, 10, 56, 1),
-                                                  child: user.profilePicture ==
-                                                          null
-                                                      ? const Icon(Icons.person)
-                                                      : Container(
-                                                          decoration: BoxDecoration(
-                                                              image: DecorationImage(
-                                                                  image: NetworkImage(user
-                                                                      .profilePicture!)),
-                                                              borderRadius:
-                                                                  const BorderRadius
-                                                                          .all(
-                                                                      Radius.circular(
-                                                                          200))),
+                                            Row(children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    z.toggle!();
+                                                  },
+                                                  icon: const Icon(Icons.menu,
+                                                      color: Colors.white)),
+                                              CircleAvatar(
+                                                backgroundColor: Colors.white,
+                                                foregroundColor:
+                                                    const Color.fromRGBO(
+                                                        0, 10, 56, 1),
+                                                child: user.profilePicture ==
+                                                        null
+                                                    ? const Icon(Icons.person)
+                                                    : Container(
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(user
+                                                                    .profilePicture!)),
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                        .all(
+                                                                    Radius.circular(
+                                                                        200))),
+                                                      ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: Text(user.username!,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                    )),
+                                              ),
+                                              IconButton(
+                                                onPressed: () {},
+                                                icon: Stack(
+                                                  children: <Widget>[
+                                                  IconButton(onPressed: (){
+                                                    Navigator.push(context, MaterialPageRoute(
+                                                      builder: (ctx)=>NotificationScreen(notifcations: snap.data![4]["notifications"])
+                                                    ));
+                                                  }, icon: const Icon(
+                                                        Icons.notifications, color: Colors.white,)),
+                                                    Positioned(
+                                                      right: 0,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets.all(1),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(6),
                                                         ),
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                          minWidth: 12,
+                                                          minHeight: 12,
+                                                        ),
+                                                        child: Text(
+                                                          numNotifications.toString(),
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 8,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: Text(user.username!,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                      )),
-                                                ),
-                                                const Icon(
-                                                    Icons
-                                                        .notification_add_sharp,
-                                                    color: Colors.white)
-                                              ],
-                                            ),
+                                              )
+                                            ]),
                                             Padding(
                                               padding:
                                                   const EdgeInsets.all(10.0),
@@ -261,19 +303,24 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       children: [
-                                        navTile(title: "Codeforces", onPressed: (){
-                                          setState(() {
-                                             codeforcesOn = true;
-                                             githubOn = false;
-                                          });
-                                        }),
-                                        navTile(title: "GitHub", onPressed: (){
-                                          setState(() {
-                                            githubOn = true;
-                                            codeforcesOn = false;
-                                          });
-                                        }),
-                                        navTile(title: "Leetcode", onPressed: (){})
+                                        navTile(
+                                            title: "Codeforces",
+                                            onPressed: () {
+                                              setState(() {
+                                                codeforcesOn = true;
+                                                githubOn = false;
+                                              });
+                                            }),
+                                        navTile(
+                                            title: "GitHub",
+                                            onPressed: () {
+                                              setState(() {
+                                                githubOn = true;
+                                                codeforcesOn = false;
+                                              });
+                                            }),
+                                        navTile(
+                                            title: "Leetcode", onPressed: () {})
                                       ],
                                     ),
                                   ),
@@ -305,11 +352,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           );
                         },
                       ),
-                      ElevatedButton(onPressed: (){
-                        Auth().logout();
-                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-                      }, child: const Text("Logout")
-                     )
+                      ElevatedButton(
+                          onPressed: () {
+                            Auth().logout();
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.routeName);
+                          },
+                          child: const Text("Logout"))
                     ]),
               ),
             ]))));

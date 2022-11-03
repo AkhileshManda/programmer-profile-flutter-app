@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
+//import 'package:programmerprofile/home/view/temp_home2.dart';
 import 'package:programmerprofile/splash.dart';
 import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:programmerprofile/userSearch/view/search_page.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
-import 'contests/view/contests_page.dart';
+import 'contests/view/contest_page.dart';
 
 
 void main(){
@@ -22,7 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Programmer Profile',
-      home: const SplashScreen(),//OnboardingPage(),//SplashScreen(),
+      home:const SplashScreen(),//OnboardingPage(),//SplashScreen(),
+      theme: ThemeData(
+        // textTheme: const TextTheme(
+        //   titleSmall: 
+        // )
+      ),
       routes: {
        // '/': (ctx) => SplashScreen(),
         OnboardingPage.routeName : (ctx) => OnboardingPage(),
@@ -30,9 +36,10 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName : (ctx) => const LoginScreen(),
         ForgotPasswordScreen.routeName : (ctx) => const ForgotPasswordScreen(),
         Home.routeName : (ctx) => const Home(),
+        //MyHomePage.routeName : (ctx) => MyHomePage(),
         ProfileScreen.routeName : (ctx) => const ProfileScreen(),
-        ContestsScreen.routeName : (ctx) => const ContestsScreen(),
         SearchUserScreen.routeName : (ctx) => const SearchUserScreen(),
+        ContestPage.routeName : (ctx) => const ContestPage(),
       },
     );
   }

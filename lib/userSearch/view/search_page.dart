@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:programmerprofile/home/controller/client.dart';
+import 'package:programmerprofile/userSearch/controller/apis.dart';
 import 'package:programmerprofile/userSearch/model/search_result.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:programmerprofile/userSearch/view/new_user_page.dart';
 import '../../home/view/widgets/drawer.dart';
-import '../controller/queries.dart';
 
 class SearchUserScreen extends StatefulWidget {
   const SearchUserScreen({super.key});
@@ -18,39 +15,6 @@ class SearchUserScreen extends StatefulWidget {
 class _SearchUserScreenState extends State<SearchUserScreen> {
   final TextEditingController controller = TextEditingController();
 
-  Future<List<SearchResult>?> searchResult({String? searchString}) async {
-    List<SearchResult> results = [];
-
-    final prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString("token")!;
-    final EndPointGithubAuth point = EndPointGithubAuth();
-    ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-
-    QueryResult result = await client.value.mutate(
-        MutationOptions(document: gql(SearchQuery.searchQuery()), variables: {
-      "input": {
-        "query": searchString,
-      }
-    }));
-
-    if (result.hasException) {
-      //print("USER");
-
-      if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
-      } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
-      }
-    } else {
-      //print(result.data);
-      for (var x in result.data!["search"]) {
-        results.add(SearchResult(
-            email: x["email"], name: x["name"], photoUrl: x["profilePicture"]));
-      }
-      return results;
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +53,14 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                         height: 20,
                       ),
                       FutureBuilder<List<SearchResult>?>(
-                          future: searchResult(searchString: controller.text),
+                          future: OtherUserAPIs().searchResult(searchString: controller.text),
                           builder: ((context, snapshot) {
                             //print(controller.text);
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const CircularProgressIndicator();
                             }
+                            //print(snapshot.data);
                             if (snapshot.hasData) {
                               return ListView.builder(
                                   shrinkWrap: true,
@@ -104,6 +69,19 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: ListTile(
+                                        onTap: (){
+                                          //print(snapshot.data![index].id);
+                                          Navigator.pushReplacement(
+                                            context, MaterialPageRoute(builder: (ctx)=>NewUserScreen(
+                                              email: snapshot.data![index].email ,
+                                              name: snapshot.data![index].name,
+                                              description: snapshot.data![index].description,
+                                              id: snapshot.data![index].id ,
+                                              profilepic: snapshot.data![index].photoUrl,
+                                              isFollowing: snapshot.data![index].isFollowing,
+                                            ))
+                                          );
+                                        },
                                         tileColor: Colors.white,
                                         leading: snapshot
                                                     .data![index].photoUrl !=

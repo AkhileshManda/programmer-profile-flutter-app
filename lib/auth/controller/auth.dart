@@ -21,6 +21,7 @@ class Auth with ChangeNotifier {
     // username = null;
     final prefs = await SharedPreferences.getInstance();
     prefs.remove("token");
+    prefs.remove("id");
     notifyListeners();
   }
 }

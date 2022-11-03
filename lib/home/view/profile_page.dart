@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/home/controller/client.dart';
-import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:programmerprofile/home/view/widgets/image_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../auth/model/user.dart';
 import '../../styles.dart';
+import '../controller/apis.dart';
 import '../controller/queries.dart';
-
 
 class ProfileScreen extends StatefulWidget {
   //final User user;
@@ -28,50 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _leetcodeCon = TextEditingController();
   final TextEditingController _codeforcesCon = TextEditingController();
 
-  late User user;
-
-  Future<User?> getUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString("token")!;
-    final EndPointGithubAuth point = EndPointGithubAuth();
-    ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.getUser()),
-    ));
-
-    if (result.hasException) {
-      if (!mounted) return null;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          padding: const EdgeInsets.all(15),
-          margin: const EdgeInsets.all(20),
-          backgroundColor: Colors.red,
-          content:
-              Text(result.exception!.graphqlErrors[0].message.toString())));
-      //_passwordCon.clear();
-
-      if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
-
-      } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
-      }
-    } else {
-      //print(result.data);
-      user = User(
-        username: result.data!["getUser"]["name"],
-        leetcodeUsername: result.data!["getUser"]["leetcodeUsername"],
-        codeforcesUsername: result.data!["getUser"]["codeforcesUsername"],
-        githubToken: result.data!["getUser"]["githubToken"],
-        profilePicture: result.data!["getUser"]["profilePicture"],
-      );
-
-      return user;
-      //Navigator.pushReplacementNamed(context, Home.routeName);
-    }
-    return null;
-  }
+  late Future<User?> _future;
 
   void onGithubAuthPressed() async {
     // setState(() {
@@ -119,12 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void onPlatformAddition(
-      {required String username, required String platform}) async {
-    // setState(() {
-    //   isLoading = true;
-    // });
-
+  void onPlatformAddition({required String username, required String platform}) async {
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     final EndPointGithubAuth point = EndPointGithubAuth();
@@ -175,15 +126,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _future = APIs().getUserProfile();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
         body: SafeArea(
           child: Stack(children: [
             LottieBuilder.asset("assets/animations/bg-1.json"),
-            FutureBuilder(
-                future: getUser(),
-                builder: (ctx, snap) {
+            FutureBuilder<User?>(
+                future: _future,
+                builder: (ctx, AsyncSnapshot<User?> snap) {
                   if (snap.hasData) {
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -201,19 +158,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: BackButton(
                                       color: Colors.white,
                                       onPressed: () {
-                                        Navigator.pushReplacementNamed(
-                                            context, Home.routeName);
+                                        //Navigator.pushReplacementNamed(
+                                        // context, Home.routeName);
+                                        Navigator.pop(context);
                                       },
                                     ),
                                   ),
-                                  ImageInput(url: user.profilePicture),
+                                  ImageInput(url: snap.data!.profilePicture),
 
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Text(
-                                      user.username!,
+                                      snap.data!.username!,
                                       style: const TextStyle(
-                                          color: Colors.pink,
+                                          color: Color.fromARGB(
+                                              255, 229, 241, 246),
                                           fontSize: 25,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -221,30 +180,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                   const SizedBox(height: 20),
                                   //Expanded(child: Container()),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.pink,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Styles.githubColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      child: ListTile(
+                                          leading: const FaIcon(
+                                              FontAwesomeIcons.github,
+                                              color: Colors.white),
+                                          title: const Text(
+                                            "Authorize with GitHub",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          trailing: snap.data!.githubToken !=
+                                                  null
+                                              ? const FaIcon(
+                                                  FontAwesomeIcons.check,
+                                                  color: Colors.green)
+                                              : const FaIcon(
+                                                  FontAwesomeIcons.plus,
+                                                  color: Colors.white),
+                                          onTap: () {
+                                            onGithubAuthPressed();
+                                          }),
                                     ),
-                                    child: ListTile(
-                                        leading: const FaIcon(
-                                            FontAwesomeIcons.github,
-                                            color: Colors.white),
-                                        title: const Text(
-                                          "Authorize with GitHub",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        trailing: user.githubToken != null
-                                            ? const FaIcon(
-                                                FontAwesomeIcons.check,
-                                                color: Colors.green)
-                                            : const FaIcon(
-                                                FontAwesomeIcons.plus,
-                                                color: Colors.white),
-                                        onTap: () {
-                                          onGithubAuthPressed();
-                                        }),
                                   ),
                                   const SizedBox(height: 20),
                                   const Text(
@@ -253,167 +217,174 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         color: Colors.white, fontSize: 24),
                                   ),
                                   const SizedBox(height: 20),
-                                  ExpansionPanelList(
-                                      dividerColor: Colors.white,
-                                      expandedHeaderPadding:
-                                          const EdgeInsets.all(8),
-                                      expansionCallback:
-                                          (panelIndex, isExpanded) {
-                                        setState(() {
-                                          expanded[panelIndex] = !isExpanded;
-                                        });
-                                      },
-                                      children: [
-                                        ExpansionPanel(
-                                            backgroundColor: Colors.pink,
-                                            headerBuilder: (context, isOpen) {
-                                              return const Padding(
-                                                  padding: EdgeInsets.all(15),
-                                                  child: Text(
-                                                      "Add Codeforces Username",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17)));
-                                            },
-                                            body: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Wrap(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.7,
-                                                      child: TextField(
-                                                        controller:
-                                                            _codeforcesCon,
-                                                        decoration: Styles
-                                                            .textFieldStyle(user
-                                                                        .codeforcesUsername ==
-                                                                    null
-                                                                ? "Enter Username"
-                                                                : user
-                                                                    .codeforcesUsername!),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: ElevatedButton(
-                                                        style: ButtonStyle(
-                                                          backgroundColor:
-                                                              MaterialStateProperty
-                                                                  .all(const Color
-                                                                          .fromRGBO(
-                                                                      0,
-                                                                      10,
-                                                                      56,
-                                                                      1)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ExpansionPanelList(
+                                        dividerColor: Colors.white,
+                                        expandedHeaderPadding:
+                                            const EdgeInsets.all(8),
+                                        expansionCallback:
+                                            (panelIndex, isExpanded) {
+                                          setState(() {
+                                            expanded[panelIndex] = !isExpanded;
+                                          });
+                                        },
+                                        children: [
+                                          ExpansionPanel(
+                                              backgroundColor:
+                                                  Styles.expansionColor,
+                                              headerBuilder: (context, isOpen) {
+                                                return const Padding(
+                                                    padding: EdgeInsets.all(15),
+                                                    child: Text(
+                                                        "Add Codeforces Username",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17)));
+                                              },
+                                              body: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Wrap(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: SizedBox(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                        child: TextField(
+                                                          controller:
+                                                              _codeforcesCon,
+                                                          decoration: Styles
+                                                              .textFieldStyle(snap
+                                                                          .data!
+                                                                          .codeforcesUsername ==
+                                                                      null
+                                                                  ? "Enter Username"
+                                                                  : snap.data!
+                                                                      .codeforcesUsername!),
                                                         ),
-                                                        onPressed: () {
-                                                          onPlatformAddition(
-                                                              username:
-                                                                  _codeforcesCon
-                                                                      .text,
-                                                              platform:
-                                                                  "CODEFORCES");
-                                                        },
-                                                        child: Text(
-                                                            user.codeforcesUsername ==
-                                                                    null
-                                                                ? "Add"
-                                                                : "Update",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white))),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            isExpanded: expanded[0]),
-                                        ExpansionPanel(
-                                            backgroundColor: Colors.pink,
-                                            headerBuilder: (context, isOpen) {
-                                              return const Padding(
-                                                  padding: EdgeInsets.all(15),
-                                                  child: Text(
-                                                      "Add Leetcode Username",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17)));
-                                            },
-                                            body: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Wrap(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.7,
-                                                      child: TextField(
-                                                        controller:
-                                                            _leetcodeCon,
-                                                        decoration: Styles
-                                                            .textFieldStyle(user
-                                                                        .leetcodeUsername ==
-                                                                    null
-                                                                ? "Enter Username"
-                                                                : user
-                                                                    .leetcodeUsername!),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: ElevatedButton(
-                                                        style: ButtonStyle(
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: ElevatedButton(
+                                                          style: ButtonStyle(
                                                             backgroundColor:
-                                                                MaterialStateProperty.all(
-                                                                    const Color
+                                                                MaterialStateProperty
+                                                                    .all(const Color
                                                                             .fromRGBO(
                                                                         0,
                                                                         10,
                                                                         56,
-                                                                        1))),
-                                                        onPressed: () {
-                                                          onPlatformAddition(
-                                                              username:
-                                                                  _leetcodeCon
-                                                                      .text,
-                                                              platform:
-                                                                  "LEETCODE");
-                                                        },
-                                                        child: Text(
-                                                            user.leetcodeUsername ==
-                                                                    null
-                                                                ? "Add"
-                                                                : "Update",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white))),
-                                                  )
-                                                ],
+                                                                        1)),
+                                                          ),
+                                                          onPressed: () {
+                                                            onPlatformAddition(
+                                                                username:
+                                                                    _codeforcesCon
+                                                                        .text,
+                                                                platform:
+                                                                    "CODEFORCES");
+                                                          },
+                                                          child: Text(
+                                                              snap.data!.codeforcesUsername ==
+                                                                      null
+                                                                  ? "Add"
+                                                                  : "Update",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            isExpanded: expanded[1])
-                                      ])
+                                              isExpanded: expanded[0]),
+                                          ExpansionPanel(
+                                              backgroundColor:
+                                                  Styles.expansionColor,
+                                              headerBuilder: (context, isOpen) {
+                                                return const Padding(
+                                                    padding: EdgeInsets.all(15),
+                                                    child: Text(
+                                                        "Add Leetcode Username",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17)));
+                                              },
+                                              body: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Wrap(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: SizedBox(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                        child: TextField(
+                                                          controller:
+                                                              _leetcodeCon,
+                                                          decoration: Styles
+                                                              .textFieldStyle(snap
+                                                                          .data!
+                                                                          .leetcodeUsername ==
+                                                                      null
+                                                                  ? "Enter Username"
+                                                                  : snap.data!
+                                                                      .leetcodeUsername!),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStateProperty.all(
+                                                                      const Color
+                                                                              .fromRGBO(
+                                                                          0,
+                                                                          10,
+                                                                          56,
+                                                                          1))),
+                                                          onPressed: () {
+                                                            onPlatformAddition(
+                                                                username:
+                                                                    _leetcodeCon
+                                                                        .text,
+                                                                platform:
+                                                                    "LEETCODE");
+                                                          },
+                                                          child: Text(
+                                                              snap.data!.leetcodeUsername ==
+                                                                      null
+                                                                  ? "Add"
+                                                                  : "Update",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              isExpanded: expanded[1])
+                                        ]),
+                                  )
                                 ],
                               ),
                             )));

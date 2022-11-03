@@ -58,6 +58,9 @@ dependencies:
   simple_markdown_editor: ^0.2.0
   mime_type: ^1.0.0
   syncfusion_flutter_charts: ^20.3.52
+  persistent_bottom_nav_bar: ^5.0.2
+  bottom_navy_bar: ^6.0.0
+  flutter_cards_reel: ^0.0.2
  
   
 
