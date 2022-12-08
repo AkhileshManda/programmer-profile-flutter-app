@@ -9,6 +9,7 @@ import 'package:programmerprofile/home/controller/apis.dart';
 import 'package:programmerprofile/home/view/widgets/codeforces_graphs.dart';
 import 'package:programmerprofile/home/view/widgets/drawer.dart';
 import 'package:programmerprofile/home/view/edit_bio_page.dart';
+import 'package:programmerprofile/home/view/widgets/lc_tags_chart.dart';
 import 'package:programmerprofile/notifications/controller/api.dart';
 import 'package:programmerprofile/notifications/view/notification_page.dart';
 import '../../auth/controller/auth.dart';
@@ -25,8 +26,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<Home> {
   final ScrollController controller = ScrollController();
-  bool githubOn = true;
-  bool codeforcesOn = false;
+  bool githubOn = false;
+  bool codeforcesOn = true;
+  bool leetcodeOn = false;
+
   late User? user;
   // List of values: [User object, Map<Date,Contribution>, CFGraphData, GithubData]
   Future<List<dynamic>>? _getData;
@@ -42,7 +45,8 @@ class _HomeState extends State<Home>
       apis.getHeatMapData(),
       apis.getCFGraphData(),
       apis.getGithubData(),
-      NotificationAPIs().getNotifications()
+      NotificationAPIs().getNotifications(),
+      apis.getLeetCodeData()
     ]);
   }
 
@@ -99,10 +103,13 @@ class _HomeState extends State<Home>
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-                          
+
                           if (snap.hasData) {
                             User user = snap.data![0];
-                            int numNotifications = snap.data![4] == null? 0 : snap.data![4]["unseenNotifications"];
+                            int numNotifications = snap.data![4] == null
+                                ? 0
+                                : snap.data![4]["unseen-notifications"];
+                            //print(numNotifications);
                             return Column(
                               children: [
                                 snap.data![0] != null
@@ -151,17 +158,26 @@ class _HomeState extends State<Home>
                                                 onPressed: () {},
                                                 icon: Stack(
                                                   children: <Widget>[
-                                                  IconButton(onPressed: (){
-                                                    Navigator.push(context, MaterialPageRoute(
-                                                      builder: (ctx)=>NotificationScreen(notifcations: snap.data![4]["notifications"])
-                                                    ));
-                                                  }, icon: const Icon(
-                                                        Icons.notifications, color: Colors.white,)),
-                                                    Positioned(
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (ctx) =>
+                                                                      NotificationScreen(
+                                                                          notifcations:
+                                                                              snap.data![4]["notifications"])));
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.notifications,
+                                                          color: Colors.white,
+                                                        )),
+                                                    numNotifications > 0 ?Positioned(
                                                       right: 0,
                                                       child: Container(
                                                         padding:
-                                                            const EdgeInsets.all(1),
+                                                            const EdgeInsets
+                                                                .all(1),
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Colors.red,
@@ -175,8 +191,10 @@ class _HomeState extends State<Home>
                                                           minHeight: 12,
                                                         ),
                                                         child: Text(
-                                                          numNotifications.toString(),
-                                                          style: const TextStyle(
+                                                          numNotifications
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 8,
                                                           ),
@@ -185,6 +203,7 @@ class _HomeState extends State<Home>
                                                         ),
                                                       ),
                                                     )
+                                                     :const SizedBox()
                                                   ],
                                                 ),
                                               )
@@ -309,6 +328,7 @@ class _HomeState extends State<Home>
                                               setState(() {
                                                 codeforcesOn = true;
                                                 githubOn = false;
+                                                leetcodeOn = false;
                                               });
                                             }),
                                         navTile(
@@ -317,10 +337,17 @@ class _HomeState extends State<Home>
                                               setState(() {
                                                 githubOn = true;
                                                 codeforcesOn = false;
+                                                leetcodeOn = false;
                                               });
                                             }),
                                         navTile(
-                                            title: "Leetcode", onPressed: () {})
+                                            title: "Leetcode", onPressed: () {
+                                                setState(() {
+                                                githubOn = false;
+                                                codeforcesOn = false;
+                                                leetcodeOn = true;
+                                              });
+                                            })
                                       ],
                                     ),
                                   ),
@@ -332,8 +359,8 @@ class _HomeState extends State<Home>
                                         ratingGraphData: snap.data![2]
                                             ["rating"],
                                       ))
-                                    : (snap.data![3] == null
-                                        ? const Text("Couldn't Load Graphs")
+                                    : (snap.data![2] == null
+                                        ? const Text("Couldn't Codeforces Load Graphs")
                                         : const SizedBox()),
                                 snap.data![3] != null && githubOn
                                     ? (GitHubCharts(
@@ -341,8 +368,14 @@ class _HomeState extends State<Home>
                                         languagedata: snap.data![3]
                                             ["languageData"],
                                       ))
-                                    : (snap.data![3] == null
-                                        ? const Text("Couldn't Load Graphs")
+                                    : (snap.data![3] == null && githubOn == true
+                                        ? const Text("Couldn't Load Github Graphs")
+                                        : const SizedBox()),
+                                snap.data![5] !=null && leetcodeOn ? LCTagsGraph(
+                                  tags: snap.data![5]["tagDetails"],
+                                  contests: snap.data![5]["contestHistory"],
+                                  languagedata: snap.data![5]["languageStats"],
+                                ):(snap.data![5] ==null ?const Text("Couldn't Load Leetcode Graphs")
                                         : const SizedBox())
                               ],
                             );

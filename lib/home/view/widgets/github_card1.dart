@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Widget githubCard1(
-    {required String totalStars,
+    {
     required String totalCommits,
     required String prs,
     required String issues,
@@ -23,10 +23,10 @@ Widget githubCard1(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Total Commits : $totalCommits"),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Total Stars Earned : $totalStars"),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Text("Total Stars Earned : $totalStars"),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Total PRs : $prs "),

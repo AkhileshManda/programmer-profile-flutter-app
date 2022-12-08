@@ -75,7 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void onPlatformAddition({required String username, required String platform}) async {
+  void onPlatformAddition(
+      {required String username, required String platform}) async {
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     final EndPointGithubAuth point = EndPointGithubAuth();
@@ -206,7 +207,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   FontAwesomeIcons.plus,
                                                   color: Colors.white),
                                           onTap: () {
-                                            onGithubAuthPressed();
+                                            if (snap.data!.githubToken == null){
+                                              onGithubAuthPressed();
+                                            }
                                           }),
                                     ),
                                   ),
