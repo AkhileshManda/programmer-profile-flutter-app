@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:programmerprofile/home/view/widgets/github_card1.dart';
+import 'package:programmerprofile/home/view/widgets/github_streak_card.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../model/github_language_model.dart';
 
@@ -32,11 +33,20 @@ class _GitHubChartsState extends State<GitHubCharts> {
         Column(
           children: [
             githubCard1(
-                totalStars: widget.data["stars"]!,
                 totalCommits: widget.data["commits"]!,
                 prs: widget.data["pullRequests"]!,
                 issues: widget.data["issues"]!,
                 contributedTo: widget.data["contributedTo"]!),
+            Padding(
+              padding: const EdgeInsets.only(top:8.0, bottom:8.0),
+              child: GithubStreakGraph(
+                currentStreakLength: widget.data["currentStreakLength"]!, 
+                longestStreakLength: widget.data["longestStreakLength"]!,
+                 currentStreakStartDate: widget.data["currentStreakStartDate"]!, 
+                longestStreakStartDate: widget.data["longestStreakStartDate"]!, 
+                longestStreakEndDate: widget.data["longestStreakEndDate"]!,
+              ),
+            ),
             SfCircularChart(
                 legend: Legend(isVisible: true),
                 tooltipBehavior: _tooltip,

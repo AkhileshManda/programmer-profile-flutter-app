@@ -12,8 +12,7 @@ import '../../home/model/cf_rating_model.dart';
 import '../../home/model/github_language_model.dart';
 import '../model/search_result.dart';
 
-class OtherUserAPIs{
-
+class OtherUserAPIs {
   Future<List<SearchResult>?> searchResult({String? searchString}) async {
     List<SearchResult> results = [];
 
@@ -41,21 +40,20 @@ class OtherUserAPIs{
       // print("Search called");
       // print(result.data);
       for (var x in result.data!["search"]) {
-        results.add(
-          SearchResult(
-            description: x["description"],
-            id: x["id"],
-            email: x["email"], 
-            name: x["name"], 
-            photoUrl: x["profilePicture"],
-            isFollowing: x["isFollowing"],
-          ));
+        results.add(SearchResult(
+          description: x["description"],
+          id: x["id"],
+          email: x["email"],
+          name: x["name"],
+          photoUrl: x["profilePicture"],
+          isFollowing: x["isFollowing"],
+        ));
       }
       return results;
     }
     return null;
   }
-   
+
   Future<Map<String, List<dynamic>>?> getOtherCFGraphData(String id) async {
     Map<String, List<dynamic>>? data = {};
     List<CFDonutModel> tempdonutGraphData = [];
@@ -68,14 +66,10 @@ class OtherUserAPIs{
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.cfGraphs()),
-      variables: {
-        "input": {
-          "userId" : id
-        }
-      }
-    ));
+    QueryResult result = await client.value.mutate(
+        MutationOptions(document: gql(DashBoardQueries.cfGraphs()), variables: {
+      "input": {"userId": id}
+    }));
     if (result.hasException) {
       // print("CodeForces");
       if (result.exception!.graphqlErrors.isEmpty) {
@@ -123,7 +117,7 @@ class OtherUserAPIs{
     }
     return null;
   }
-  
+
   Future<Map<String, dynamic>?> getOtherGithubData(String id) async {
     Map<String, String> details = {};
     List<Language> templanguagedata = [];
@@ -136,13 +130,10 @@ class OtherUserAPIs{
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
     QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.githubGraphs()),
-      variables: {
-        "input": {
-          "userId": id
-        }
-      }
-    ));
+        document: gql(DashBoardQueries.githubGraphs()),
+        variables: {
+          "input": {"userId": id}
+        }));
     if (result.hasException) {
       // print("GITHUB CHARTS");
 
@@ -240,7 +231,7 @@ class OtherUserAPIs{
     }
     return null;
   }
-  
+
   Future<Map<DateTime, int>?> getOtherHeatMapData(String id) async {
     Map<DateTime, int>? data = {};
     final prefs = await SharedPreferences.getInstance();
@@ -250,13 +241,10 @@ class OtherUserAPIs{
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
     QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.getContributions()),
-      variables: {
-        "input":{
-          "userId": id 
-        }
-      }
-    ));
+        document: gql(DashBoardQueries.getContributions()),
+        variables: {
+          "input": {"userId": id}
+        }));
     if (result.hasException) {
       // print("HEATMAP");
 
@@ -281,26 +269,22 @@ class OtherUserAPIs{
     return null;
   }
 
-  Future<bool> toggleFollow(String action, String id)async{
-    
+  
+
+  Future<bool> toggleFollow(String action, String id) async {
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     //print("token: $token");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(SearchQuery.toggleFollow()),
-      variables: {
-        "input":{
-          "userId": id,
-          "action" : action
-        }
-      }
-    ));
+    QueryResult result = await client.value.mutate(
+        MutationOptions(document: gql(SearchQuery.toggleFollow()), variables: {
+      "input": {"userId": id, "action": action}
+    }));
     if (result.hasException) {
       // print("Toggle Follow");
-     
+
       if (result.exception!.graphqlErrors.isEmpty) {
         // print("Internet is not found");
       } else {
@@ -310,10 +294,10 @@ class OtherUserAPIs{
       // print(result.data);
       return true;
       //print(data.toString());
-      
+
     }
     return false;
-    
-    
   }
+
+
 }

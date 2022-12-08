@@ -105,16 +105,8 @@ class DashBoardQueries {
 
   static String githubGraphs() {
     return """ 
-      query GithubGraphs(\$input: UserIdInput!) {
+     query GithubGraphs(\$input: UserIdInput!) {
   githubGraphs(input: \$input) {
-    streakGraph {
-      currentSteakLength
-      longestStreakLength
-      longestStreakStartDate
-      longestStreakEndDate
-      currentStreakStartDate
-      totalContributions
-    }
     languageGraph {
       name
       color
@@ -124,7 +116,6 @@ class DashBoardQueries {
       followers
       following
       repos
-      stars
       forkedBy
       watchedBy
       commits
@@ -133,10 +124,95 @@ class DashBoardQueries {
       pullRequests
       pullRequestReviews
     }
+    streakGraph {
+      currentSteakLength
+      longestStreakLength
+      longestStreakStartDate
+      longestStreakEndDate
+      currentStreakStartDate
+      totalContributions
+    }
   }
 }
     """;
   }
+
+ static String leetcodeGraph(){
+  return """ 
+  query LeetcodeGraphs(\$input: UserIdInput!) {
+  leetcodeGraphs(input: \$input) {
+    contest {
+      rating
+      ranking
+      attendedContestsCount
+      totalParticipants
+      topPercentage
+    }
+    contestHistory {
+      attended
+      problemsSolved
+      totalProblems
+      rating
+      ranking
+      contest {
+        title
+        startTime
+      }
+    }
+    problems {
+      difficulty
+      count
+    }
+    user {
+      username
+      profile {
+        realname
+        about
+        avatar
+        skills
+        country
+        ranking
+        categoryDiscussCount
+        solutionCount
+        reputation
+        postViewCount
+      }
+      languageProblemCount {
+        languageName
+        problemsSolved
+      }
+      tagProblemCounts {
+        advanced {
+          tagName
+          tagSlug
+          problemsSolved
+        }
+        intermediate {
+          tagName
+          tagSlug
+          problemsSolved
+        }
+        fundamental {
+          tagName
+          tagSlug
+          problemsSolved
+        }
+      }
+      problemsSolvedBeatsStats {
+        difficulty
+        percentage
+      }
+      submitStatsGlobal {
+        difficulty
+        count
+      }
+    }
+  }
+}
+  
+  
+  """;
+ }
 
   
 }

@@ -13,7 +13,7 @@ import '../../home/view/widgets/github_charts.dart';
 class NewUserScreen extends StatefulWidget {
   final String id;
   final String name;
-  final String email;
+  //final String email;
   final String? profilepic;
   final String? description;
   final bool isFollowing;
@@ -21,7 +21,7 @@ class NewUserScreen extends StatefulWidget {
     super.key,
     required this.id,
     required this.name,
-    required this.email,
+    //required this.email,
     required this.profilepic,
     required this.description,
     required this.isFollowing,
@@ -48,6 +48,8 @@ class _NewUserScreenState extends State<NewUserScreen> {
       apis.getOtherHeatMapData(widget.id),
       apis.getOtherCFGraphData(widget.id),
       apis.getOtherGithubData(widget.id),
+      
+      
     ]);
     isFollowing = widget.isFollowing;
   }

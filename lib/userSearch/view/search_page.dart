@@ -73,7 +73,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                           //print(snapshot.data![index].id);
                                           Navigator.pushReplacement(
                                             context, MaterialPageRoute(builder: (ctx)=>NewUserScreen(
-                                              email: snapshot.data![index].email ,
+                                              //email: snapshot.data![index].email ,
                                               name: snapshot.data![index].name,
                                               description: snapshot.data![index].description,
                                               id: snapshot.data![index].id ,
