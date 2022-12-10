@@ -101,7 +101,7 @@ class ContestAPI{
       data.add(weekContests);
       data.add(upcomingContests);
 
-      print(data[0][1].start.toString());
+      //print(data[0][1].start.toString());
       return data;
     }
     return null;
