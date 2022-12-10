@@ -38,8 +38,8 @@ class ContestAPI{
       for(var x in result.data!["getContests"]["today"]) {
         todayContests.add(Contest(
           duration: x["duration"], 
-          // start: DateTime.parse(x["start"].toString()), 
-          // end: DateTime.parse(x["end"].toString()),
+          start: DateTime.parse(x["start"].toString()), 
+          end: DateTime.parse(x["end"].toString()),
           event: x["event"], 
           host: x["host"], 
           href: x["href"], 
@@ -100,6 +100,8 @@ class ContestAPI{
       data.add(tomContests);
       data.add(weekContests);
       data.add(upcomingContests);
+
+      print(data[0][1].start.toString());
       return data;
     }
     return null;

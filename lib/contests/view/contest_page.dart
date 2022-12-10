@@ -71,63 +71,88 @@ class _ContestPageState extends State<ContestPage> {
                                       //print(snap.data.toString());
                                       if (snap.connectionState ==
                                           ConnectionState.waiting) {
-                                        return index == 0 ? const Center(child: CircularProgressIndicator()) : const SizedBox();
+                                        return index == 0
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : const SizedBox();
                                       }
                                       if (snap.hasData) {
                                         //print(keys);
                                         return Container(
                                           height: 800,
                                           color: Colors.primaries[Random()
-                                              .nextInt(Colors.primaries.length)],
+                                              .nextInt(
+                                                  Colors.primaries.length)],
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 30, right: 30, top: 30),
                                             child: Column(
                                               children: [
                                                 Text(contestTimes[index]),
-                                                index!=3? SizedBox(
-                                                  height: 400,
-                                                  child: ListView.builder(
-                                                      //shrinkWrap: true,
-                                                      //physics: const BouncingScrollPhysics(),
-                                                      itemCount: snap
-                                                          .data![index].length,
-                                                      itemBuilder: (ctx, i) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Card(
-                                                            child: ListTile(
-                                                              title: Text(snap
-                                                                  .data![index][i]
-                                                                  .event),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }),
-                                                ):SizedBox(
-                                                  height: 600,
-                                                  child: ListView.builder(
-                                                        //shrinkWrap: true,
-                                                        //physics: const BouncingScrollPhysics(),
-                                                        itemCount: snap
-                                                            .data![index].length,
-                                                        itemBuilder: (ctx, i) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Card(
-                                                              child: ListTile(
-                                                                title: Text(snap
-                                                                    .data![index][i]
-                                                                    .event),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }),
-                                                ),
+                                                index != 3
+                                                    ? SizedBox(
+                                                        height: 400,
+                                                        child: ListView.builder(
+                                                            //shrinkWrap: true,
+                                                            //physics: const BouncingScrollPhysics(),
+                                                            itemCount: snap
+                                                                .data![index]
+                                                                .length,
+                                                            itemBuilder:
+                                                                (ctx, i) {
+                                                              return Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.all(
+                                                                          8.0),
+                                                                  child: contestCard(
+                                                                      name: snap
+                                                                          .data![index]
+                                                                              [
+                                                                              i]
+                                                                          .event,
+                                                                      start: (snap.data![index][i].start ?? DateTime.now())
+                                                                          .toString(),
+                                                                      end: (snap.data![index][i].end ?? DateTime.now())
+                                                                          .toString(),
+                                                                      site: snap
+                                                                          .data![
+                                                                              index]
+                                                                              [i]
+                                                                          .host));
+                                                            }),
+                                                      )
+                                                    : SizedBox(
+                                                        height: 600,
+                                                        child: ListView.builder(
+                                                            //shrinkWrap: true,
+                                                            //physics: const BouncingScrollPhysics(),
+                                                            itemCount: snap
+                                                                .data![index]
+                                                                .length,
+                                                            itemBuilder:
+                                                                (ctx, i) {
+                                                              return Padding(
+                                                                  padding:
+                                                                      const EdgeInsets.all(
+                                                                          8.0),
+                                                                  child: contestCard(
+                                                                      name: snap
+                                                                          .data![index]
+                                                                              [
+                                                                              i]
+                                                                          .event,
+                                                                      start: (snap.data![index][i].start ?? DateTime.now())
+                                                                          .toString(),
+                                                                      end: (snap.data![index][i].end ?? DateTime.now())
+                                                                          .toString(),
+                                                                      site: snap
+                                                                          .data![
+                                                                              index]
+                                                                              [i]
+                                                                          .host));
+                                                            }),
+                                                      ),
                                               ],
                                             ),
                                           ),
@@ -152,6 +177,41 @@ class _ContestPageState extends State<ContestPage> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget contestCard(
+      {required String name,
+      required String start,
+      required String end,
+      required String site}) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                name,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(start),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(end),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(site),
+            )
+          ],
         ),
       ),
     );

@@ -42,7 +42,7 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
         ),
         SfCircularChart(
             tooltipBehavior: _tooltip,
-            legend: Legend(isVisible: true),
+            legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
             series: <CircularSeries<CFDonutModel, String>>[
               DoughnutSeries<CFDonutModel, String>(
                 dataSource: widget.donutGraphData,

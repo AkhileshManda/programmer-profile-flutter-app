@@ -9,6 +9,7 @@ import '../../auth/model/user.dart';
 import '../../home/view/widgets/codeforces_graphs.dart';
 import '../../home/view/widgets/drawer.dart';
 import '../../home/view/widgets/github_charts.dart';
+import '../../home/view/widgets/lc_tags_chart.dart';
 
 class NewUserScreen extends StatefulWidget {
   final String id;
@@ -35,6 +36,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
   final ScrollController controller = ScrollController();
   bool githubOn = true;
   bool codeforcesOn = false;
+  bool leetcodeOn = false;
   late User? user;
   // List of values: [User object, Map<Date,Contribution>, CFGraphData, GithubData]
   Future<List<dynamic>>? _getData;
@@ -48,8 +50,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
       apis.getOtherHeatMapData(widget.id),
       apis.getOtherCFGraphData(widget.id),
       apis.getOtherGithubData(widget.id),
-      
-      
+      apis.getOtherLeetCodeData(widget.id)
     ]);
     isFollowing = widget.isFollowing;
   }
@@ -137,20 +138,19 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                       )),
                                 ),
                                 ElevatedButton(
-                                onPressed: () async {
-                                  bool x = await apis.toggleFollow(
-                                      isFollowing ? "REMOVE" : "ADD",
-                                      widget.id);
-                                  if (x) {
-                                    setState(() {
-                                      isFollowing = !isFollowing;
-                                    });
-                                  }
-                                },
-                                child: isFollowing
-                                    ? const Text("Following")
-                                    : const Text("Follow")),
-
+                                    onPressed: () async {
+                                      bool x = await apis.toggleFollow(
+                                          isFollowing ? "REMOVE" : "ADD",
+                                          widget.id);
+                                      if (x) {
+                                        setState(() {
+                                          isFollowing = !isFollowing;
+                                        });
+                                      }
+                                    },
+                                    child: isFollowing
+                                        ? const Text("Following")
+                                        : const Text("Follow")),
                               ],
                             ),
                             Padding(
@@ -189,7 +189,6 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                 ),
                               ),
                             ),
-                            
                             FutureBuilder<List<dynamic>>(
                               future: _getData,
                               builder:
@@ -251,6 +250,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                                     setState(() {
                                                       codeforcesOn = true;
                                                       githubOn = false;
+                                                      leetcodeOn = false;
                                                     });
                                                   }),
                                               navTile(
@@ -259,11 +259,18 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                                     setState(() {
                                                       githubOn = true;
                                                       codeforcesOn = false;
+                                                      leetcodeOn = false;
                                                     });
                                                   }),
                                               navTile(
                                                   title: "Leetcode",
-                                                  onPressed: () {})
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      leetcodeOn = true;
+                                                    githubOn = false;
+                                                    codeforcesOn = false;
+                                                    });
+                                                  })
                                             ],
                                           ),
                                         ),
@@ -290,6 +297,18 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                           : (snap.data![2] == null
                                               ? const Text(
                                                   "Couldn't Load Graphs")
+                                              : const SizedBox()),
+                                      snap.data![3] != null && leetcodeOn
+                                          ? (LCTagsGraph(
+                                              tags: snap.data![3]["tagDetails"],
+                                              contests: snap.data![3]
+                                                  ["contestHistory"],
+                                              languagedata: snap.data![3]
+                                                  ["languageStats"],
+                                            ))
+                                          : (snap.data![3] == null
+                                              ? const Text(
+                                                  "Couldn't Load Leetcode Graphs")
                                               : const SizedBox())
                                     ],
                                   );

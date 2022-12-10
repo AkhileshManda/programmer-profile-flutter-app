@@ -48,7 +48,7 @@ class _GitHubChartsState extends State<GitHubCharts> {
               ),
             ),
             SfCircularChart(
-                legend: Legend(isVisible: true),
+                legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
                 tooltipBehavior: _tooltip,
                 series: <CircularSeries<Language, String>>[
                   DoughnutSeries<Language, String>(

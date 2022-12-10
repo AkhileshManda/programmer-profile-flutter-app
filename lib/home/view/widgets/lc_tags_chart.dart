@@ -36,9 +36,14 @@ class _LCTagsGraphState extends State<LCTagsGraph> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text("Leetcode Analysis",
+              style: TextStyle(color: Colors.white, fontSize: 20)),
+        ),
         SfCircularChart(
             tooltipBehavior: _tooltip2,
-            legend: Legend(isVisible: true),
+            legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
             series: <CircularSeries<LCLanguage, String>>[
               DoughnutSeries<LCLanguage, String>(
                 dataSource: widget.languagedata,
@@ -48,7 +53,7 @@ class _LCTagsGraphState extends State<LCTagsGraph> {
           ]),
         SfCircularChart(
             tooltipBehavior: _tooltip,
-            legend: Legend(isVisible: true),
+            legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
             series: <CircularSeries<LCTagsModel, String>>[
               DoughnutSeries<LCTagsModel, String>(
                 dataSource: widget.tags,

@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:programmerprofile/home/controller/client.dart';
 import 'package:programmerprofile/home/model/cf_bar_model.dart';
+import 'package:programmerprofile/home/model/lc_stats_model.dart';
+import 'package:programmerprofile/home/model/lc_tags_model.dart';
 import 'package:programmerprofile/userSearch/controller/queries.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +12,8 @@ import '../../home/controller/queries.dart';
 import '../../home/model/cf_donut_model.dart';
 import '../../home/model/cf_rating_model.dart';
 import '../../home/model/github_language_model.dart';
+import '../../home/model/lc_contest_model.dart';
+import '../../home/model/lc_language_model.dart';
 import '../model/search_result.dart';
 
 class OtherUserAPIs {
@@ -298,6 +302,108 @@ class OtherUserAPIs {
     }
     return false;
   }
+
+  Future<Map<String,dynamic>?> getOtherLeetCodeData(String id)async{
+    Map<String,dynamic>? data = {};
+    
+    final prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString("token")!;
+    //final String id = prefs.getString("id")!;
+    // print("id: " + id);
+    //print("token: $token");
+    final EndPointGithubAuth point = EndPointGithubAuth();
+    ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
+
+    QueryResult result = await client.value.mutate(MutationOptions(
+      document: gql(DashBoardQueries.leetcodeGraph()),
+      variables: {
+        "input": {
+          "userId": id
+        }
+      }
+    ));
+    // print("REACHED HERE AFTER QUERY");
+    if (result.hasException) {
+       //print("LEETCODE CHARTS");
+
+      if (result.exception!.graphqlErrors.isEmpty) {
+        //print("LEETCODE CHARTS");
+        //print("Internet is not found");
+      } else {
+        //print("LEETCODE CHARTS");
+        //print(result.exception!.graphqlErrors[0].message.toString());
+      }
+    }else{
+      //print("LC in");
+      List<LCContest> contestHistory = [];
+      for(var x in result.data!["leetcodeGraphs"]["contestHistory"]){
+        //print(x["contest"]["title"]);
+        contestHistory.add(
+          LCContest(
+            problemSolved: x["problemsSolved"], 
+            totalProblems: x["totalProblems"], 
+            rating: x["rating"],
+            ranking: x["ranking"], 
+            title: x["contest"]["title"], 
+            startTime: DateTime.parse(x["contest"]["startTime"].toString())
+          )
+        );
+      }
+      //print("FINE TILL HERE");
+      data.putIfAbsent("contestHistory", () => contestHistory);
+      //print(result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"]);
+      data.putIfAbsent("questionsStats", () => LCStats(
+        totalProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"], 
+        easyProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][1]["count"], 
+        mediumProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][2]["count"], 
+        hardProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][3]["count"],
+        problemsTotal: result.data!["leetcodeGraphs"]["problems"][0]["count"],
+        easyTotal:  result.data!["leetcodeGraphs"]["problems"][1]["count"],
+        mediumTotal:  result.data!["leetcodeGraphs"]["problems"][2]["count"],
+        hardTotal:  result.data!["leetcodeGraphs"]["problems"][3]["count"]
+      ));
+      //print(data);
+      List<LCTagsModel> advancedTags = [];
+      //print(result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["advanced"]);
+      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["advanced"]){
+        advancedTags.add(LCTagsModel(
+          tagName: x["tagName"],
+          tagSlug: x["tagSlug"],
+          problemsCount: x["problemsSolved"],
+        ));
+      }
+
+      List<LCTagsModel> intermediateTags = [];
+      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["intermediate"]){
+        intermediateTags.add(LCTagsModel(
+          tagName: x["tagName"],
+          tagSlug: x["tagSlug"],
+          problemsCount: x["problemsSolved"],
+        ));
+      }
+
+      List<LCTagsModel> fundamentalTags = [];
+      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["fundamental"]){
+        fundamentalTags.add(LCTagsModel(
+          tagName: x["tagName"],
+          tagSlug: x["tagSlug"],
+          problemsCount: x["problemsSolved"],
+        ));
+      }
+      data.putIfAbsent("tagDetails", ()=> fundamentalTags+intermediateTags+advancedTags);
+      
+      List<LCLanguage> languageStats = [];
+      for(var x in result.data!["leetcodeGraphs"]["user"]["languageProblemCount"]){
+         languageStats.add(LCLanguage(languageName: x["languageName"], problemsSolved: x["problemsSolved"]));
+      }
+
+      data.putIfAbsent("languageStats", ()=>languageStats);
+      //print(data["languageStats"]);
+
+      return data;
+    }
+    return null;
+  }  
 
 
 }
