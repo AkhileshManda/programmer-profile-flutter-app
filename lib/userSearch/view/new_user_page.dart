@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:lottie/lottie.dart';
 // ignore: depend_on_referenced_packages
 import 'package:markdown/markdown.dart' as md;
@@ -86,10 +87,11 @@ class _NewUserScreenState extends State<NewUserScreen> {
       ),
     );
   }
-
+  final ZoomDrawerController z = ZoomDrawerController();
   @override
   Widget build(BuildContext context) {
     return DrawerTemplate(
+        z: z,
         body: Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
             body: SafeArea(

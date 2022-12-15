@@ -66,18 +66,20 @@ class APIs {
         tempdonutGraphData.add(CFDonutModel(
             tagName: x["tagName"], problemsCount: x["problemsCount"]));
       }
-
+      // print("all good till here");
       for (var x in result.data!["codeforcesGraphs"]["ratingGraph"]
           ["ratings"]) {
         tempRatingData.add(CFRatingModel(
           contestId: x["contestId"],
           contestName: x["contestName"],
+          date: DateFormat("yyyy-MM-dd").parse(x["date"]),
           handle: x["handle"],
           newRating: x["newRating"],
           oldRating: x["oldRating"],
           rank: x["rank"],
         ));
       }
+      // print(tempRatingData);
       //print(barGraphData.toString());
       data.putIfAbsent("donut", () => tempdonutGraphData);
       data.putIfAbsent("bar", () => tempbarGraphData);
@@ -99,7 +101,7 @@ class APIs {
     final String token = prefs.getString("token")!;
     final String id = prefs.getString("id")!;
     // print("id: " + id);
-    //print("token: $token");
+    // print("token: $token");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 

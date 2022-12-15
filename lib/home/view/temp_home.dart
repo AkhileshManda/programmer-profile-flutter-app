@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 // ignore: depend_on_referenced_packages
 import 'package:markdown/markdown.dart' as md;
 import 'package:lottie/lottie.dart';
-import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/home/controller/apis.dart';
 import 'package:programmerprofile/home/view/widgets/codeforces_graphs.dart';
 import 'package:programmerprofile/home/view/widgets/drawer.dart';
@@ -12,7 +12,6 @@ import 'package:programmerprofile/home/view/edit_bio_page.dart';
 import 'package:programmerprofile/home/view/widgets/lc_tags_chart.dart';
 import 'package:programmerprofile/notifications/controller/api.dart';
 import 'package:programmerprofile/notifications/view/notification_page.dart';
-import '../../auth/controller/auth.dart';
 import '../../auth/model/user.dart';
 import 'widgets/github_charts.dart';
 
@@ -40,6 +39,9 @@ class _HomeState extends State<Home>
   @override
   void initState() {
     super.initState();
+    // apis.getUser().then((value) => setState(() {
+    //       user = value;
+    //     }));
     _getData = Future.wait([
       apis.getUser(),
       apis.getHeatMapData(),
@@ -48,11 +50,6 @@ class _HomeState extends State<Home>
       NotificationAPIs().getNotifications(),
       apis.getLeetCodeData()
     ]);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Widget navTile(
@@ -82,10 +79,13 @@ class _HomeState extends State<Home>
     );
   }
 
+  final ZoomDrawerController z = ZoomDrawerController();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return DrawerTemplate(
+       z: z,
         body: Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
             body: SafeArea(
@@ -120,7 +120,8 @@ class _HomeState extends State<Home>
                                             Row(children: [
                                               IconButton(
                                                   onPressed: () {
-                                                    z.toggle!();
+                                                    //print("Pressed");
+                                                    z.open!();
                                                   },
                                                   icon: const Icon(Icons.menu,
                                                       color: Colors.white)),
@@ -172,38 +173,43 @@ class _HomeState extends State<Home>
                                                           Icons.notifications,
                                                           color: Colors.white,
                                                         )),
-                                                    numNotifications > 0 ?Positioned(
-                                                      right: 0,
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(1),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.red,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(6),
-                                                        ),
-                                                        constraints:
-                                                            const BoxConstraints(
-                                                          minWidth: 12,
-                                                          minHeight: 12,
-                                                        ),
-                                                        child: Text(
-                                                          numNotifications
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 8,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    )
-                                                     :const SizedBox()
+                                                    numNotifications > 0
+                                                        ? Positioned(
+                                                            right: 0,
+                                                            child: Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(1),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    Colors.red,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            6),
+                                                              ),
+                                                              constraints:
+                                                                  const BoxConstraints(
+                                                                minWidth: 12,
+                                                                minHeight: 12,
+                                                              ),
+                                                              child: Text(
+                                                                numNotifications
+                                                                    .toString(),
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 8,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox()
                                                   ],
                                                 ),
                                               )
@@ -341,8 +347,9 @@ class _HomeState extends State<Home>
                                               });
                                             }),
                                         navTile(
-                                            title: "Leetcode", onPressed: () {
-                                                setState(() {
+                                            title: "Leetcode",
+                                            onPressed: () {
+                                              setState(() {
                                                 githubOn = false;
                                                 codeforcesOn = false;
                                                 leetcodeOn = true;
@@ -360,7 +367,8 @@ class _HomeState extends State<Home>
                                             ["rating"],
                                       ))
                                     : (snap.data![2] == null
-                                        ? const Text("Couldn't Codeforces Load Graphs")
+                                        ? const Text(
+                                            "Couldn't Codeforces Load Graphs")
                                         : const SizedBox()),
                                 snap.data![3] != null && githubOn
                                     ? (GitHubCharts(
@@ -369,13 +377,20 @@ class _HomeState extends State<Home>
                                             ["languageData"],
                                       ))
                                     : (snap.data![3] == null && githubOn == true
-                                        ? const Text("Couldn't Load Github Graphs")
+                                        ? const Text(
+                                            "Couldn't Load Github Graphs")
                                         : const SizedBox()),
-                                snap.data![5] !=null && leetcodeOn ? LCTagsGraph(
-                                  tags: snap.data![5]["tagDetails"],
-                                  contests: snap.data![5]["contestHistory"],
-                                  languagedata: snap.data![5]["languageStats"],
-                                ):(snap.data![5] ==null ?const Text("Couldn't Load Leetcode Graphs")
+                                snap.data![5] != null && leetcodeOn
+                                    ? LCTagsGraph(
+                                        tags: snap.data![5]["tagDetails"],
+                                        contests: snap.data![5]
+                                            ["contestHistory"],
+                                        languagedata: snap.data![5]
+                                            ["languageStats"],
+                                      )
+                                    : (snap.data![5] == null
+                                        ? const Text(
+                                            "Couldn't Load Leetcode Graphs")
                                         : const SizedBox())
                               ],
                             );
@@ -385,13 +400,6 @@ class _HomeState extends State<Home>
                           );
                         },
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Auth().logout();
-                            Navigator.pushReplacementNamed(
-                                context, LoginScreen.routeName);
-                          },
-                          child: const Text("Logout"))
                     ]),
               ),
             ]))));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:programmerprofile/home/model/cf_rating_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../model/cf_bar_model.dart';
@@ -71,17 +72,19 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
             ]),
         SfCartesianChart(
           tooltipBehavior: _tooltip2,
-          primaryXAxis: NumericAxis(
+          primaryYAxis: NumericAxis(
             majorGridLines: const MajorGridLines(width: 0),
             axisLine: const AxisLine(width: 0),
           ),
-          primaryYAxis: NumericAxis(
-              majorGridLines: const MajorGridLines(width: 0),
-              axisLine: const AxisLine(width: 0)),
+          primaryXAxis: DateTimeAxis(
+            dateFormat: DateFormat("yyyy-MM-dd"),
+            majorGridLines: const MajorGridLines(width: 0),
+            axisLine: const AxisLine(width: 0),
+          ),
           series: <ChartSeries>[
-            LineSeries<CFRatingModel, int>(
+            LineSeries<CFRatingModel, DateTime>(
                 dataSource: widget.ratingGraphData,
-                xValueMapper: (CFRatingModel data, _) => data.contestId,
+                xValueMapper: (CFRatingModel data, _) => data.date,
                 yValueMapper: (CFRatingModel data, _) => data.newRating)
           ],
         ),

@@ -1,7 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_cards_reel/sliver_cards_reel.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/contests/view/contest_card.dart';
 
 import '../../home/view/widgets/drawer.dart';
 import '../controller/api.dart';
@@ -27,7 +28,16 @@ class _ContestPageState extends State<ContestPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Color> contestColors = [
+      const Color.fromRGBO(245, 110, 179, 1),
+      const Color.fromRGBO(203, 28, 141, 1),
+      const Color.fromRGBO(127, 22, 127, 1),
+      const Color.fromRGBO(70, 12, 104, 1)
+    ];
+
+    final ZoomDrawerController z = ZoomDrawerController();
     return DrawerTemplate(
+      z: z,
       body: Scaffold(
         backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
         body: SafeArea(
@@ -38,10 +48,12 @@ class _ContestPageState extends State<ContestPage> {
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.menu, color: Colors.white),
+                      BackButton(
+                        color: Colors.white,
                         onPressed: () {
-                          z.toggle!();
+                          //Navigator.pushReplacementNamed(
+                          // context, Home.routeName);
+                          Navigator.pop(context);
                         },
                       ),
                       const Text("Contests & Events",
@@ -81,15 +93,22 @@ class _ContestPageState extends State<ContestPage> {
                                         //print(keys);
                                         return Container(
                                           height: 800,
-                                          color: Colors.primaries[Random()
-                                              .nextInt(
-                                                  Colors.primaries.length)],
+                                          color: contestColors[index],
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 30, right: 30, top: 30),
                                             child: Column(
                                               children: [
-                                                Text(contestTimes[index]),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child:
+                                                      Text(contestTimes[index],
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                          )),
+                                                ),
                                                 index != 3
                                                     ? SizedBox(
                                                         height: 400,
@@ -111,13 +130,18 @@ class _ContestPageState extends State<ContestPage> {
                                                                               [
                                                                               i]
                                                                           .event,
-                                                                      start: (snap.data![index][i].start ?? DateTime.now())
-                                                                          .toString(),
-                                                                      end: (snap.data![index][i].end ?? DateTime.now())
-                                                                          .toString(),
+                                                                      start: (snap
+                                                                          .data![index]
+                                                                              [
+                                                                              i]
+                                                                          .start!),
+                                                                      end: (snap
+                                                                          .data![index]
+                                                                              [
+                                                                              i]
+                                                                          .end!),
                                                                       site: snap
-                                                                          .data![
-                                                                              index]
+                                                                          .data![index]
                                                                               [i]
                                                                           .host));
                                                             }),
@@ -138,14 +162,15 @@ class _ContestPageState extends State<ContestPage> {
                                                                           8.0),
                                                                   child: contestCard(
                                                                       name: snap
-                                                                          .data![index]
-                                                                              [
+                                                                          .data![index][
                                                                               i]
                                                                           .event,
-                                                                      start: (snap.data![index][i].start ?? DateTime.now())
-                                                                          .toString(),
-                                                                      end: (snap.data![index][i].end ?? DateTime.now())
-                                                                          .toString(),
+                                                                      start: (snap.data![index][i].start ??
+                                                                          DateTime
+                                                                              .now()),
+                                                                      end: (snap.data![index][i].end ??
+                                                                          DateTime
+                                                                              .now()),
                                                                       site: snap
                                                                           .data![
                                                                               index]
@@ -177,41 +202,6 @@ class _ContestPageState extends State<ContestPage> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget contestCard(
-      {required String name,
-      required String start,
-      required String end,
-      required String site}) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                name,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(start),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(end),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(site),
-            )
-          ],
         ),
       ),
     );

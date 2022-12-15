@@ -106,6 +106,7 @@ class OtherUserAPIs {
         tempRatingData.add(CFRatingModel(
           contestId: x["contestId"],
           contestName: x["contestName"],
+          date: DateFormat("yyyy-MM-dd").parse(x["date"]),
           handle: x["handle"],
           newRating: x["newRating"],
           oldRating: x["oldRating"],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/userSearch/controller/apis.dart';
 import 'package:programmerprofile/userSearch/model/search_result.dart';
@@ -14,11 +15,11 @@ class SearchUserScreen extends StatefulWidget {
 
 class _SearchUserScreenState extends State<SearchUserScreen> {
   final TextEditingController controller = TextEditingController();
-
-
+  final ZoomDrawerController z = ZoomDrawerController();
   @override
   Widget build(BuildContext context) {
     return DrawerTemplate(
+        z: z,
         body: Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
             body: SafeArea(
@@ -28,8 +29,23 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
+                      Row(
+                    children: [
+                      BackButton(
+                        color: Colors.white,
+                        onPressed: () {
+                          //Navigator.pushReplacementNamed(
+                          // context, Home.routeName);
+                          Navigator.pop(context);
+                        },
+                      ),
                       const Text("Search Users",
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ))
+                    ],
+                  ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -53,7 +69,8 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                         height: 20,
                       ),
                       FutureBuilder<List<SearchResult>?>(
-                          future: OtherUserAPIs().searchResult(searchString: controller.text),
+                          future: OtherUserAPIs()
+                              .searchResult(searchString: controller.text),
                           builder: ((context, snapshot) {
                             //print(controller.text);
                             if (snapshot.connectionState ==
@@ -62,46 +79,64 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                             }
                             //print(snapshot.data);
                             if (snapshot.hasData) {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: ((context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ListTile(
-                                        onTap: (){
-                                          //print(snapshot.data![index].id);
-                                          Navigator.pushReplacement(
-                                            context, MaterialPageRoute(builder: (ctx)=>NewUserScreen(
-                                              //email: snapshot.data![index].email ,
-                                              name: snapshot.data![index].name,
-                                              description: snapshot.data![index].description,
-                                              id: snapshot.data![index].id ,
-                                              profilepic: snapshot.data![index].photoUrl,
-                                              isFollowing: snapshot.data![index].isFollowing,
-                                            ))
-                                          );
-                                        },
-                                        tileColor: Colors.white,
-                                        leading: snapshot
-                                                    .data![index].photoUrl !=
-                                                null
-                                            ? CircleAvatar(
-                                                foregroundImage: NetworkImage(
-                                                    snapshot.data![index]
-                                                        .photoUrl!),
-                                              )
-                                            : const CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                foregroundColor: Color.fromRGBO(
-                                                    0, 10, 56, 1),
-                                                child: Icon(Icons.person)),
-                                        title: Text(snapshot.data![index].name),
-                                        subtitle:
-                                            Text(snapshot.data![index].email),
-                                      ),
-                                    );
-                                  }));
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: ((context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ListTile(
+                                          shape: RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                                width: 2,
+                                                color: Colors.amberAccent),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          onTap: () {
+                                            //print(snapshot.data![index].id);
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (ctx) =>
+                                                        NewUserScreen(
+                                                          //email: snapshot.data![index].email ,
+                                                          name: snapshot
+                                                              .data![index].name,
+                                                          description: snapshot
+                                                              .data![index]
+                                                              .description,
+                                                          id: snapshot
+                                                              .data![index].id,
+                                                          profilepic: snapshot
+                                                              .data![index]
+                                                              .photoUrl,
+                                                          isFollowing: snapshot
+                                                              .data![index]
+                                                              .isFollowing,
+                                                        )));
+                                          },
+                                          tileColor: Colors.white,
+                                          leading: snapshot
+                                                      .data![index].photoUrl !=
+                                                  null
+                                              ? CircleAvatar(
+                                                  foregroundImage: NetworkImage(
+                                                      snapshot.data![index]
+                                                          .photoUrl!),
+                                                )
+                                              : const CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  foregroundColor: Color.fromRGBO(
+                                                      0, 10, 56, 1),
+                                                  child: Icon(Icons.person)),
+                                          title: Text(snapshot.data![index].name),
+                                        ),
+                                      );
+                                    })),
+                              );
                             }
                             return const Center(
                               child: Text("No Results Found"),

@@ -17,12 +17,11 @@ class Splash extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool seen = (prefs.getBool('seen') ?? false);
     //print(_seen);
-    
+
     if (seen) {
       _handleStartScreen();
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-
     } else {
       await prefs.setBool('seen', true);
       if (!mounted) return;
@@ -34,9 +33,8 @@ class Splash extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 4, 24, 40),
-      ),
-      
+          color: const Color.fromARGB(255, 4, 24, 40),
+          child: const Text("SPLASH SCREEN", style: TextStyle(color: Colors.white))),
     );
   }
 
@@ -47,14 +45,19 @@ class Splash extends State<SplashScreen> {
   }
 
   Future<void> _handleStartScreen() async {
-
     final prefs = await SharedPreferences.getInstance();
     //print(prefs.toString());
-   // print(prefs.getString('token'));
+    // print(prefs.getString('token'));
     if (!mounted) return;
-    if (prefs.getString('token')==null) {
+    if (prefs.getString('token') == null) {
       Navigator.popAndPushNamed(context, LoginScreen.routeName);
     } else {
+      // await Provider.of<UserProvider>(context, listen: false).getUserData();
+      // await Provider.of<UserProvider>(context, listen: false).getHeatMapData();
+      // await Provider.of<UserProvider>(context, listen: false).getCFData();
+      // await Provider.of<UserProvider>(context, listen: false).getGithubData();
+      // await Provider.of<UserProvider>(context, listen: false).getLeetCodeData();
+      //print("fetched eveything moving on");
       Navigator.popAndPushNamed(context, Home.routeName);
     }
   }

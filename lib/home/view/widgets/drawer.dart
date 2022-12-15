@@ -3,28 +3,32 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:programmerprofile/auth/controller/auth.dart';
+import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/contests/view/contest_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
 import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:programmerprofile/userSearch/view/search_page.dart';
 
-final ZoomDrawerController z = ZoomDrawerController();
+
 
 class DrawerTemplate extends StatefulWidget {
   final Widget body;
-  const DrawerTemplate({Key? key, required this.body}) : super(key: key);
-
+  final ZoomDrawerController z;
+  const DrawerTemplate({Key? key, required this.body, required this.z}) : super(key: key);
   @override
   DrawerTemplateState createState() => DrawerTemplateState();
+  
 }
 
 class DrawerTemplateState extends State<DrawerTemplate> {
   bool isLoading = false;
-
+  
   @override
   Widget build(BuildContext context) {
+    
     return ZoomDrawer(
-      controller: z,
+      controller: widget.z,
       borderRadius: 24,
       openCurve: Curves.fastOutSlowIn,
       slideWidth: MediaQuery.of(context).size.width * 0.65,
@@ -44,35 +48,60 @@ class DrawerTemplateState extends State<DrawerTemplate> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              TextButton.icon(
-                  onPressed: () async {
-                    Navigator.pushReplacementNamed(context, Home.routeName);
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.houseUser,
-                      color: Colors.white),
-                  label: const Text("Home")),
-              TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context,ContestPage.routeName);
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.trophy,
-                      color: Colors.white),
-                  label: const Text("Contests And Events")),
-              TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, ProfileScreen.routeName);
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.user,
-                      color: Colors.white),
-                  label: const Text("Profile")),
-              TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, SearchUserScreen.routeName);
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.search,
-                      color: Colors.white),
-                  label: const Text("Search Users"))
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton.icon(
+                    onPressed: () async {
+                      Navigator.pushReplacementNamed(context, Home.routeName);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.houseUser,
+                        color: Colors.white),
+                    label: const Text("Home")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, ContestPage.routeName);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.trophy,
+                        color: Colors.white),
+                    label: const Text("Contests And Events")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, ProfileScreen.routeName);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.user,
+                        color: Colors.white),
+                    label: const Text("Profile")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, SearchUserScreen.routeName);
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.search,
+                        color: Colors.white),
+                    label: const Text("Search Users")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 80,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Auth().logout();
+                        Navigator.pushReplacementNamed(
+                            context, LoginScreen.routeName);
+                      },
+                      child: const Text("Logout")),
+                ),
+              )
+              
             ],
           ),
         ),

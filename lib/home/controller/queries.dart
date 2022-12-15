@@ -75,15 +75,16 @@ class DashBoardQueries {
   static String cfGraphs() {
     return """ 
      query CodeforcesGraphs(\$input: UserIdInput!) {
-    codeforcesGraphs(input: \$input) {
+  codeforcesGraphs(input: \$input) {
     ratingGraph {
       ratings {
         contestId
         contestName
+        date
         handle
-        rank
-        oldRating
         newRating
+        oldRating
+        rank
       }
     }
     barGraph {

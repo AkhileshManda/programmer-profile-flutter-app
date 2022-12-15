@@ -235,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         children: [
                                           ExpansionPanel(
                                               backgroundColor:
-                                                  Styles.expansionColor,
+                                                  Colors.pink,
                                               headerBuilder: (context, isOpen) {
                                                 return const Padding(
                                                     padding: EdgeInsets.all(15),
@@ -312,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               isExpanded: expanded[0]),
                                           ExpansionPanel(
                                               backgroundColor:
-                                                  Styles.expansionColor,
+                                                  Colors.pink,
                                               headerBuilder: (context, isOpen) {
                                                 return const Padding(
                                                     padding: EdgeInsets.all(15),

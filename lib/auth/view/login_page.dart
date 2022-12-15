@@ -5,6 +5,7 @@ import 'package:programmerprofile/auth/controller/api.dart';
 import 'package:programmerprofile/auth/view/forgot_password_page.dart';
 import 'package:programmerprofile/auth/view/sign_up_page.dart';
 import 'package:programmerprofile/auth/view/widgets/custom_button.dart';
+import 'package:programmerprofile/home/controller/user_provider.dart';
 import 'package:programmerprofile/styles.dart';
 import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,6 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString("token", result.data!['signin']['token']);
       prefs.setString("id", result.data!['signin']['user']["id"]);
       if (!mounted) return;
+      UserProvider userProvider = UserProvider();
+      userProvider.getUserData();
+      userProvider.getHeatMapData();
+      userProvider.getCFData();
+      userProvider.getGithubData();
+      userProvider.getLeetCodeData();
       Navigator.pushReplacementNamed(context, Home.routeName);
     }
   }
