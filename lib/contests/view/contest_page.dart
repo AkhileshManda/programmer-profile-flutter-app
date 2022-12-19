@@ -125,6 +125,7 @@ class _ContestPageState extends State<ContestPage> {
                                                                       const EdgeInsets.all(
                                                                           8.0),
                                                                   child: contestCard(
+                                                                      href: snap.data![index][i].href,
                                                                       name: snap
                                                                           .data![index]
                                                                               [
@@ -161,6 +162,7 @@ class _ContestPageState extends State<ContestPage> {
                                                                       const EdgeInsets.all(
                                                                           8.0),
                                                                   child: contestCard(
+                                                                      href: snap.data![index][i].href,
                                                                       name: snap
                                                                           .data![index][
                                                                               i]
