@@ -315,9 +315,19 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                     ],
                                   );
                                 }
-                                return const Center(
-                                  child: Text("No data found"),
-                                );
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      LottieBuilder.asset("assets/images/not-found.json"),
+                                      const Text("User has not connected any of his accounts", style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25
+                                      ),textAlign: TextAlign.center,),
+                                    ],
+                                  )),
+                                ); 
                               },
                             ),
                           ]),
