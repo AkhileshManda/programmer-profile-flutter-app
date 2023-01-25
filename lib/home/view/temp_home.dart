@@ -103,7 +103,7 @@ class _HomeState extends State<Home>
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-
+                          // print("SNAP HOME"+snap.data.toString());
                           if (snap.hasData) {
                             User user = snap.data![0];
                             int numNotifications = snap.data![4] == null

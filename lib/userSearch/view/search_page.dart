@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:lottie/lottie.dart';
 import 'package:programmerprofile/userSearch/controller/apis.dart';
 import 'package:programmerprofile/userSearch/model/search_result.dart';
@@ -30,22 +31,22 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                   child: Column(
                     children: [
                       Row(
-                    children: [
-                      BackButton(
-                        color: Colors.white,
-                        onPressed: () {
-                          //Navigator.pushReplacementNamed(
-                          // context, Home.routeName);
-                          Navigator.pop(context);
-                        },
-                      ),
-                      const Text("Search Users",
-                          style: TextStyle(
+                        children: [
+                          BackButton(
                             color: Colors.white,
-                            fontSize: 20,
-                          ))
-                    ],
-                  ),
+                            onPressed: () {
+                              //Navigator.pushReplacementNamed(
+                              // context, Home.routeName);
+                              Navigator.pop(context);
+                            },
+                          ),
+                          const Text("Search Users",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ))
+                        ],
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
@@ -87,52 +88,86 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                     itemBuilder: ((context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: ListTile(
-                                          shape: RoundedRectangleBorder(
-                                            side: const BorderSide(
-                                                width: 2,
-                                                color: Colors.amberAccent),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                        child: GlassmorphicContainer(
+                                          width: double.infinity,
+                                          height: 69,
+                                          borderRadius: 20,
+                                          blur: 20,
+                                          alignment: Alignment.bottomCenter,
+                                          border: 2,
+                                          linearGradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                const Color(0xFFffffff)
+                                                    .withOpacity(0.1),
+                                                const Color(0xFFFFFFFF)
+                                                    .withOpacity(0.05),
+                                              ],
+                                              stops: const[
+                                                0.1,
+                                                1,
+                                              ]),
+                                          borderGradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              const Color(0xFFffffff)
+                                                  .withOpacity(0.5),
+                                              const Color((0xFFFFFFFF))
+                                                  .withOpacity(0.5),
+                                            ],
                                           ),
-                                          onTap: () {
-                                            //print(snapshot.data![index].id);
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (ctx) =>
-                                                        NewUserScreen(
-                                                          //email: snapshot.data![index].email ,
-                                                          name: snapshot
-                                                              .data![index].name,
-                                                          description: snapshot
+                                          child: Center(
+                                            child: ListTile(
+                                              onTap: () {
+                                                //print(snapshot.data![index].id);
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (ctx) =>
+                                                            NewUserScreen(
+                                                              //email: snapshot.data![index].email ,
+                                                              name: snapshot
+                                                                  .data![index]
+                                                                  .name,
+                                                              description: snapshot
+                                                                  .data![index]
+                                                                  .description,
+                                                              id: snapshot
+                                                                  .data![index]
+                                                                  .id,
+                                                              profilepic: snapshot
+                                                                  .data![index]
+                                                                  .photoUrl,
+                                                              isFollowing: snapshot
+                                                                  .data![index]
+                                                                  .isFollowing,
+                                                            )));
+                                              },
+                                              //tileColor: Colors.white,
+                                              leading: snapshot.data![index]
+                                                          .photoUrl !=
+                                                      null
+                                                  ? CircleAvatar(
+                                                      foregroundImage:
+                                                          NetworkImage(snapshot
                                                               .data![index]
-                                                              .description,
-                                                          id: snapshot
-                                                              .data![index].id,
-                                                          profilepic: snapshot
-                                                              .data![index]
-                                                              .photoUrl,
-                                                          isFollowing: snapshot
-                                                              .data![index]
-                                                              .isFollowing,
-                                                        )));
-                                          },
-                                          tileColor: Colors.white,
-                                          leading: snapshot
-                                                      .data![index].photoUrl !=
-                                                  null
-                                              ? CircleAvatar(
-                                                  foregroundImage: NetworkImage(
-                                                      snapshot.data![index]
-                                                          .photoUrl!),
-                                                )
-                                              : const CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  foregroundColor: Color.fromRGBO(
-                                                      0, 10, 56, 1),
-                                                  child: Icon(Icons.person)),
-                                          title: Text(snapshot.data![index].name),
+                                                              .photoUrl!),
+                                                    )
+                                                  : const CircleAvatar(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      foregroundColor:
+                                                          Color.fromRGBO(
+                                                              0, 10, 56, 1),
+                                                      child: Icon(Icons.person)),
+                                              title: Text(
+                                                  snapshot.data![index].name,
+                                                   style: const TextStyle(color: Colors.white, fontSize: 18),
+                                                  ),
+                                            ),
+                                          ),
                                         ),
                                       );
                                     })),

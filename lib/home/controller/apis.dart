@@ -41,7 +41,7 @@ class APIs {
     ));
     //print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-      //print("CodeForces");
+      // print("CodeForces");
       if (result.exception!.graphqlErrors.isEmpty) {
         // print("Internet is not found");
       } else {
@@ -49,7 +49,7 @@ class APIs {
         return null;
       }
     } else {
-      // print("Success");
+      // print("CF Success");
 
       for (var x in result.data!["codeforcesGraphs"]["barGraph"]
           ["problemRatingGraph"]) {
@@ -232,8 +232,8 @@ class APIs {
         // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      //print("USER");
-      //print(result.data);
+      // print("USER");
+      // print(result.data);
       // final prefs = await SharedPreferences.getInstance();
       
       return User(
@@ -270,9 +270,9 @@ class APIs {
       // print("HEATMAP");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
+        // print("Internet is not found");
       } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
       // print("HeatMap Success");
@@ -284,7 +284,7 @@ class APIs {
         DateTime date = DateFormat("yyyy-MM-dd").parse(activity["date"]);
         data.putIfAbsent(date, () => contributionSum);
       }
-      //print(data.toString());
+      // print(data.toString());
       return data;
     }
     return null;
@@ -308,7 +308,8 @@ class APIs {
         //print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      //print(result.data);
+      // print("USER");
+      // print(result.data);
       return User(
         username: result.data!["getUser"]["name"],
         leetcodeUsername: result.data!["getUser"]["leetcodeUsername"],
@@ -343,19 +344,24 @@ class APIs {
     ));
     // print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-       //print("LEETCODE CHARTS");
+      //  print("LEETCODE CHARTS");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("LEETCODE CHARTS");
-        //print("Internet is not found");
+        // print("LEETCODE CHARTS");
+        // print("Internet is not found");
       } else {
-        //print("LEETCODE CHARTS");
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        // print("LEETCODE CHARTS");
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     }else{
-      //print("LC in");
+      // print("LC in");
+      // print(result.data);
+      if(result.data!["leetcodeGraphs"]==null){
+        // print("Returning null");
+        return null;
+      }
       List<LCContest> contestHistory = [];
-      for(var x in result.data!["leetcodeGraphs"]["contestHistory"]){
+      for(var x in result.data!["leetcodeGraphs"]!["contestHistory"]){
         //print(x["contest"]["title"]);
         contestHistory.add(
           LCContest(
@@ -368,7 +374,7 @@ class APIs {
           )
         );
       }
-      //print("FINE TILL HERE");
+      // print("FINE TILL HERE");
       data.putIfAbsent("contestHistory", () => contestHistory);
       //print(result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"]);
       data.putIfAbsent("questionsStats", () => LCStats(
@@ -417,8 +423,6 @@ class APIs {
       }
 
       data.putIfAbsent("languageStats", ()=>languageStats);
-      //print(data["languageStats"]);
-
       return data;
     }
     return null;
