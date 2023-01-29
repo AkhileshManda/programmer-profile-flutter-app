@@ -85,322 +85,323 @@ class _HomeState extends State<Home>
   Widget build(BuildContext context) {
     super.build(context);
     return DrawerTemplate(
-       z: z,
+        z: z,
         body: Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
             body: SafeArea(
                 child: Stack(children: [
               LottieBuilder.asset("assets/animations/bg-1.json"),
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                    //shrinkWrap: true,
-                    children: [
-                      FutureBuilder<List<dynamic>>(
-                        future: _getData,
-                        builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
-                          if (snap.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                          // print("SNAP HOME"+snap.data.toString());
-                          if (snap.hasData) {
-                            User user = snap.data![0];
-                            int numNotifications = snap.data![4] == null
-                                ? 0
-                                : snap.data![4]["unseen-notifications"];
-                            //print(numNotifications);
-                            return Column(
-                              children: [
-                                snap.data![0] != null
-                                    ? (Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          children: [
-                                            Row(children: [
+              FutureBuilder<List<dynamic>>(
+                future: _getData,
+                builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
+                  // if (snap.connectionState == ConnectionState.waiting) {
+                  //   return Center(
+                  //       child: LottieBuilder.asset(
+                  //           "assets/images/loading_spinner.json"));
+                  // }
+                  // print("SNAP HOME"+snap.data.toString());
+                  if (snap.hasData) {
+                    User user = snap.data![0];
+                    int numNotifications = snap.data![4] == null
+                        ? 0
+                        : snap.data![4]["unseen-notifications"];
+                    //print(numNotifications);
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          snap.data![0] != null
+                              ? (Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      Row(children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              //print("Pressed");
+                                              z.open!();
+                                            },
+                                            icon: const Icon(Icons.menu,
+                                                color: Colors.white)),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          foregroundColor:
+                                              const Color.fromRGBO(
+                                                  0, 10, 56, 1),
+                                          child: user.profilePicture ==
+                                                  null
+                                              ? const Icon(Icons.person)
+                                              : Container(
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(user
+                                                              .profilePicture!)),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                                  .all(
+                                                              Radius.circular(
+                                                                  200))),
+                                                ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: Text(user.username!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              )),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Stack(
+                                            children: <Widget>[
                                               IconButton(
                                                   onPressed: () {
-                                                    //print("Pressed");
-                                                    z.open!();
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (ctx) =>
+                                                                NotificationScreen(
+                                                                    notifcations:
+                                                                        snap.data![4]["notifications"])));
                                                   },
-                                                  icon: const Icon(Icons.menu,
-                                                      color: Colors.white)),
-                                              CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                foregroundColor:
-                                                    const Color.fromRGBO(
-                                                        0, 10, 56, 1),
-                                                child: user.profilePicture ==
-                                                        null
-                                                    ? const Icon(Icons.person)
-                                                    : Container(
-                                                        decoration: BoxDecoration(
-                                                            image: DecorationImage(
-                                                                image: NetworkImage(user
-                                                                    .profilePicture!)),
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius.circular(
-                                                                        200))),
+                                                  icon: const Icon(
+                                                    Icons.notifications,
+                                                    color: Colors.white,
+                                                  )),
+                                              numNotifications > 0
+                                                  ? Positioned(
+                                                      right: 0,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(1),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Colors.red,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      6),
+                                                        ),
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                          minWidth: 12,
+                                                          minHeight: 12,
+                                                        ),
+                                                        child: Text(
+                                                          numNotifications
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors
+                                                                .white,
+                                                            fontSize: 8,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                        ),
                                                       ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Text(user.username!,
-                                                    style: const TextStyle(
+                                                    )
+                                                  : const SizedBox()
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              //color: Color.fromARGB(255, 125, 10, 48),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(
+                                                          20)),
+                                              border: Border.all(
+                                                  color: Colors.grey)),
+                                          //height: 200,
+                                          child: Column(
+                                            children: [
+                                              Markdown(
+                                                styleSheet:
+                                                    MarkdownStyleSheet(
+                                                  p: const TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 20,
-                                                    )),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {},
-                                                icon: Stack(
-                                                  children: <Widget>[
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (ctx) =>
-                                                                      NotificationScreen(
-                                                                          notifcations:
-                                                                              snap.data![4]["notifications"])));
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.notifications,
-                                                          color: Colors.white,
-                                                        )),
-                                                    numNotifications > 0
-                                                        ? Positioned(
-                                                            right: 0,
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(1),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color:
-                                                                    Colors.red,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            6),
-                                                              ),
-                                                              constraints:
-                                                                  const BoxConstraints(
-                                                                minWidth: 12,
-                                                                minHeight: 12,
-                                                              ),
-                                                              child: Text(
-                                                                numNotifications
-                                                                    .toString(),
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 8,
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : const SizedBox()
+                                                      fontSize: 16),
+                                                ),
+                                                shrinkWrap: true,
+                                                controller: controller,
+                                                selectable: true,
+                                                data: user.description ==
+                                                        null
+                                                    ? "Add profile description in markdown"
+                                                    : user.description!,
+                                                extensionSet:
+                                                    md.ExtensionSet(
+                                                  md
+                                                      .ExtensionSet
+                                                      .gitHubFlavored
+                                                      .blockSyntaxes,
+                                                  [
+                                                    md.EmojiSyntax(),
+                                                    ...md
+                                                        .ExtensionSet
+                                                        .gitHubFlavored
+                                                        .inlineSyntaxes
                                                   ],
                                                 ),
-                                              )
-                                            ]),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    //color: Color.fromARGB(255, 125, 10, 48),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                20)),
-                                                    border: Border.all(
-                                                        color: Colors.grey)),
-                                                //height: 200,
-                                                child: Column(
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .end,
                                                   children: [
-                                                    Markdown(
-                                                      styleSheet:
-                                                          MarkdownStyleSheet(
-                                                        p: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 16),
-                                                      ),
-                                                      shrinkWrap: true,
-                                                      controller: controller,
-                                                      selectable: true,
-                                                      data: user.description ==
-                                                              null
-                                                          ? "Add profile description in markdown"
-                                                          : user.description!,
-                                                      extensionSet:
-                                                          md.ExtensionSet(
-                                                        md
-                                                            .ExtensionSet
-                                                            .gitHubFlavored
-                                                            .blockSyntaxes,
-                                                        [
-                                                          md.EmojiSyntax(),
-                                                          ...md
-                                                              .ExtensionSet
-                                                              .gitHubFlavored
-                                                              .inlineSyntaxes
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (ctx) =>
-                                                                              const EditorScreen()));
-                                                            },
-                                                            icon: const Icon(
-                                                                Icons.edit,
-                                                                color: Colors
-                                                                    .white),
-                                                          )
-                                                        ],
-                                                      ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (ctx) =>
+                                                                        const EditorScreen()));
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.edit,
+                                                          color: Colors
+                                                              .white),
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                            ),
-                                          ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ))
-                                    : (const Text("Failed Lmao")),
-                                snap.data![1] != null
-                                    ? (HeatMap(
-                                        defaultColor: Colors.white,
-                                        datasets: snap.data![1],
-                                        //datasets: data,
-                                        colorMode: ColorMode.opacity,
-                                        showText: false,
-                                        scrollable: true,
-                                        colorsets: const {
-                                          5: Colors.pink,
-                                          3: Color.fromARGB(255, 199, 4, 137),
-                                          1: Color.fromARGB(255, 121, 0, 97),
-                                        },
-                                        onClick: (value) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "${snap.data![1][value].toString()}+ contributions")));
-                                        },
-                                        textColor: Colors.white,
-                                        //margin: EdgeInsets.all(8.0),
-                                        showColorTip: false,
-                                      ))
-                                    : (const Text("Could'nt load map")),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 8.0),
-                                  child: Container(
-                                    height: 60,
-                                    decoration: const BoxDecoration(
-                                        color: Colors.transparent),
-                                    child: ListView(
-                                      physics: const BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      children: [
-                                        navTile(
-                                            title: "Codeforces",
-                                            onPressed: () {
-                                              setState(() {
-                                                codeforcesOn = true;
-                                                githubOn = false;
-                                                leetcodeOn = false;
-                                              });
-                                            }),
-                                        navTile(
-                                            title: "GitHub",
-                                            onPressed: () {
-                                              setState(() {
-                                                githubOn = true;
-                                                codeforcesOn = false;
-                                                leetcodeOn = false;
-                                              });
-                                            }),
-                                        navTile(
-                                            title: "Leetcode",
-                                            onPressed: () {
-                                              setState(() {
-                                                githubOn = false;
-                                                codeforcesOn = false;
-                                                leetcodeOn = true;
-                                              });
-                                            })
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                snap.data![2] != null && codeforcesOn
-                                    ? (CodeforcesGraphs(
-                                        barGraphData: snap.data![2]["bar"],
-                                        donutGraphData: snap.data![2]["donut"],
-                                        ratingGraphData: snap.data![2]
-                                            ["rating"],
-                                      ))
-                                    : (snap.data![2] == null
-                                        ? const Text(
-                                            "Couldn't Codeforces Load Graphs")
-                                        : const SizedBox()),
-                                snap.data![3] != null && githubOn
-                                    ? (GitHubCharts(
-                                        data: snap.data![3]["details"],
-                                        languagedata: snap.data![3]
-                                            ["languageData"],
-                                      ))
-                                    : (snap.data![3] == null && githubOn == true
-                                        ? const Text(
-                                            "Couldn't Load Github Graphs")
-                                        : const SizedBox()),
-                                snap.data![5] != null && leetcodeOn
-                                    ? LCTagsGraph(
-                                        tags: snap.data![5]["tagDetails"],
-                                        contests: snap.data![5]
-                                            ["contestHistory"],
-                                        languagedata: snap.data![5]
-                                            ["languageStats"],
-                                      )
-                                    : (snap.data![5] == null
-                                        ? const Text(
-                                            "Couldn't Load Leetcode Graphs")
-                                        : const SizedBox())
-                              ],
-                            );
-                          }
-                          return const Center(
-                            child: Text("No data found"),
-                          );
-                        },
+                                ))
+                              : (const Text("Failed Lmao")),
+                          snap.data![1] != null
+                              ? (HeatMap(
+                                  defaultColor: Colors.white,
+                                  datasets: snap.data![1],
+                                  //datasets: data,
+                                  colorMode: ColorMode.opacity,
+                                  showText: false,
+                                  scrollable: true,
+                                  colorsets: const {
+                                    5: Colors.pink,
+                                    3: Color.fromARGB(255, 199, 4, 137),
+                                    1: Color.fromARGB(255, 121, 0, 97),
+                                  },
+                                  onClick: (value) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                            content: Text(
+                                                "${snap.data![1][value].toString()}+ contributions")));
+                                  },
+                                  textColor: Colors.white,
+                                  //margin: EdgeInsets.all(8.0),
+                                  showColorTip: false,
+                                ))
+                              : (const Text("Could'nt load map")),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0),
+                            child: Container(
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                  color: Colors.transparent),
+                              child: ListView(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  navTile(
+                                      title: "Codeforces",
+                                      onPressed: () {
+                                        setState(() {
+                                          codeforcesOn = true;
+                                          githubOn = false;
+                                          leetcodeOn = false;
+                                        });
+                                      }),
+                                  navTile(
+                                      title: "GitHub",
+                                      onPressed: () {
+                                        setState(() {
+                                          githubOn = true;
+                                          codeforcesOn = false;
+                                          leetcodeOn = false;
+                                        });
+                                      }),
+                                  navTile(
+                                      title: "Leetcode",
+                                      onPressed: () {
+                                        setState(() {
+                                          githubOn = false;
+                                          codeforcesOn = false;
+                                          leetcodeOn = true;
+                                        });
+                                      })
+                                ],
+                              ),
+                            ),
+                          ),
+                          snap.data![2] != null && codeforcesOn
+                              ? (CodeforcesGraphs(
+                                  barGraphData: snap.data![2]["bar"],
+                                  donutGraphData: snap.data![2]["donut"],
+                                  ratingGraphData: snap.data![2]
+                                      ["rating"],
+                                ))
+                              : (snap.data![2] == null
+                                  ? const Text(
+                                      "Couldn't Codeforces Load Graphs")
+                                  : const SizedBox()),
+                          snap.data![3] != null && githubOn
+                              ? (GitHubCharts(
+                                  data: snap.data![3]["details"],
+                                  languagedata: snap.data![3]
+                                      ["languageData"],
+                                ))
+                              : (snap.data![3] == null && githubOn == true
+                                  ? const Text(
+                                      "Couldn't Load Github Graphs")
+                                  : const SizedBox()),
+                          snap.data![5] != null && leetcodeOn
+                              ? LCTagsGraph(
+                                  tags: snap.data![5]["tagDetails"],
+                                  contests: snap.data![5]
+                                      ["contestHistory"],
+                                  languagedata: snap.data![5]
+                                      ["languageStats"],
+                                )
+                              : (snap.data![5] == null
+                                  ? const Text(
+                                      "Couldn't Load Leetcode Graphs")
+                                  : const SizedBox())
+                        ],
                       ),
-                    ]),
+                    );
+                  } 
+                  return Center(
+                      // child: snap.connectionState == ConnectionState.waiting?LottieBuilder.asset(
+                      //       "assets/images/loading_spinner.json"): LottieBuilder.asset(
+                      //       "assets/images/search-not-fount.json") ,
+                      child: LottieBuilder.asset(
+                            "assets/images/loading_spinner.json")
+                    );
+                  }
+                ,
               ),
             ]))));
   }

@@ -392,7 +392,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             )));
                   }
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: LottieBuilder.asset(
+                                    "assets/images/loading_spinner.json"));
                 })
           ]),
         ));

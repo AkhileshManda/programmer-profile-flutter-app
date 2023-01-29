@@ -76,7 +76,8 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                             //print(controller.text);
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return LottieBuilder.asset(
+                            "assets/images/loading_spinner.json");
                             }
                             //print(snapshot.data);
                             if (snapshot.hasData) {
@@ -122,7 +123,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                             child: ListTile(
                                               onTap: () {
                                                 //print(snapshot.data![index].id);
-                                                Navigator.pushReplacement(
+                                                Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (ctx) =>

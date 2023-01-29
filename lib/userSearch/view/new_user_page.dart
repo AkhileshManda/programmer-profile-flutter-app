@@ -8,7 +8,7 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:programmerprofile/userSearch/controller/apis.dart';
 import '../../auth/model/user.dart';
 import '../../home/view/widgets/codeforces_graphs.dart';
-import '../../home/view/widgets/drawer.dart';
+// import '../../home/view/widgets/drawer.dart';
 import '../../home/view/widgets/github_charts.dart';
 import '../../home/view/widgets/lc_tags_chart.dart';
 
@@ -90,9 +90,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
   final ZoomDrawerController z = ZoomDrawerController();
   @override
   Widget build(BuildContext context) {
-    return DrawerTemplate(
-        z: z,
-        body: Scaffold(
+    return Scaffold(
             backgroundColor: const Color.fromRGBO(0, 10, 56, 1),
             body: SafeArea(
                 child: Stack(children: [
@@ -109,9 +107,9 @@ class _NewUserScreenState extends State<NewUserScreen> {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      z.toggle!();
+                                      Navigator.pop(context);
                                     },
-                                    icon: const Icon(Icons.menu,
+                                    icon: const Icon(Icons.arrow_back_ios,
                                         color: Colors.white)),
                                 CircleAvatar(
                                   backgroundColor: Colors.white,
@@ -333,6 +331,6 @@ class _NewUserScreenState extends State<NewUserScreen> {
                           ]),
                         ),
                       ]))
-            ]))));
+            ])));
   }
 }
