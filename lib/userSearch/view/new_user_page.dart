@@ -221,10 +221,11 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                                     255, 121, 0, 97),
                                               },
                                               onClick: (value) {
+                                                // print("LOSSS"+snap.data![0][value].toString());
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(SnackBar(
                                                         content: Text(
-                                                            "${snap.data![1][value].toString()}+ contributions")));
+                                                            "${snap.data![0][value].toString()}+ contributions")));
                                               },
                                               textColor: Colors.white,
                                               //margin: EdgeInsets.all(8.0),

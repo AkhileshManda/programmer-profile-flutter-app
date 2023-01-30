@@ -47,17 +47,17 @@ class DrawerTemplateState extends State<DrawerTemplate> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton.icon(
-                    onPressed: (){
-                      // print("CLOSE");
-                      widget.z.close;
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.houseUser,
-                        color: Colors.white),
-                    label: const Text("Home")),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: TextButton.icon(
+              //       onPressed: (){
+              //         // print("CLOSE");
+              //         widget.z.close;
+              //       },
+              //       icon: const FaIcon(FontAwesomeIcons.houseUser,
+              //           color: Colors.white),
+              //       label: const Text("Home")),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton.icon(

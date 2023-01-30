@@ -26,160 +26,161 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
             body: SafeArea(
                 child: Stack(children: [
               LottieBuilder.asset("assets/animations/bg-1.json"),
-              SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
+              Column(
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          BackButton(
-                            color: Colors.white,
-                            onPressed: () {
-                              //Navigator.pushReplacementNamed(
-                              // context, Home.routeName);
-                              Navigator.pop(context);
-                            },
-                          ),
-                          const Text("Search Users",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ))
-                        ],
+                      BackButton(
+                        color: Colors.white,
+                        onPressed: () {
+                          //Navigator.pushReplacementNamed(
+                          // context, Home.routeName);
+                          Navigator.pop(context);
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: controller,
-                          //onChanged: (value) => _runFilter(value),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText: 'Search',
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {
-                                //print(controller.text);
-                                setState(() {});
-                              },
-                            ),
-                          ),
+                      const Text("Search Users",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: controller,
+                      //onChanged: (value) => _runFilter(value),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Search',
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            //print(controller.text);
+                            setState(() {});
+                          },
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FutureBuilder<List<SearchResult>?>(
-                          future: OtherUserAPIs()
-                              .searchResult(searchString: controller.text),
-                          builder: ((context, snapshot) {
-                            //print(controller.text);
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return LottieBuilder.asset(
-                            "assets/images/loading_spinner.json");
-                            }
-                            //print(snapshot.data);
-                            if (snapshot.hasData) {
-                              return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: ((context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GlassmorphicContainer(
-                                          width: double.infinity,
-                                          height: 69,
-                                          borderRadius: 20,
-                                          blur: 20,
-                                          alignment: Alignment.bottomCenter,
-                                          border: 2,
-                                          linearGradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                const Color(0xFFffffff)
-                                                    .withOpacity(0.1),
-                                                const Color(0xFFFFFFFF)
-                                                    .withOpacity(0.05),
-                                              ],
-                                              stops: const[
-                                                0.1,
-                                                1,
-                                              ]),
-                                          borderGradient: LinearGradient(
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: FutureBuilder<List<SearchResult>?>(
+                        future: OtherUserAPIs()
+                            .searchResult(searchString: controller.text),
+                        builder: ((context, snapshot) {
+                          //print(controller.text);
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return LottieBuilder.asset(
+                          "assets/images/loading_spinner.json");
+                          }
+                          //print(snapshot.data);
+                          if (snapshot.hasData) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView.builder(
+                                  // shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: ((context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GlassmorphicContainer(
+                                        width: double.infinity,
+                                        height: 69,
+                                        borderRadius: 20,
+                                        blur: 20,
+                                        alignment: Alignment.bottomCenter,
+                                        border: 2,
+                                        linearGradient: LinearGradient(
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                             colors: [
                                               const Color(0xFFffffff)
-                                                  .withOpacity(0.5),
-                                              const Color((0xFFFFFFFF))
-                                                  .withOpacity(0.5),
+                                                  .withOpacity(0.1),
+                                              const Color(0xFFFFFFFF)
+                                                  .withOpacity(0.05),
                                             ],
-                                          ),
-                                          child: Center(
-                                            child: ListTile(
-                                              onTap: () {
-                                                //print(snapshot.data![index].id);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (ctx) =>
-                                                            NewUserScreen(
-                                                              //email: snapshot.data![index].email ,
-                                                              name: snapshot
-                                                                  .data![index]
-                                                                  .name,
-                                                              description: snapshot
-                                                                  .data![index]
-                                                                  .description,
-                                                              id: snapshot
-                                                                  .data![index]
-                                                                  .id,
-                                                              profilepic: snapshot
-                                                                  .data![index]
-                                                                  .photoUrl,
-                                                              isFollowing: snapshot
-                                                                  .data![index]
-                                                                  .isFollowing,
-                                                            )));
-                                              },
-                                              //tileColor: Colors.white,
-                                              leading: snapshot.data![index]
-                                                          .photoUrl !=
-                                                      null
-                                                  ? CircleAvatar(
-                                                      foregroundImage:
-                                                          NetworkImage(snapshot
-                                                              .data![index]
-                                                              .photoUrl!),
-                                                    )
-                                                  : const CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      foregroundColor:
-                                                          Color.fromRGBO(
-                                                              0, 10, 56, 1),
-                                                      child: Icon(Icons.person)),
-                                              title: Text(
-                                                  snapshot.data![index].name,
-                                                   style: const TextStyle(color: Colors.white, fontSize: 18),
-                                                  ),
-                                            ),
+                                            stops: const[
+                                              0.1,
+                                              1,
+                                            ]),
+                                        borderGradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            const Color(0xFFffffff)
+                                                .withOpacity(0.5),
+                                            const Color((0xFFFFFFFF))
+                                                .withOpacity(0.5),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: ListTile(
+                                            onTap: () {
+                                              //print(snapshot.data![index].id);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (ctx) =>
+                                                          NewUserScreen(
+                                                            //email: snapshot.data![index].email ,
+                                                            name: snapshot
+                                                                .data![index]
+                                                                .name,
+                                                            description: snapshot
+                                                                .data![index]
+                                                                .description,
+                                                            id: snapshot
+                                                                .data![index]
+                                                                .id,
+                                                            profilepic: snapshot
+                                                                .data![index]
+                                                                .photoUrl,
+                                                            isFollowing: snapshot
+                                                                .data![index]
+                                                                .isFollowing,
+                                                          )));
+                                            },
+                                            //tileColor: Colors.white,
+                                            leading: snapshot.data![index]
+                                                        .photoUrl !=
+                                                    null
+                                                ? CircleAvatar(
+                                                    foregroundImage:
+                                                        NetworkImage(snapshot
+                                                            .data![index]
+                                                            .photoUrl!),
+                                                  )
+                                                : const CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    foregroundColor:
+                                                        Color.fromRGBO(
+                                                            0, 10, 56, 1),
+                                                    child: Icon(Icons.person)),
+                                            title: Text(
+                                                snapshot.data![index].name,
+                                                 style: const TextStyle(color: Colors.white, fontSize: 18),
+                                                ),
                                           ),
                                         ),
-                                      );
-                                    })),
-                              );
-                            }
-                            return const Center(
-                              child: Text("No Results Found"),
+                                      ),
+                                    );
+                                  })),
                             );
-                          }))
-                    ],
-                  ))
+                          }
+                          return const Center(
+                            child: Text("No Results Found"),
+                          );
+                        })),
+                  )
+                ],
+              )
             ]))));
   }
 }
