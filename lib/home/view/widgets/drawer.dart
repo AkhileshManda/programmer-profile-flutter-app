@@ -7,7 +7,7 @@ import 'package:programmerprofile/auth/controller/auth.dart';
 import 'package:programmerprofile/auth/view/login_page.dart';
 import 'package:programmerprofile/contests/view/contest_page.dart';
 import 'package:programmerprofile/home/view/profile_page.dart';
-import 'package:programmerprofile/home/view/temp_home.dart';
+// import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:programmerprofile/userSearch/view/search_page.dart';
 
 
@@ -26,7 +26,6 @@ class DrawerTemplateState extends State<DrawerTemplate> {
   
   @override
   Widget build(BuildContext context) {
-    
     return ZoomDrawer(
       controller: widget.z,
       borderRadius: 24,
@@ -51,8 +50,9 @@ class DrawerTemplateState extends State<DrawerTemplate> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextButton.icon(
-                    onPressed: () async {
-                      Navigator.pushReplacementNamed(context, Home.routeName);
+                    onPressed: (){
+                      // print("CLOSE");
+                      widget.z.close;
                     },
                     icon: const FaIcon(FontAwesomeIcons.houseUser,
                         color: Colors.white),

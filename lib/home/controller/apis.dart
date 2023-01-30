@@ -18,6 +18,7 @@ import '../model/lc_tags_model.dart';
 class APIs {
   //USER
   Future<Map<String, List<dynamic>>?> getCFGraphData() async {
+    // print("Called");
     Map<String, List<dynamic>>? data = {};
     List<CFDonutModel> tempdonutGraphData = [];
     List<CFBarModel> tempbarGraphData = [];
@@ -50,6 +51,10 @@ class APIs {
       }
     } else {
       // print("CF Success");
+      // print(result.data);
+      if(result.data!["codeforcesGraphs"] == null){
+        return null;
+      }
 
       for (var x in result.data!["codeforcesGraphs"]["barGraph"]
           ["problemRatingGraph"]) {
@@ -126,7 +131,11 @@ class APIs {
       }
     } else {
       // print("Github success");
-
+      // print(result.data);
+      if(result.data!["githubGraphs"]==null){
+        // print("Returning null");
+        return null;
+      }
       details.putIfAbsent(
           "currentStreakLength",
           () => result.data!["githubGraphs"]["streakGraph"]
@@ -276,16 +285,20 @@ class APIs {
       }
     } else {
       // print("HeatMap Success");
+      int flag = 0;
       for (var activity in result.data!["contributionGraph"]["contributions"]) {
         int contributionSum = activity["githubContributions"] +
             activity["codeforcesContributions"] +
             activity["leetcodeContributions"];
         //print(activity["date"]+" "+contributionSum.toString() );
+        if(contributionSum != 0){
+          flag = 1;
+        }
         DateTime date = DateFormat("yyyy-MM-dd").parse(activity["date"]);
         data.putIfAbsent(date, () => contributionSum);
       }
-      // print(data.toString());
-      return data;
+      
+      return flag == 1? data : null;
     }
     return null;
   }
