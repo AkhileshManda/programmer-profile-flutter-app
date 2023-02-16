@@ -33,14 +33,14 @@ An application to help coders keep track of their coding activity and growth acr
      <td>New Users Screen</td>
   </tr>
   <tr>
-    <td><img src="screenshots/Programmer-Profile-Dashboard-Heatmap.PNG" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745125.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-Heatmap.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-LeetCodeAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-CFAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-GitHubAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Notification.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-ProfileScreen.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-ContestsAndEvents.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-SearchUserScreen.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-NewUserScreen.PNG"></td>
   </tr>
  </table>
