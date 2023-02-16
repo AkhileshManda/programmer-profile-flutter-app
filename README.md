@@ -20,3 +20,27 @@ An application to help coders keep track of their coding activity and growth acr
 - Lottie Animations
 
 ## Screenshots
+<table>
+  <tr>
+     <td>Dashboard Heatmap</td>
+     <td>Leetcode Analysis</td>
+     <td>Codeforces Analysis</td>
+     <td>GitHub Analysis</td>
+     <td>Notification Screen</td>
+     <td>Profile Screen</td>
+     <td>Contest and Events Screen</td>
+     <td>Search Users Screen</td>
+     <td>New Users Screen</td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Programmer-Profile-Dashboard-Heatmap.PNG" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745125.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+  </tr>
+ </table>
