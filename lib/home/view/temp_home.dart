@@ -37,11 +37,9 @@ class _HomeState extends State<Home>
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    // apis.getUser().then((value) => setState(() {
-    //       user = value;
-    //     }));
+  void didChangeDependencies() {
+    print("did change");
+    super.didChangeDependencies();
     _getData = Future.wait([
       apis.getUser(),
       apis.getHeatMapData(),
@@ -50,20 +48,6 @@ class _HomeState extends State<Home>
       NotificationAPIs().getNotifications(),
       apis.getLeetCodeData()
     ]);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-     _getData = Future.wait([
-      apis.getUser(),
-      apis.getHeatMapData(),
-      apis.getCFGraphData(),
-      apis.getGithubData(),
-      NotificationAPIs().getNotifications(),
-      apis.getLeetCodeData()
-    ]);
-    
   }
 
   Widget navTile(
@@ -127,15 +111,8 @@ class _HomeState extends State<Home>
                 child: FutureBuilder<List<dynamic>>(
                   future: _getData,
                   builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
-                    // print("running builder");
-                    // if (snap.connectionState == ConnectionState.waiting) {
-                    //   return Center(
-                    //       child: LottieBuilder.asset(
-                    //           "assets/images/loading_spinner.json"));
-                    // }
-                    // print("SNAP HOME"+snap.data.toString());
                     if (snap.hasData) {
-                      // print(snap.data![1]);
+                      print(snap.data![5]);
                       User user = snap.data![0];
                       int numNotifications = snap.data![4] == null
                           ? 0
@@ -471,7 +448,10 @@ class _HomeState extends State<Home>
                                                               context,
                                                               MaterialPageRoute(
                                                                   builder: (ctx) =>
-                                                                      const EditorScreen()));
+                                                                      EditorScreen(
+                                                                        initialData:
+                                                                            user.description!,
+                                                                      )));
                                                         },
                                                         icon: const Icon(
                                                             Icons.edit,
@@ -581,8 +561,7 @@ class _HomeState extends State<Home>
                                         ["languageStats"],
                                   )
                                 : (snap.data![5] == null
-                                    ? const Text(
-                                        "Couldn't Load Leetcode Graphs")
+                                    ? const NotFound()
                                     : const SizedBox())
                           ],
                         ),
@@ -615,12 +594,10 @@ class NotFound extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LottieBuilder.asset(
-              "assets/images/not-found.json"),
+          LottieBuilder.asset("assets/images/not-found.json"),
           const Text(
             "No accounts have been connected",
-            style: TextStyle(
-                color: Colors.white, fontSize: 25),
+            style: TextStyle(color: Colors.white, fontSize: 25),
             textAlign: TextAlign.center,
           ),
           const SizedBox(
@@ -628,8 +605,7 @@ class NotFound extends StatelessWidget {
           ),
           const Text(
             "Already connected accounts? Pull to refresh",
-            style: TextStyle(
-                color: Colors.white, fontSize: 15),
+            style: TextStyle(color: Colors.white, fontSize: 15),
             textAlign: TextAlign.center,
           ),
         ],

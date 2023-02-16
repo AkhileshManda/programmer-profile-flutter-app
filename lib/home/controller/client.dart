@@ -5,7 +5,7 @@ class EndPointGithubAuth {
   ValueNotifier<GraphQLClient> getClientGithub(String token) {
     ValueNotifier<GraphQLClient> client = ValueNotifier(GraphQLClient(
       link: HttpLink(
-        "https://programmer-profile.azurewebsites.net/graphql",
+        "https://graphenous.azurewebsites.net/graphql",
         defaultHeaders: {
           'Authorization': 'Bearer $token',
         },

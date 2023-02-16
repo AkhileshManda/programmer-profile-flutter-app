@@ -41,8 +41,8 @@ class OtherUserAPIs {
         //print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      // print("Search called");
-      // print(result.data);
+      print("Search called");
+      print(result.data);
       for (var x in result.data!["search"]) {
         results.add(SearchResult(
           description: x["description"],
@@ -251,15 +251,15 @@ class OtherUserAPIs {
           "input": {"userId": id}
         }));
     if (result.hasException) {
-      // print("HEATMAP");
+      print("HEATMAP");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("Internet is not found");
+        print("Internet is not found");
       } else {
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      // print("HeatMap Success");
+      print("HeatMap Success");
       for (var activity in result.data!["contributionGraph"]["contributions"]) {
         int contributionSum = activity["githubContributions"] +
             activity["codeforcesContributions"] +

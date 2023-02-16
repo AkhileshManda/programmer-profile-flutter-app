@@ -6,7 +6,7 @@ class EndPoint {
   ValueNotifier<GraphQLClient> getClient(){
     ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(
-        link: HttpLink("https://programmer-profile.azurewebsites.net/graphql"),
+        link: HttpLink("https://graphenous.azurewebsites.net/graphql"),
         cache: GraphQLCache(),
       )
     );

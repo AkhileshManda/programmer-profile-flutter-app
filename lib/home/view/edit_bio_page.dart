@@ -8,7 +8,8 @@ import 'package:simple_markdown_editor/simple_markdown_editor.dart';
 import '../controller/queries.dart';
 
 class EditorScreen extends StatefulWidget {
-  const EditorScreen({Key? key}) : super(key: key);
+  final String? initialData;
+  const EditorScreen({Key? key, this.initialData}) : super(key: key);
   static const routeName = 'editor_screen';
   @override
   EditorScreenState createState() => EditorScreenState();
@@ -16,6 +17,11 @@ class EditorScreen extends StatefulWidget {
 
 class EditorScreenState extends State<EditorScreen> {
   final TextEditingController _controller = TextEditingController();
+  @override
+  void initState() {
+    _controller.text = widget.initialData == null? "" : widget.initialData!;
+    super.initState();
+  }
 
   void onBioSubmitted(String bio)async{
     final prefs = await SharedPreferences.getInstance();
