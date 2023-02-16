@@ -28,11 +28,11 @@ class _ContestPageState extends State<ContestPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> contestColors = [
-      const Color.fromRGBO(245, 110, 179, 1),
-      const Color.fromRGBO(203, 28, 141, 1),
-      const Color.fromRGBO(127, 22, 127, 1),
-      const Color.fromRGBO(70, 12, 104, 1)
+    List<Color> contestColors = const [
+      Color.fromARGB(255, 86, 18, 247),
+      Color.fromARGB(255, 7, 7, 170),
+      Color.fromRGBO(127, 22, 127, 1),
+      Color.fromRGBO(70, 12, 104, 1)
     ];
 
     final ZoomDrawerController z = ZoomDrawerController();

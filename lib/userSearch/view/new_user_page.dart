@@ -8,7 +8,7 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:programmerprofile/userSearch/controller/apis.dart';
 import '../../auth/model/user.dart';
 import '../../home/view/widgets/codeforces_graphs.dart';
-// import '../../home/view/widgets/drawer.dart';
+import '../../home/view/temp_home.dart';
 import '../../home/view/widgets/github_charts.dart';
 import '../../home/view/widgets/lc_tags_chart.dart';
 
@@ -231,7 +231,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                               //margin: EdgeInsets.all(8.0),
                                               showColorTip: false,
                                             ))
-                                          : (const Text("Could'nt load map")),
+                                          : (const SizedBox()),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 8.0, bottom: 8.0),
@@ -308,8 +308,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                                   ["languageStats"],
                                             ))
                                           : (snap.data![3] == null
-                                              ? const Text(
-                                                  "Couldn't Load Leetcode Graphs")
+                                              ? const NotFound()
                                               : const SizedBox())
                                     ],
                                   );

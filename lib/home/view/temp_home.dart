@@ -112,7 +112,7 @@ class _HomeState extends State<Home>
                   future: _getData,
                   builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
                     if (snap.hasData) {
-                      // print(snap.data![5]);
+                      // print(snap.data![2]);
                       User user = snap.data![0];
                       int numNotifications = snap.data![4] == null
                           ? 0
@@ -571,8 +571,7 @@ class _HomeState extends State<Home>
                       child: snap.connectionState == ConnectionState.waiting
                           ? LottieBuilder.asset(
                               "assets/images/loading_spinner.json")
-                          : LottieBuilder.asset(
-                              "assets/images/search-not-fount.json"),
+                          : const NotFound(),
                     );
                   },
                 ),
