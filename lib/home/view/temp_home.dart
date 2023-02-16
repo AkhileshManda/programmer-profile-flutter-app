@@ -38,7 +38,7 @@ class _HomeState extends State<Home>
 
   @override
   void didChangeDependencies() {
-    print("did change");
+    // print("did change");
     super.didChangeDependencies();
     _getData = Future.wait([
       apis.getUser(),
@@ -112,7 +112,7 @@ class _HomeState extends State<Home>
                   future: _getData,
                   builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
                     if (snap.hasData) {
-                      print(snap.data![5]);
+                      // print(snap.data![5]);
                       User user = snap.data![0];
                       int numNotifications = snap.data![4] == null
                           ? 0

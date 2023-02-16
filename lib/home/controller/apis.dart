@@ -31,7 +31,7 @@ class APIs {
     // print("id: $id");
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-    print("CODEFORCES");
+    // print("CODEFORCES");
     QueryResult result = await client.value.mutate(MutationOptions(
       document: gql(DashBoardQueries.cfGraphs()),
       variables: {
@@ -42,16 +42,16 @@ class APIs {
     ));
     //print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-      print("CodeForces");
+      // print("CodeForces");
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        // print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
         return null;
       }
     } else {
-      print("CF Success");
-      print(result.data);
+      // print("CF Success");
+      // print(result.data);
       if(result.data!["codeforcesGraphs"] == null){
         return null;
       }
@@ -224,7 +224,7 @@ class APIs {
   Future<User?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
-    print("token here: " + token);
+    // print("token here: " + token);
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
@@ -233,16 +233,16 @@ class APIs {
     ));
 
     if (result.hasException) {
-      print("USER");
+      // print("USER");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        // print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      print("USER");
-      print(result.data);
+      // print("USER");
+      // print(result.data);
       // final prefs = await SharedPreferences.getInstance();
       
       return User(
@@ -276,15 +276,15 @@ class APIs {
       }
     ));
     if (result.hasException) {
-      print("HEATMAP");
+      // print("HEATMAP");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("Internet is not found");
+        // print("Internet is not found");
       } else {
-        print(result.exception!.graphqlErrors[0].message.toString());
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     } else {
-      print("HeatMap Success");
+      // print("HeatMap Success");
       int flag = 0;
       for (var activity in result.data!["contributionGraph"]["contributions"]) {
         int contributionSum = activity["githubContributions"] +
@@ -357,18 +357,18 @@ class APIs {
     ));
     // print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-       print("LEETCODE CHARTS");
+      //  print("LEETCODE CHARTS");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        print("LEETCODE CHARTS");
-        print("Internet is not found");
+        // print("LEETCODE CHARTS");
+        // print("Internet is not found");
       } else {
-        print("LEETCODE CHARTS");
-        print(result.exception!.graphqlErrors[0].message.toString());
+        // print("LEETCODE CHARTS");
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
     }else{
-      print("LC in");
-      print(result.data);
+      // print("LC in");
+      // print(result.data);
       if(result.data!["leetcodeGraphs"]==null){
         // print("Returning null");
         return null;

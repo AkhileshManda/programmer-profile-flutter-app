@@ -199,7 +199,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                       child: CircularProgressIndicator());
                                 }
                                 if (snap.hasData) {
-                                  print(snap.data.toString());
+                                  // print(snap.data.toString());
                                   // print(snap.data![0].runtimeType);
                                   // print(snap.data![1].runtimeType);
                                   // print(snap.data![2].runtimeType);
