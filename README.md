@@ -2,8 +2,6 @@
 
 An application to help coders keep track of their coding activity and growth across multiple platforms! Currently the app supports github, leetcode and codeforces profile.
 
-**Note** - Recent issues with LeetCode API.. Working towards fixing
-
 ## Features
 
 - Email Authentication with verify OTP
