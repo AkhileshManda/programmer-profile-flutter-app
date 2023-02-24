@@ -285,9 +285,8 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                               ratingGraphData: snap.data![1]
                                                   ["rating"],
                                             ))
-                                          : (snap.data![1] == null
-                                              ? const Text(
-                                                  "Couldn't Load Graphs")
+                                          : (snap.data![1] == null  && codeforcesOn
+                                              ? const NotFound()
                                               : const SizedBox()),
                                       snap.data![2] != null && githubOn
                                           ? (GitHubCharts(
@@ -295,9 +294,8 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                               languagedata: snap.data![2]
                                                   ["languageData"],
                                             ))
-                                          : (snap.data![2] == null
-                                              ? const Text(
-                                                  "Couldn't Load Graphs")
+                                          : (snap.data![2] == null && githubOn
+                                              ? const NotFound()
                                               : const SizedBox()),
                                       snap.data![3] != null && leetcodeOn
                                           ? (LCTagsGraph(
@@ -307,7 +305,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
                                               languagedata: snap.data![3]
                                                   ["languageStats"],
                                             ))
-                                          : (snap.data![3] == null
+                                          : (snap.data![3] == null && leetcodeOn
                                               ? const NotFound()
                                               : const SizedBox())
                                     ],

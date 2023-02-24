@@ -24,12 +24,12 @@ class ImageInputState extends State<ImageInput> {
     //print(fileName);
 
     String url =
-        "https://programmer-profile.azurewebsites.net/api/upload/profile-picture";
+        "https://graphenous.azurewebsites.net/api/upload/profile-picture";
 
     String mimeType = mime(fileName)!;
     String mimee = mimeType.split('/')[0];
     String type = mimeType.split('/')[1];
-    //print("API Call");
+    // print("API Call");
     Dio dio = Dio();
     dio.options.headers["Content-Type"] = "multipart/form-data";
     dio.options.headers["Authorization"] = "Bearer $token";
@@ -47,7 +47,7 @@ class ImageInputState extends State<ImageInput> {
     final imageFile = await ImagePicker()
         .pickImage(source: ImageSource.gallery, maxWidth: 600);
     setState(() {
-      //print("am setting state here");
+      // print("am setting state here");
       _storedImage = File(imageFile!.path);
     });
 
@@ -57,9 +57,9 @@ class ImageInputState extends State<ImageInput> {
 
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
-    //print(token);
+    // print(token);
     //Upload to api
-    //print("API UPload");
+    // print("API UPload");
     _upload(File(imageFile.path), token);
   }
 

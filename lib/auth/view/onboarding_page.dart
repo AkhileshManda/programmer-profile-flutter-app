@@ -50,7 +50,7 @@ class OnboardingPage extends StatelessWidget {
           return OnBoardingCard(data: data[index]);
         },
         onFinish: () {
-          Navigator.pushNamed(
+          Navigator.pushReplacementNamed(
             context, SignUpScreen.routeName
           );
         },

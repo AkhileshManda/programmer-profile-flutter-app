@@ -30,8 +30,9 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                 children: [
                   Row(
                     children: [
-                      BackButton(
+                      IconButton(
                         color: Colors.white,
+                        icon: const Icon(Icons.arrow_back_ios),
                         onPressed: () {
                           //Navigator.pushReplacementNamed(
                           // context, Home.routeName);
@@ -76,7 +77,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return LottieBuilder.asset(
-                          "assets/images/loading_spinner.json");
+                                "assets/images/loading_spinner.json");
                           }
                           //print(snapshot.data);
                           if (snapshot.hasData) {
@@ -105,7 +106,7 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                               const Color(0xFFFFFFFF)
                                                   .withOpacity(0.05),
                                             ],
-                                            stops: const[
+                                            stops: const [
                                               0.1,
                                               1,
                                             ]),
@@ -164,9 +165,11 @@ class _SearchUserScreenState extends State<SearchUserScreen> {
                                                             0, 10, 56, 1),
                                                     child: Icon(Icons.person)),
                                             title: Text(
-                                                snapshot.data![index].name,
-                                                 style: const TextStyle(color: Colors.white, fontSize: 18),
-                                                ),
+                                              snapshot.data![index].name,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
+                                            ),
                                           ),
                                         ),
                                       ),

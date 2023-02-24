@@ -48,8 +48,9 @@ class _ContestPageState extends State<ContestPage> {
                 children: [
                   Row(
                     children: [
-                      BackButton(
+                      IconButton(
                         color: Colors.white,
+                        icon: const Icon(Icons.arrow_back_ios),
                         onPressed: () {
                           //Navigator.pushReplacementNamed(
                           // context, Home.routeName);
@@ -84,9 +85,8 @@ class _ContestPageState extends State<ContestPage> {
                                       if (snap.connectionState ==
                                           ConnectionState.waiting) {
                                         return index == 0
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator())
+                                            ? Center(child: LottieBuilder.asset(
+                                    "assets/images/loading_spinner.json"))
                                             : const SizedBox();
                                       }
                                       if (snap.hasData) {
