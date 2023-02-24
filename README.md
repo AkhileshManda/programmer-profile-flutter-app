@@ -2,8 +2,6 @@
 
 An application to help coders keep track of their coding activity and growth across multiple platforms! Currently the app supports github, leetcode and codeforces profile.
 
-**Note** - Recent issues with LeetCode API.. Working towards fixing
-
 ## Features
 
 - Email Authentication with verify OTP
@@ -20,3 +18,27 @@ An application to help coders keep track of their coding activity and growth acr
 - Lottie Animations
 
 ## Screenshots
+<table>
+  <tr>
+     <td>Dashboard Heatmap</td>
+     <td>Leetcode Analysis</td>
+     <td>Codeforces Analysis</td>
+     <td>GitHub Analysis</td>
+     <td>Notification Screen</td>
+     <td>Profile Screen</td>
+     <td>Contest and Events Screen</td>
+     <td>Search Users Screen</td>
+     <td>New Users Screen</td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Programmer-profile-Dashboard-Heatmap.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-LeetCodeAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-CFAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Dashboard-GitHubAnalysis.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-Notification.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-ProfileScreen.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-ContestsAndEvents.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-SearchUserScreen.PNG"></td>
+    <td><img src="screenshots/Programmer-profile-NewUserScreen.PNG"></td>
+  </tr>
+ </table>
