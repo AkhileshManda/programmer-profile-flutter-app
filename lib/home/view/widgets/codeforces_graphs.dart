@@ -27,8 +27,8 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
   @override
   void initState() {
     _tooltip = TooltipBehavior(enable: true);
-    _tooltip1 = TooltipBehavior(enable: true);
-    _tooltip2 = TooltipBehavior(enable: true);
+    _tooltip1 = TooltipBehavior(enable: true, header: "Rating");
+    _tooltip2 = TooltipBehavior(enable: true, header: "Rating");
     super.initState();
   }
 
@@ -59,6 +59,7 @@ class _CodeforcesGraphsState extends State<CodeforcesGraphs> {
               majorGridLines: const MajorGridLines(width: 0),
             ),
             tooltipBehavior: _tooltip1,
+            
             series: <ChartSeries<CFBarModel, String>>[
               ColumnSeries<CFBarModel, String>(
                 dataSource: widget.barGraphData,

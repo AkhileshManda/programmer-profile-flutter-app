@@ -10,20 +10,18 @@ import 'package:programmerprofile/home/view/profile_page.dart';
 // import 'package:programmerprofile/home/view/temp_home.dart';
 import 'package:programmerprofile/userSearch/view/search_page.dart';
 
-
-
 class DrawerTemplate extends StatefulWidget {
   final Widget body;
   final ZoomDrawerController z;
-  const DrawerTemplate({Key? key, required this.body, required this.z}) : super(key: key);
+  const DrawerTemplate({Key? key, required this.body, required this.z})
+      : super(key: key);
   @override
   DrawerTemplateState createState() => DrawerTemplateState();
-  
 }
 
 class DrawerTemplateState extends State<DrawerTemplate> {
   bool isLoading = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
@@ -58,50 +56,50 @@ class DrawerTemplateState extends State<DrawerTemplate> {
               //           color: Colors.white),
               //       label: const Text("Home")),
               // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, ContestPage.routeName);
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.trophy,
-                        color: Colors.white),
-                    label: const Text("Contests And Events")),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, ProfileScreen.routeName);
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.user,
-                        color: Colors.white),
-                    label: const Text("Profile")),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SearchUserScreen.routeName);
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.search,
-                        color: Colors.white),
-                    label: const Text("Search Users")),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: 80,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Auth().logout();
-                        Navigator.pushReplacementNamed(
-                            context, LoginScreen.routeName);
-                      },
-                      child: const Text("Logout")),
+              ListTile(
+                leading:
+                    const FaIcon(FontAwesomeIcons.trophy, color: Colors.white),
+                title: const Text(
+                  "Contests And Events",
+                  style: TextStyle(color: Colors.white),
                 ),
+                onTap: () =>
+                    Navigator.pushNamed(context, ContestPage.routeName),
+              ),
+
+              ListTile(
+                leading:
+                    const FaIcon(FontAwesomeIcons.user, color: Colors.white),
+                title: const Text(
+                  "Profile",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () =>
+                    Navigator.pushNamed(context, ProfileScreen.routeName),
+              ),
+              ListTile(
+                leading:
+                    const FaIcon(FontAwesomeIcons.search, color: Colors.white),
+                title: const Text(
+                  "Search Users",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () =>
+                    Navigator.pushNamed(context, SearchUserScreen.routeName),
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.white),
+                title: const Text(
+                  "Logout",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  Auth().logout();
+                  Navigator.pushReplacementNamed(
+                      context, LoginScreen.routeName);
+                },
               )
-              
             ],
           ),
         ),

@@ -9,12 +9,11 @@ class LCTagsGraph extends StatefulWidget {
   final List<LCTagsModel> tags;
   final List<LCContest> contests;
   final List<LCLanguage> languagedata;
-  const LCTagsGraph({
-    required this.tags, 
-    required this.contests, 
-    required this.languagedata,
-    super.key
-  });
+  const LCTagsGraph(
+      {required this.tags,
+      required this.contests,
+      required this.languagedata,
+      super.key});
   @override
   State<LCTagsGraph> createState() => _LCTagsGraphState();
 }
@@ -27,9 +26,8 @@ class _LCTagsGraphState extends State<LCTagsGraph> {
   initState() {
     super.initState();
     _tooltip = TooltipBehavior(enable: true);
-    _tooltip1 = TooltipBehavior(enable: true);
+    _tooltip1 = TooltipBehavior(enable: true, header: "Rating");
     _tooltip2 = TooltipBehavior(enable: true);
-    
   }
 
   @override
@@ -43,17 +41,21 @@ class _LCTagsGraphState extends State<LCTagsGraph> {
         ),
         SfCircularChart(
             tooltipBehavior: _tooltip2,
-            legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
+            legend: Legend(
+                isVisible: true,
+                textStyle: const TextStyle(color: Colors.white)),
             series: <CircularSeries<LCLanguage, String>>[
               DoughnutSeries<LCLanguage, String>(
                 dataSource: widget.languagedata,
                 xValueMapper: (data, _) => data.languageName,
                 yValueMapper: (data, _) => data.problemsSolved,
               )
-          ]),
+            ]),
         SfCircularChart(
             tooltipBehavior: _tooltip,
-            legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
+            legend: Legend(
+                isVisible: true,
+                textStyle: const TextStyle(color: Colors.white)),
             series: <CircularSeries<LCTagsModel, String>>[
               DoughnutSeries<LCTagsModel, String>(
                 dataSource: widget.tags,

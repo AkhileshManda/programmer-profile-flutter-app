@@ -44,15 +44,20 @@ Widget githubCard1(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Total Commits : $totalCommits",
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Total Commits :",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    Text(
+                      totalCommits,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Text("Total Stars Earned : $totalStars"),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

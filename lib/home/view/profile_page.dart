@@ -23,7 +23,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = true;
-  List<bool> expanded = [true, true];
+  List<bool> expanded = [false, false];
   final TextEditingController _leetcodeCon = TextEditingController();
   final TextEditingController _codeforcesCon = TextEditingController();
 
@@ -207,7 +207,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   FontAwesomeIcons.plus,
                                                   color: Colors.white),
                                           onTap: () {
-                                            if (snap.data!.githubToken == null){
+                                            if (snap.data!.githubToken ==
+                                                null) {
                                               onGithubAuthPressed();
                                             }
                                           }),
@@ -234,8 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         },
                                         children: [
                                           ExpansionPanel(
-                                              backgroundColor:
-                                                  Colors.pink,
+                                              backgroundColor: Colors.pink,
                                               headerBuilder: (context, isOpen) {
                                                 return const Padding(
                                                     padding: EdgeInsets.all(15),
@@ -311,8 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ),
                                               isExpanded: expanded[0]),
                                           ExpansionPanel(
-                                              backgroundColor:
-                                                  Colors.pink,
+                                              backgroundColor: Colors.pink,
                                               headerBuilder: (context, isOpen) {
                                                 return const Padding(
                                                     padding: EdgeInsets.all(15),
@@ -392,8 +391,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             )));
                   }
-                  return Center(child: LottieBuilder.asset(
-                                    "assets/images/loading_spinner.json"));
+                  return Center(
+                      child: LottieBuilder.asset(
+                          "assets/images/loading_spinner.json"));
                 })
           ]),
         ));

@@ -20,7 +20,7 @@ class GithubStreakGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlassmorphicContainer(
       width: 350,
-      height: 250,
+      height: 200,
       borderRadius: 20,
       blur: 20,
       alignment: Alignment.bottomCenter,
@@ -56,42 +56,38 @@ class GithubStreakGraph extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Current Streak Start Date ${currentStreakStartDate.substring(0, 10)}",
+                    "Current Streak: \n\n${currentStreakStartDate.substring(0, 10)} length: $currentStreakLength ",
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
                 // Padding(
                 //   padding: const EdgeInsets.all(8.0),
-                //   child: Text("Total Stars Earned : $totalStars"),
+                //   child: Text(
+                //     "Current Streak Length $currentStreakLength",
+                //     style: const TextStyle(color: Colors.white, fontSize: 18),
+                //   ),
                 // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Current Streak Length $currentStreakLength",
+                    "Longest Streak \n\n${longestStreakStartDate.substring(0, 10)} - ${longestStreakEndDate.substring(0, 10)}  $longestStreakLength days",
                     style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Longest Streak Start Date ${longestStreakStartDate.substring(0, 10)}",
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Longest Streak End Date ${longestStreakEndDate.substring(0, 10)}",
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Longest Streak length $longestStreakLength",
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                )
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Text(
+                //     "Longest Streak End Date ${longestStreakEndDate.substring(0, 10)}",
+                //     style: const TextStyle(color: Colors.white, fontSize: 18),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Text(
+                //     "Longest Streak length $longestStreakLength",
+                //     style: const TextStyle(color: Colors.white, fontSize: 18),
+                //   ),
+                // )
               ],
             ),
           ],

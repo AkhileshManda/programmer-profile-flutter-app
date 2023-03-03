@@ -7,7 +7,8 @@ import '../../model/github_language_model.dart';
 class GitHubCharts extends StatefulWidget {
   final Map<String, String> data;
   final List<Language> languagedata;
-  const GitHubCharts({required this.data, required this.languagedata, super.key});
+  const GitHubCharts(
+      {required this.data, required this.languagedata, super.key});
 
   @override
   State<GitHubCharts> createState() => _GitHubChartsState();
@@ -38,17 +39,19 @@ class _GitHubChartsState extends State<GitHubCharts> {
                 issues: widget.data["issues"]!,
                 contributedTo: widget.data["contributedTo"]!),
             Padding(
-              padding: const EdgeInsets.only(top:8.0, bottom:8.0),
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: GithubStreakGraph(
-                currentStreakLength: widget.data["currentStreakLength"]!, 
-                longestStreakLength: widget.data["longestStreakLength"]!,
-                 currentStreakStartDate: widget.data["currentStreakStartDate"]!, 
-                longestStreakStartDate: widget.data["longestStreakStartDate"]!, 
+                currentStreakLength: widget.data["currentStreakLength"] ?? "0",
+                longestStreakLength: widget.data["longestStreakLength"] ?? "0",
+                currentStreakStartDate: widget.data["currentStreakStartDate"]!,
+                longestStreakStartDate: widget.data["longestStreakStartDate"]!,
                 longestStreakEndDate: widget.data["longestStreakEndDate"]!,
               ),
             ),
             SfCircularChart(
-                legend: Legend(isVisible: true, textStyle: const TextStyle(color: Colors.white)),
+                legend: Legend(
+                    isVisible: true,
+                    textStyle: const TextStyle(color: Colors.white)),
                 tooltipBehavior: _tooltip,
                 series: <CircularSeries<Language, String>>[
                   DoughnutSeries<Language, String>(
