@@ -37,6 +37,20 @@ class _HomeState extends State<Home>
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    // print("did change");
+    super.initState();
+    _getData = Future.wait([
+      apis.getUser(),
+      apis.getHeatMapData(),
+      apis.getCFGraphData(),
+      apis.getGithubData(),
+      NotificationAPIs().getNotifications(),
+      apis.getLeetCodeData()
+    ]);
+  }
+
+  @override
   void didChangeDependencies() {
     // print("did change");
     super.didChangeDependencies();
@@ -111,8 +125,9 @@ class _HomeState extends State<Home>
                 child: FutureBuilder<List<dynamic>>(
                   future: _getData,
                   builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
+                    // print(snap.data);
                     if (snap.hasData) {
-                      // print(snap.data![2]);
+                      // print(snap.data);
                       User user = snap.data![0];
                       int numNotifications = snap.data![4] == null
                           ? 0

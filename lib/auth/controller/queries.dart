@@ -14,7 +14,8 @@ class AuthenticationQueries {
             token
             user {
               email
-            name
+              name
+              id
           }
         }
       }

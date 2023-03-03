@@ -63,6 +63,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       final prefs = await SharedPreferences.getInstance();
       // print(result.data!['checkCode']['token']);
       prefs.setString("token", result.data!['checkCode']['token']);
+      prefs.setString("id", result.data!['checkCode']['user']['id']);
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, Home.routeName);
       // print("SHEEESH");
