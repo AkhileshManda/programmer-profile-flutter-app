@@ -156,8 +156,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   //     height: 100),
                                   Align(
                                     alignment: Alignment.topLeft,
-                                    child: BackButton(
+                                    child: IconButton(
                                       color: Colors.white,
+                                      icon: const Icon(Icons.arrow_back_ios),
                                       onPressed: () {
                                         //Navigator.pushReplacementNamed(
                                         // context, Home.routeName);

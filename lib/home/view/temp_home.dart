@@ -465,7 +465,7 @@ class _HomeState extends State<Home>
                                                                   builder: (ctx) =>
                                                                       EditorScreen(
                                                                         initialData:
-                                                                            user.description!,
+                                                                            user.description ?? "Enter Your Description",
                                                                       )));
                                                         },
                                                         icon: const Icon(
