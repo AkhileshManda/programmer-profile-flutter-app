@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.programmerprofile">
    <application
-        android:label="programmerprofile"
+        android:label="Graphenous"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
