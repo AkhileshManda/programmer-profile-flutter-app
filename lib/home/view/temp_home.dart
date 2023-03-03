@@ -565,7 +565,7 @@ class _HomeState extends State<Home>
                                     data: snap.data![3]["details"],
                                     languagedata: snap.data![3]["languageData"],
                                   ))
-                                : (snap.data![3] == null && githubOn == true
+                                : (snap.data![3] == null && githubOn
                                     ? const NotFound()
                                     : const SizedBox()),
                             snap.data![5] != null && leetcodeOn
@@ -575,7 +575,7 @@ class _HomeState extends State<Home>
                                     languagedata: snap.data![5]
                                         ["languageStats"],
                                   )
-                                : (snap.data![5] == null
+                                : (snap.data![5] == null && leetcodeOn
                                     ? const NotFound()
                                     : const SizedBox())
                           ],
