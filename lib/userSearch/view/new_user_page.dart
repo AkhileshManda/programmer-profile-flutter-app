@@ -39,7 +39,7 @@ class _NewUserScreenState extends State<NewUserScreen> {
   bool leetcodeOn = false;
   late User? user;
   // List of values: [User object, Map<Date,Contribution>, CFGraphData, GithubData]
-  Future<List<dynamic>>? _getData;
+  late Future<List<dynamic>> _getData;
   OtherUserAPIs apis = OtherUserAPIs();
   late bool isFollowing;
 
@@ -192,14 +192,16 @@ class _NewUserScreenState extends State<NewUserScreen> {
                           builder: (ctx, AsyncSnapshot<List<dynamic>> snap) {
                             if (snap.connectionState ==
                                 ConnectionState.waiting) {
+                              // print("WAITING");
                               return const Center(
                                   child: CircularProgressIndicator());
                             }
+                            // print(snap.data);
                             if (snap.hasData) {
                               // print(snap.data.toString());
-                              // print(snap.data![0].runtimeType);
-                              // print(snap.data![1].runtimeType);
-                              // print(snap.data![2].runtimeType);
+                              // print(snap.data![0]);
+                              // print(snap.data![1]);
+                              // print(snap.data![2]);
                               return Column(
                                 children: [
                                   snap.data![0] != null

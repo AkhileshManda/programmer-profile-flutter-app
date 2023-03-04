@@ -84,6 +84,11 @@ class OtherUserAPIs {
       }
     } else {
       // print("Success");
+      // print("CF"+result.data.toString());
+
+      if(result.data!["codeforcesGraphs"]==null){
+        return null;
+      }
 
       for (var x in result.data!["codeforcesGraphs"]["barGraph"]
           ["problemRatingGraph"]) {
@@ -113,11 +118,12 @@ class OtherUserAPIs {
           rank: x["rank"],
         ));
       }
-      //print(barGraphData.toString());
+      // print(barGraphData.toString());
       data.putIfAbsent("donut", () => tempdonutGraphData);
       data.putIfAbsent("bar", () => tempbarGraphData);
       data.putIfAbsent("rating", () => tempRatingData);
 
+      // print(data);
       return data;
     }
     return null;
@@ -151,6 +157,11 @@ class OtherUserAPIs {
       }
     } else {
       // print("Github success");
+      // print("GITHUB"+ result.data.toString());
+
+      if(result.data!["githubGraphs"]==null){
+        return null;
+      }
 
       details.putIfAbsent(
           "currentStreakLength",
@@ -228,10 +239,11 @@ class OtherUserAPIs {
         templanguagedata.add(
             Language(color: x["color"], name: x["name"], number: x["size"]));
       }
-      //print(details.toString());
+      // print("AFTER HERE");
       data.putIfAbsent("details", () => details);
       data.putIfAbsent("languageData", () => templanguagedata);
 
+      // print(details.toString());
       return data;
     }
     return null;
@@ -268,13 +280,11 @@ class OtherUserAPIs {
         DateTime date = DateFormat("yyyy-MM-dd").parse(activity["date"]);
         data.putIfAbsent(date, () => contributionSum);
       }
-      //print(data.toString());
+      // print(data.toString());
       return data;
     }
     return null;
   }
-
-  
 
   Future<bool> toggleFollow(String action, String id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -304,9 +314,9 @@ class OtherUserAPIs {
     return false;
   }
 
-  Future<Map<String,dynamic>?> getOtherLeetCodeData(String id)async{
-    Map<String,dynamic>? data = {};
-    
+  Future<Map<String, dynamic>?> getOtherLeetCodeData(String id) async {
+    Map<String, dynamic>? data = {};
+
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     //final String id = prefs.getString("id")!;
@@ -316,57 +326,59 @@ class OtherUserAPIs {
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
     QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.leetcodeGraph()),
-      variables: {
-        "input": {
-          "userId": id
-        }
-      }
-    ));
+        document: gql(DashBoardQueries.leetcodeGraph()),
+        variables: {
+          "input": {"userId": id}
+        }));
     // print("REACHED HERE AFTER QUERY");
     if (result.hasException) {
-       //print("LEETCODE CHARTS");
+      // print("LEETCODE CHARTS");
 
       if (result.exception!.graphqlErrors.isEmpty) {
-        //print("LEETCODE CHARTS");
-        //print("Internet is not found");
+        // print("LEETCODE CHARTS");
+        // print("Internet is not found");
       } else {
-        //print("LEETCODE CHARTS");
-        //print(result.exception!.graphqlErrors[0].message.toString());
+        // print("LEETCODE CHARTS");
+        // print(result.exception!.graphqlErrors[0].message.toString());
       }
-    }else{
-      //print("LC in");
+    } else {
+      // print("LC in");
       List<LCContest> contestHistory = [];
-      for(var x in result.data!["leetcodeGraphs"]["contestHistory"]){
-        //print(x["contest"]["title"]);
-        contestHistory.add(
-          LCContest(
-            problemSolved: x["problemsSolved"], 
-            totalProblems: x["totalProblems"], 
+      for (var x in result.data!["leetcodeGraphs"]["contestHistory"]) {
+        // print(x["contest"]["title"]);
+        contestHistory.add(LCContest(
+            problemSolved: x["problemsSolved"],
+            totalProblems: x["totalProblems"],
             rating: x["rating"],
-            ranking: x["ranking"], 
-            title: x["contest"]["title"], 
-            startTime: DateTime.parse(x["contest"]["startTime"].toString())
-          )
-        );
+            ranking: x["ranking"],
+            title: x["contest"]["title"],
+            startTime: DateTime.parse(x["contest"]["startTime"].toString())));
       }
-      //print("FINE TILL HERE");
+      // print("FINE TILL HERE");
       data.putIfAbsent("contestHistory", () => contestHistory);
-      //print(result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"]);
-      data.putIfAbsent("questionsStats", () => LCStats(
-        totalProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"], 
-        easyProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][1]["count"], 
-        mediumProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][2]["count"], 
-        hardProblemsSolved: result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][3]["count"],
-        problemsTotal: result.data!["leetcodeGraphs"]["problems"][0]["count"],
-        easyTotal:  result.data!["leetcodeGraphs"]["problems"][1]["count"],
-        mediumTotal:  result.data!["leetcodeGraphs"]["problems"][2]["count"],
-        hardTotal:  result.data!["leetcodeGraphs"]["problems"][3]["count"]
-      ));
-      //print(data);
+      // print(result.data!["leetcodeGraphs"]["user"]["submitStatsGlobal"][0]["count"]);
+      data.putIfAbsent(
+          "questionsStats",
+          () => LCStats(
+              totalProblemsSolved: result.data!["leetcodeGraphs"]["user"]
+                  ["submitStatsGlobal"][0]["count"],
+              easyProblemsSolved: result.data!["leetcodeGraphs"]["user"]
+                  ["submitStatsGlobal"][1]["count"],
+              mediumProblemsSolved: result.data!["leetcodeGraphs"]["user"]
+                  ["submitStatsGlobal"][2]["count"],
+              hardProblemsSolved: result.data!["leetcodeGraphs"]["user"]
+                  ["submitStatsGlobal"][3]["count"],
+              problemsTotal: result.data!["leetcodeGraphs"]["problems"][0]
+                  ["count"],
+              easyTotal: result.data!["leetcodeGraphs"]["problems"][1]["count"],
+              mediumTotal: result.data!["leetcodeGraphs"]["problems"][2]
+                  ["count"],
+              hardTotal: result.data!["leetcodeGraphs"]["problems"][3]["count"]));
+      // print(data);
       List<LCTagsModel> advancedTags = [];
-      //print(result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["advanced"]);
-      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["advanced"]){
+      // print(result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["advanced"]);
+      for (var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]
+          ["advanced"]) {
         advancedTags.add(LCTagsModel(
           tagName: x["tagName"],
           tagSlug: x["tagSlug"],
@@ -375,7 +387,8 @@ class OtherUserAPIs {
       }
 
       List<LCTagsModel> intermediateTags = [];
-      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["intermediate"]){
+      for (var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]
+          ["intermediate"]) {
         intermediateTags.add(LCTagsModel(
           tagName: x["tagName"],
           tagSlug: x["tagSlug"],
@@ -384,27 +397,30 @@ class OtherUserAPIs {
       }
 
       List<LCTagsModel> fundamentalTags = [];
-      for(var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]["fundamental"]){
+      for (var x in result.data!["leetcodeGraphs"]["user"]["tagProblemCounts"]
+          ["fundamental"]) {
         fundamentalTags.add(LCTagsModel(
           tagName: x["tagName"],
           tagSlug: x["tagSlug"],
           problemsCount: x["problemsSolved"],
         ));
       }
-      data.putIfAbsent("tagDetails", ()=> fundamentalTags+intermediateTags+advancedTags);
-      
+      data.putIfAbsent("tagDetails",
+          () => fundamentalTags + intermediateTags + advancedTags);
+
       List<LCLanguage> languageStats = [];
-      for(var x in result.data!["leetcodeGraphs"]["user"]["languageProblemCount"]){
-         languageStats.add(LCLanguage(languageName: x["languageName"], problemsSolved: x["problemsSolved"]));
+      for (var x in result.data!["leetcodeGraphs"]["user"]
+          ["languageProblemCount"]) {
+        languageStats.add(LCLanguage(
+            languageName: x["languageName"],
+            problemsSolved: x["problemsSolved"]));
       }
 
-      data.putIfAbsent("languageStats", ()=>languageStats);
-      //print(data["languageStats"]);
+      data.putIfAbsent("languageStats", () => languageStats);
+      // print(data);
 
       return data;
     }
     return null;
-  }  
-
-
+  }
 }
