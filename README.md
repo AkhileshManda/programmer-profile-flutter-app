@@ -2,6 +2,8 @@
 
 An application to help coders keep track of their coding activity and growth across multiple platforms! Currently the app supports github, leetcode and codeforces profile.
 
+Try it out at : https://play.google.com/store/apps/details?id=com.kitaihazure.graphenous1
+
 ## Features
 
 - Email Authentication with verify OTP
