@@ -1,6 +1,6 @@
 import 'dart:core';
 
-class User{
+class User {
   String? id;
   String? username;
   String? email;
@@ -28,6 +28,6 @@ class User{
     this.updatedAt,
     this.followedByIds,
     this.followingIds,
-    this.githubToken
+    this.githubToken,
   });
 }

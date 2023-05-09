@@ -3,13 +3,11 @@ import 'package:programmerprofile/home/controller/apis.dart';
 
 import '../../auth/model/user.dart';
 
-class UserProvider with ChangeNotifier{
+class UserProvider with ChangeNotifier {
   User? _user;
   User? get user => _user;
 
-  UserProvider(
-
-  );
+  UserProvider();
 
   //heatmap
   Map<DateTime, int>? _heatMapData;
@@ -24,42 +22,42 @@ class UserProvider with ChangeNotifier{
   Map<String, dynamic>? get githubData => _githubData;
 
   //Leetcode Data
-  Map<String,dynamic>? _leetcodeData;
-  Map<String,dynamic>? get leetcodeData => _leetcodeData;
+  Map<String, dynamic>? _leetcodeData;
+  Map<String, dynamic>? get leetcodeData => _leetcodeData;
 
-  Future<void> getUserData()async{
+  Future<void> getUserData() async {
     _user = await APIs().getUser();
     notifyListeners();
   }
 
-  void updateUserProfilePicture(String newurl){
+  void updateUserProfilePicture(String newurl) {
     _user?.profilePicture = newurl;
     notifyListeners();
   }
 
-  void updateUserBio(String newBio){
+  void updateUserBio(String newBio) {
     _user?.description = newBio;
     notifyListeners();
   }
 
-  Future<void>  getCFData()async{
+  Future<void> getCFData() async {
     // print("Getting CFData...");
     _cfdata = await APIs().getCFGraphData();
     notifyListeners();
     // print("SET data");
   }
 
-  Future<void> getGithubData() async{
+  Future<void> getGithubData() async {
     _githubData = await APIs().getGithubData();
     notifyListeners();
   }
 
-  Future<void> getLeetCodeData() async{
+  Future<void> getLeetCodeData() async {
     _leetcodeData = await APIs().getLeetCodeData();
     notifyListeners();
-  } 
+  }
 
-  Future<void> getHeatMapData() async{
+  Future<void> getHeatMapData() async {
     _heatMapData = await APIs().getHeatMapData();
     notifyListeners();
   }

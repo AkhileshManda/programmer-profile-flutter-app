@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _confirmPasswordCon = TextEditingController();
 
   bool isLoading = false;
-  
+
   void onSignUpPressed(
       {required String name,
       required String email,
@@ -155,7 +155,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: TextFormField(
                                   controller: _confirmPasswordCon,
                                   obscureText: true,
-                                  decoration: Styles.textFieldStyle("Confirm Password"),
+                                  decoration:
+                                      Styles.textFieldStyle("Confirm Password"),
                                 ),
                               )
                             ],
@@ -165,16 +166,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 25,
                         ),
                         customElevatedButton(
-                          isLoading: isLoading, 
-                          onPressed: (){
+                          isLoading: isLoading,
+                          onPressed: () {
                             onSignUpPressed(
-                                    name: _nameCon.text,
-                                    email: _emailCon.text,
-                                    password: _passwordCon.text,
-                                    confirmPassword: _confirmPasswordCon.text,
-                                  );
-                          }, 
-                          title: "Sign Up"
+                              name: _nameCon.text,
+                              email: _emailCon.text,
+                              password: _passwordCon.text,
+                              confirmPassword: _confirmPasswordCon.text,
+                            );
+                          },
+                          title: "Sign Up",
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -185,17 +186,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   TextStyle(color: Colors.white, fontSize: 17),
                             ),
                             TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, LoginScreen.routeName);
-                                },
-                                child: isLoading? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                ):const Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.pink, fontSize: 17),
-                                ))
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, LoginScreen.routeName);
+                              },
+                              child: isLoading
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : const Text(
+                                      "Login",
+                                      style: TextStyle(
+                                          color: Colors.pink, fontSize: 17),
+                                    ),
+                            )
                           ],
                         )
                       ],

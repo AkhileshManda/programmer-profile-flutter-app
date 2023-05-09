@@ -15,18 +15,16 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailCon = TextEditingController();
-  
+
   bool isLoading = false;
 
   void onButtonPressed({required String email}) async {
-    
     setState(() {
       isLoading = true;
     });
-    
+
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
@@ -84,8 +82,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         LottieBuilder.asset(
-                            "assets/images/forgotPassword.json",
-                            height: 350),
+                          "assets/images/forgotPassword.json",
+                          height: 350,
+                        ),
 
                         const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -123,11 +122,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                         const SizedBox(height: 10),
                         customElevatedButton(
-                          isLoading: isLoading, 
-                          onPressed: (){
+                          isLoading: isLoading,
+                          onPressed: () {
                             onButtonPressed(email: _emailCon.text);
-                          }, 
-                          title: "Confirm Email"
+                          },
+                          title: "Confirm Email",
                         )
                       ],
                     ),

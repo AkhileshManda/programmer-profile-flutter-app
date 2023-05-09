@@ -1,4 +1,4 @@
-class CFDonutModel{
+class CFDonutModel {
   String tagName;
   int problemsCount;
 

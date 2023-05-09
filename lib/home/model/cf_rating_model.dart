@@ -1,4 +1,4 @@
-class CFRatingModel{
+class CFRatingModel {
   int contestId;
   String contestName;
   DateTime date;
@@ -14,6 +14,6 @@ class CFRatingModel{
     required this.handle,
     required this.rank,
     required this.oldRating,
-    required this.newRating
+    required this.newRating,
   });
 }

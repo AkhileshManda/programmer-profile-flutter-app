@@ -1,4 +1,4 @@
-class Language{
+class Language {
   String color;
   String name;
   int number;

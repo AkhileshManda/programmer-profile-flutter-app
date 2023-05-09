@@ -1,4 +1,4 @@
-class Contest{
+class Contest {
   int duration;
   DateTime? start;
   DateTime? end;
@@ -8,7 +8,7 @@ class Contest{
   String id;
   String resource;
   int resourceId;
-  
+
   Contest({
     required this.duration,
     this.start,
@@ -18,7 +18,6 @@ class Contest{
     required this.href,
     required this.id,
     required this.resource,
-    required this.resourceId
+    required this.resourceId,
   });
-  
 }

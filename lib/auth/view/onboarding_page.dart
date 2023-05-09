@@ -20,7 +20,8 @@ class OnboardingPage extends StatelessWidget {
     ),
     OnBoardingData(
       title: "Code",
-      subtitle: "Keep coding effectively while we help you keep track of your strength and weaknesses",
+      subtitle:
+          "Keep coding effectively while we help you keep track of your strength and weaknesses",
       image: LottieBuilder.asset("assets/images/98636-coding.json"),
       backgroundColor: Colors.white,
       titleColor: Colors.purple,
@@ -29,7 +30,8 @@ class OnboardingPage extends StatelessWidget {
     ),
     OnBoardingData(
       title: "Collaborate",
-      subtitle: "Collaborate with developers across the world and build innovative products",
+      subtitle:
+          "Collaborate with developers across the world and build innovative products",
       image: LottieBuilder.asset("assets/images/5482-connect.json"),
       backgroundColor: const Color.fromRGBO(71, 59, 117, 1),
       titleColor: Colors.yellow,
@@ -42,7 +44,6 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ConcentricPageView(
-
         duration: const Duration(seconds: 4),
         colors: data.map((e) => e.backgroundColor).toList(),
         itemCount: data.length,
@@ -51,7 +52,8 @@ class OnboardingPage extends StatelessWidget {
         },
         onFinish: () {
           Navigator.pushReplacementNamed(
-            context, SignUpScreen.routeName
+            context,
+            SignUpScreen.routeName,
           );
         },
       ),

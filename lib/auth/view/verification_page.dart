@@ -22,26 +22,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   bool isLoading = false;
 
-  void onVerificationPressed()async{
-
+  void onVerificationPressed() async {
     setState(() {
       isLoading = true;
     });
     final EndPoint point = EndPoint();
     ValueNotifier<GraphQLClient> client = point.getClient();
 
-    QueryResult result = await client.value.mutate(
-        MutationOptions(document: gql(AuthenticationQueries.verify()), 
+    QueryResult result = await client.value.mutate(MutationOptions(
+        document: gql(AuthenticationQueries.verify()),
         variables: {
           "input": {
-           'email': widget.email,
-           'code': _code
+            'email': widget.email,
+            'code': _code,
           }
         }));
 
     if (result.hasException) {
       setState(() {
-         isLoading = false;
+        isLoading = false;
       });
       //print(result.exception);
       if (!mounted) return;
@@ -69,6 +68,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       // print("SHEEESH");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,37 +82,38 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   children: [
                     //LottieBuilder.asset("assets/images/112417-verify-your-email.json"),
                     LottieBuilder.asset("assets/images/17245-code.json",
-                            height: 350),
-                                           const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Verify OTP",
-                            style: TextStyle(
-                                color: Colors.pink,
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            "Please enter the OTP recieved on your mail to proceed",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                        height: 350),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Verify OTP",
+                        style: TextStyle(
+                            color: Colors.pink,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "Please enter the OTP recieved on your mail to proceed",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     VerificationCode(
-                      textStyle: const TextStyle(fontSize: 20.0, color: Colors.pink),
+                      textStyle:
+                          const TextStyle(fontSize: 20.0, color: Colors.pink),
                       keyboardType: TextInputType.streetAddress,
                       underlineColor: Colors.pink,
-                       // If this is null it will use primaryColor: Colors.red from Theme
+                      // If this is null it will use primaryColor: Colors.red from Theme
                       length: 6,
-                      cursorColor:
-                          Colors.pink, // If this is null it will default to the ambient
+                      cursorColor: Colors
+                          .pink, // If this is null it will default to the ambient
                       // clearAll is NOT required, you can delete it
                       // takes any widget, so you can implement your design
                       clearAll: const Padding(
@@ -137,13 +138,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         if (!_onEditing) FocusScope.of(context).unfocus();
                       },
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 30),
                     customElevatedButton(
-                      isLoading: isLoading, 
-                      onPressed: (){
+                      isLoading: isLoading,
+                      onPressed: () {
                         onVerificationPressed();
-                      }, 
-                      title: "Verify"
+                      },
+                      title: "Verify",
                     )
                   ],
                 ),

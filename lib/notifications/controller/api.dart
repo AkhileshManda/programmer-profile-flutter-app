@@ -73,14 +73,16 @@ class NotificationAPIs {
 
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(NotificationQuery.seeNotifications()),
-      variables:  {
+    QueryResult result = await client.value.mutate(
+      MutationOptions(
+        document: gql(NotificationQuery.seeNotifications()),
+        variables: {
           "input": {
-            "notificationId": notificationID
-          }
-        }
-    ));
+            "notificationId": notificationID,
+          },
+        },
+      ),
+    );
 
     if (result.hasException) {
       //print("Notification DED");

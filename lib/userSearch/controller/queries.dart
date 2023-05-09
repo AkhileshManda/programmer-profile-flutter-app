@@ -14,7 +14,7 @@ class SearchQuery {
      """;
   }
 
-  static String toggleFollow(){
+  static String toggleFollow() {
     return """ 
     mutation ToggleFollow(\$input: ToggleFollowInput!) {
     toggleFollow(input: \$input)

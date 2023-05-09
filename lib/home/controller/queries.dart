@@ -138,8 +138,8 @@ class DashBoardQueries {
     """;
   }
 
- static String leetcodeGraph(){
-  return """ 
+  static String leetcodeGraph() {
+    return """ 
   query LeetcodeGraphs(\$input: UserIdInput!) {
   leetcodeGraphs(input: \$input) {
     contest {
@@ -213,7 +213,5 @@ class DashBoardQueries {
   
   
   """;
- }
-
-  
+  }
 }

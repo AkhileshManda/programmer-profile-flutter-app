@@ -86,7 +86,7 @@ class OtherUserAPIs {
       // print("Success");
       // print("CF"+result.data.toString());
 
-      if(result.data!["codeforcesGraphs"]==null){
+      if (result.data!["codeforcesGraphs"] == null) {
         return null;
       }
 
@@ -159,7 +159,7 @@ class OtherUserAPIs {
       // print("Github success");
       // print("GITHUB"+ result.data.toString());
 
-      if(result.data!["githubGraphs"]==null){
+      if (result.data!["githubGraphs"] == null) {
         return null;
       }
 
@@ -309,7 +309,6 @@ class OtherUserAPIs {
       // print(result.data);
       return true;
       //print(data.toString());
-
     }
     return false;
   }

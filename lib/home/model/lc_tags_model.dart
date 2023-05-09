@@ -1,4 +1,4 @@
-class LCTagsModel{
+class LCTagsModel {
   String tagName;
   String tagSlug;
   int problemsCount;

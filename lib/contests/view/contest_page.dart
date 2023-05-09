@@ -85,8 +85,9 @@ class _ContestPageState extends State<ContestPage> {
                                       if (snap.connectionState ==
                                           ConnectionState.waiting) {
                                         return index == 0
-                                            ? Center(child: LottieBuilder.asset(
-                                    "assets/images/loading_spinner.json"))
+                                            ? Center(
+                                                child: LottieBuilder.asset(
+                                                    "assets/images/loading_spinner.json"))
                                             : const SizedBox();
                                       }
                                       if (snap.hasData) {
@@ -102,12 +103,12 @@ class _ContestPageState extends State<ContestPage> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child:
-                                                      Text(contestTimes[index],
-                                                          style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20,
-                                                          )),
+                                                  child: Text(
+                                                      contestTimes[index],
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                      )),
                                                 ),
                                                 index != 3
                                                     ? SizedBox(
@@ -121,29 +122,27 @@ class _ContestPageState extends State<ContestPage> {
                                                             itemBuilder:
                                                                 (ctx, i) {
                                                               return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets.all(
-                                                                          8.0),
+                                                                  padding: const EdgeInsets.all(
+                                                                      8.0),
                                                                   child: contestCard(
-                                                                      href: snap.data![index][i].href,
+                                                                      href: snap
+                                                                          .data![index][
+                                                                              i]
+                                                                          .href,
                                                                       name: snap
-                                                                          .data![index]
-                                                                              [
+                                                                          .data![index][
                                                                               i]
                                                                           .event,
                                                                       start: (snap
-                                                                          .data![index]
-                                                                              [
+                                                                          .data![index][
                                                                               i]
                                                                           .start!),
                                                                       end: (snap
-                                                                          .data![index]
-                                                                              [
+                                                                          .data![index][
                                                                               i]
                                                                           .end!),
                                                                       site: snap
-                                                                          .data![index]
-                                                                              [i]
+                                                                          .data![index][i]
                                                                           .host));
                                                             }),
                                                       )
@@ -162,22 +161,24 @@ class _ContestPageState extends State<ContestPage> {
                                                                       const EdgeInsets.all(
                                                                           8.0),
                                                                   child: contestCard(
-                                                                      href: snap.data![index][i].href,
+                                                                      href: snap
+                                                                          .data![index]
+                                                                              [
+                                                                              i]
+                                                                          .href,
                                                                       name: snap
-                                                                          .data![index][
+                                                                          .data![index]
+                                                                              [
                                                                               i]
                                                                           .event,
                                                                       start: (snap.data![index][i].start ??
                                                                           DateTime
                                                                               .now()),
-                                                                      end: (snap.data![index][i].end ??
-                                                                          DateTime
-                                                                              .now()),
-                                                                      site: snap
-                                                                          .data![
-                                                                              index]
-                                                                              [i]
-                                                                          .host));
+                                                                      end: (snap
+                                                                              .data![index][i]
+                                                                              .end ??
+                                                                          DateTime.now()),
+                                                                      site: snap.data![index][i].host));
                                                             }),
                                                       ),
                                               ],

@@ -1,4 +1,4 @@
-class LCStats{
+class LCStats {
   int totalProblemsSolved;
   int easyProblemsSolved;
   int mediumProblemsSolved;
@@ -16,6 +16,6 @@ class LCStats{
     required this.problemsTotal,
     required this.easyTotal,
     required this.mediumTotal,
-    required this.hardTotal
+    required this.hardTotal,
   });
 }

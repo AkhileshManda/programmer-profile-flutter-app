@@ -1,4 +1,4 @@
-class NotificationModel{
+class NotificationModel {
   String id;
   String description;
   //DateTime createdAt;
@@ -16,17 +16,17 @@ class NotificationModel{
     required this.status,
     //this.seenAt,
     required this.user,
-    required this.otherUser
+    required this.otherUser,
   });
 }
 
-class NotificationUser{
+class NotificationUser {
   String id;
   String name;
   String? profile;
   String? description;
   NotificationUser({
-    required this.id, 
+    required this.id,
     required this.name,
     this.profile,
     this.description,

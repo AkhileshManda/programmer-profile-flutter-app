@@ -11,8 +11,8 @@ Widget customElevatedButton(
       width: double.infinity,
       height: 45,
       child: ElevatedButton(
-          style:
-              ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pink)),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.pink)),
           onPressed: () {
             onPressed();
           },

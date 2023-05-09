@@ -1,9 +1,9 @@
-class CFBarModel{
-   String rating;
-   int problemsCount;
+class CFBarModel {
+  String rating;
+  int problemsCount;
 
-   CFBarModel({
+  CFBarModel({
     required this.rating,
-    required this.problemsCount
-   });
+    required this.problemsCount,
+  });
 }

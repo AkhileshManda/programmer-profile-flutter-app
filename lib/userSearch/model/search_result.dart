@@ -12,7 +12,6 @@ class SearchResult {
     required this.name,
     required this.isFollowing,
     this.photoUrl,
-    this.description
+    this.description,
   });
-
 }

@@ -80,18 +80,18 @@ class ImageInputState extends State<ImageInput> {
             child: _storedImage != null
                 ? Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: FileImage(
-                          _storedImage!
-                        ) 
-                      ),
+                        image: DecorationImage(
+                          image: FileImage(
+                            _storedImage!,
+                          ),
+                        ),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(200))),
                     // child: Image.file(
                     //   _storedImage!,
                     //   fit: BoxFit.fill,
                     //   width: double.infinity,
-              
+
                     // ),
                   )
                 : (widget.url == null

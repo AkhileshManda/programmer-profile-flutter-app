@@ -13,11 +13,11 @@ import 'auth/view/login_page.dart';
 import 'auth/view/onboarding_page.dart';
 import 'contests/view/contest_page.dart';
 
-
-void main(){
-  WidgetsFlutterBinding.ensureInitialized(); 
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
@@ -25,31 +25,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Programmer Profile',
-      home:MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_)=> UserProvider())
-        ],
-        child: const SplashScreen()
-      ),//OnboardingPage(),//SplashScreen(),
+      home: MultiProvider(
+          providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+          child: const SplashScreen()),
+      // OnboardingPage(),
+      // SplashScreen(),
       theme: ThemeData(
-        // textTheme: const TextTheme(
-        //   titleSmall: 
-        // )
-      ),
+          // textTheme: const TextTheme(
+          //   titleSmall:
+          // )
+          ),
       routes: {
-       // '/': (ctx) => SplashScreen(),
-        OnboardingPage.routeName : (ctx) => OnboardingPage(),
-        SignUpScreen.routeName : (ctx) => const SignUpScreen(),
-        LoginScreen.routeName : (ctx) => const LoginScreen(),
-        ForgotPasswordScreen.routeName : (ctx) => const ForgotPasswordScreen(),
-        Home.routeName : (ctx) => ChangeNotifierProvider(
-          create: (_)=> UserProvider(),
-          child: const Home()
-        ),
+        // '/': (ctx) => SplashScreen(),
+        OnboardingPage.routeName: (ctx) => OnboardingPage(),
+        SignUpScreen.routeName: (ctx) => const SignUpScreen(),
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
+        ForgotPasswordScreen.routeName: (ctx) => const ForgotPasswordScreen(),
+        Home.routeName: (ctx) => ChangeNotifierProvider(
+              create: (_) => UserProvider(),
+              child: const Home(),
+            ),
         //MyHomePage.routeName : (ctx) => MyHomePage(),
-        ProfileScreen.routeName : (ctx) => const ProfileScreen(),
-        SearchUserScreen.routeName : (ctx) => const SearchUserScreen(),
-        ContestPage.routeName : (ctx) => const ContestPage(),
+        ProfileScreen.routeName: (ctx) => const ProfileScreen(),
+        SearchUserScreen.routeName: (ctx) => const SearchUserScreen(),
+        ContestPage.routeName: (ctx) => const ContestPage(),
       },
     );
   }

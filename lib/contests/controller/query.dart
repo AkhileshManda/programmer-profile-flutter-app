@@ -1,5 +1,5 @@
-class ContestQuery{
-  static String getContests(){
+class ContestQuery {
+  static String getContests() {
     return """ 
 
     query GetContests {

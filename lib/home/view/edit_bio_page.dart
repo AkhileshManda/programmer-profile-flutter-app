@@ -19,24 +19,26 @@ class EditorScreenState extends State<EditorScreen> {
   final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
-    _controller.text = widget.initialData == null? "" : widget.initialData!;
+    _controller.text = widget.initialData == null ? "" : widget.initialData!;
     super.initState();
   }
 
-  void onBioSubmitted(String bio)async{
+  void onBioSubmitted(String bio) async {
     final prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString("token")!;
     final EndPointGithubAuth point = EndPointGithubAuth();
     ValueNotifier<GraphQLClient> client = point.getClientGithub(token);
 
-    QueryResult result = await client.value.mutate(MutationOptions(
-      document: gql(DashBoardQueries.addDescription()),
-       variables: {
+    QueryResult result = await client.value.mutate(
+      MutationOptions(
+        document: gql(DashBoardQueries.addDescription()),
+        variables: {
           "input": {
-            "description": bio
+            "description": bio,
           }
-        }
-    ));
+        },
+      ),
+    );
 
     if (result.hasException) {
       if (!mounted) return null;
@@ -51,7 +53,6 @@ class EditorScreenState extends State<EditorScreen> {
 
       if (result.exception!.graphqlErrors.isEmpty) {
         //print("Internet is not found");
-
       } else {
         //print(result.exception!.graphqlErrors[0].message.toString());
       }
@@ -61,7 +62,6 @@ class EditorScreenState extends State<EditorScreen> {
       Navigator.pushReplacementNamed(context, Home.routeName);
     }
     return null;
-
   }
 
   @override

@@ -460,13 +460,16 @@ class _HomeState extends State<Home>
                                                       IconButton(
                                                         onPressed: () {
                                                           Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (ctx) =>
-                                                                      EditorScreen(
-                                                                        initialData:
-                                                                            user.description ?? "Enter Your Description",
-                                                                      )));
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (ctx) =>
+                                                                  EditorScreen(
+                                                                initialData: user
+                                                                        .description ??
+                                                                    "Enter Your Description",
+                                                              ),
+                                                            ),
+                                                          );
                                                         },
                                                         icon: const Icon(
                                                             Icons.edit,

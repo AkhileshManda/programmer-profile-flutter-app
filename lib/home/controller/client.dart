@@ -16,4 +16,3 @@ class EndPointGithubAuth {
     return client;
   }
 }
-

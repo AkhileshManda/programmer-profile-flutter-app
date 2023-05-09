@@ -59,7 +59,8 @@ Widget contestCard(
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 8, bottom: 2),
                   child: Text(monthName,
-                      style: const TextStyle(color: Colors.white, fontSize: 15)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 15)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -72,7 +73,8 @@ Widget contestCard(
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(day,
-                      style: const TextStyle(color: Colors.white, fontSize: 20)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 20)),
                 ),
               ],
             ),
