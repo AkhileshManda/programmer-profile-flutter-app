@@ -4,6 +4,9 @@ An application to help coders keep track of their coding activity and growth acr
 
 Try it out at : https://play.google.com/store/apps/details?id=com.kitaihazure.graphenous1
 
+Backend Credits : @kalashshah
+Backend Repo : https://github.com/kalashshah/programmer-profile-backend
+
 ## Features
 
 - Email Authentication with verify OTP
